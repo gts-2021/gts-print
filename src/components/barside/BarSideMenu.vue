@@ -9,9 +9,10 @@
 
 <script>
 
-import BarSideItem from '@/components/barside/BarSideItem.vue'
+import BarSideItem from './BarSideItem.vue'
 
 export default {
+    name: 'BarSideMenu', 
     components: {BarSideItem},
     props: {
         items: {
@@ -19,7 +20,7 @@ export default {
             required: true
         },
         itemActiveTitle : {
-            type: Boolean,
+            type: String,
             required : true
         }
     },
