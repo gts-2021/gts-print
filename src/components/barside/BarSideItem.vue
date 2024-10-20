@@ -12,6 +12,7 @@
 
 <script>
 export default {
+    name: 'BarSideItem', 
     props: {
         title: {
             type: String,

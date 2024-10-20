@@ -1,14 +1,18 @@
 {
   "name": "gts-print",
-  "version": "1.0.0-SNAPSHOT",
+  "version": "1.0.0",
   "private": true,
+  "main": "dist/gts-print.common.js",
+  "module": "dist/gts-print.umd.min.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "test": "vue-cli-service test:unit",
-    "lint": "vue-cli-service lint",
     "start": "npm run serve",
-    "sonar": "sonar-scanner -Dsonar.login=%SONAR_TOKEN%"
+    "build": "vue-cli-service build --target lib --name gts-print --dest dist src/index.js",
+    "test": "vue-cli-service test:unit",
+    "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "@mdi/font": "5.9.55",

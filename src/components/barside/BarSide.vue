@@ -22,6 +22,7 @@ import BarSideMenu from '@/components/barside/BarSideMenu.vue';
 
 
 export default {
+    name: 'BarSide', 
     components: { BarSideMenu },
 
     props: {

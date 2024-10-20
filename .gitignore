@@ -29,7 +29,6 @@ yarn-error.log*
 .DS_Store
 /public
 /coverage
-/vue.config.js
 /tests
 
 # TypeScript

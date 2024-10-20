@@ -12,6 +12,7 @@
 import BarSideItem from '@/components/barside/BarSideItem.vue'
 
 export default {
+    name: 'BarSideMenu', 
     components: {BarSideItem},
     props: {
         items: {
@@ -19,7 +20,7 @@ export default {
             required: true
         },
         itemActiveTitle : {
-            type: Boolean,
+            type: String,
             required : true
         }
     },
