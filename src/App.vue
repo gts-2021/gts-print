@@ -1,28 +1,53 @@
 <template>
-  
-  <div>Hello Print Lib</div>
- 
+
+  <BarSide :menus="menus" />
+
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
 
-nav {
-  padding: 30px;
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
+import BarSide from '@/components/barside/BarSide.vue';
 
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+export default {
+
+  components: { BarSide },
+
+
+  data() {
+    return {
+      menus: [
+        [
+          {
+            title: "Dashboard",
+            icon: "mdi mdi-finance"
+          },
+          {
+            title: "Companies",
+            icon: "mdi mdi-bag-personal-outline"
+          },
+          {
+            title: "Statistics",
+            icon: "mdi mdi-finance"
+          },
+
+        ],
+        [
+          {
+            title: "Settings",
+            icon: "mdi mdi-cog-outline"
+          },
+          {
+            title: "LogOut",
+            icon: "mdi mdi-logout"
+          },
+           
+        ]
+      ]
+    };
   }
 }
-</style>
+
+</script>
+
+<style lang="scss"></style>
