@@ -43,18 +43,25 @@
 
     </div>
 
-    <div class="scrollbar-container" ref="scrollbarContainer">
+    <div class="table-scrollbar-container" ref="scrollbarContainer">
       <div class="scrollbar-content"></div>
     </div>
 
   </div>
+
+  <DataTablePagination :pageStart="1" :totalRecords="50"/>
 </template>
 
 <script>
+import DataTablePagination from './DataTablePagination.vue';
 
 export default {
 
   name: "DataTable",
+
+  components : {
+    DataTablePagination
+  },
 
   props: {
     headers: {
@@ -70,7 +77,9 @@ export default {
     displayActions: {
       type: Boolean,
       required: false,
-      default: true
+      default(){
+				return true;
+			}
     }
   },
 
@@ -268,7 +277,7 @@ export default {
   }
 
   // design scroller
-  .scrollbar-container {
+  .table-scrollbar-container {
     width: 100%;
     height: 12px;
     border-radius: 50px;

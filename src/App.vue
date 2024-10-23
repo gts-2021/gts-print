@@ -3,7 +3,7 @@
   <!-- 
   <BarSide :menus="menus" />-->
 
-  <DataTable :headers="tabelHeaders" :items="tabelContent" :displayAction="true"/>
+  <DataTable :headers="tabelHeaders" :items="tabelContent"/>
 
 </template>
 
