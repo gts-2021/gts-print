@@ -56,56 +56,66 @@ export default {
           title: "Code",
           name: "companyCode",
           sortable: true,
+     
         },
         {
           title: "Name",
           name: "companyName",
           sortable: true,
+     
         },
         {
           title: "Email",
           name: "companyEmail",
           sortable: true,
+     
         },
         {
           title: "Domain",
           name: "companyDomain",
           sortable: true,
+     
         },
         {
           title: "Address",
           name: "companyAddress",
           sortable: true,
+     
         },
         {
           title: "Phone number",
-          name: "companyPhone"
+          name: "companyPhone",
+     
         }, 
         {
           title: "Activation Date",
           name: "activationDate",
           sortable: true,
+     
         },
         {
           title: "Website",
           name: "website",
           sortable: true,
+     
         },
         {
           title: "Facebook",
           name: "facebook",
           sortable: true,
+     
         },
         {
           title: "Instagram",
           name: "instagram",
           sortable: true,
+     
         },
         {
           title: "LinkedIn",
           name: "linkedin",
           sortable: true,
-        }  
+        }
       ],
 
       tabelContent: [

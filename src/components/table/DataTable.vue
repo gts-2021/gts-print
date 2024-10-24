@@ -8,7 +8,7 @@
         <thead>
           <tr class="table-header">
             <th class="table-header-container" v-for="header in headers" :key="header">
-              <div class="table-header-data"> 
+              <div :class="headersClass"> 
                 <div v-if="isMenuVisible(header.name)" class="table-header-menu">
                   <span class="table-header-menu-item" @click="unsort(header.name)"> Unsort </span>
                   <span class="table-header-menu-item" @click="sortAsc(header.name)"> Sort ASC </span>
@@ -22,7 +22,7 @@
 
             <!-- display actions  -->
             <th v-if="displayActions" class="table-header-container">
-              <div class="table-header-data">
+              <div :class="headersClass">
                 <span class="table-header-title">Actions </span> 
               </div>
             </th>
@@ -47,9 +47,10 @@
       <div class="scrollbar-content"></div>
     </div>
 
+    <DataTablePagination :pageStart="1" :totalRecords="50"/>
   </div>
 
-  <DataTablePagination :pageStart="1" :totalRecords="50"/>
+
 </template>
 
 <script>
@@ -79,6 +80,13 @@ export default {
       required: false,
       default(){
 				return true;
+			}
+    },
+    headersClass: {
+      type: String,
+      required: false,
+      default(){
+				return "table-header-data";
 			}
     }
   },
@@ -114,7 +122,12 @@ export default {
   methods : {
 
     toggleMenu(fieldName) {
-      this.visibleMenus[fieldName] = !this.visibleMenus[fieldName];
+      if (this.visibleMenus[fieldName]) {
+      this.visibleMenus = {};
+      } else {
+        this.visibleMenus = {}; 
+        this.visibleMenus[fieldName] = true;
+      }
     },
     
     isMenuVisible(fieldName) {
