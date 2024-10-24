@@ -5,20 +5,20 @@
 		<div class="gts-print-pagination-page-length-container"> 
 
 			<div>
-				<span> Rows per page:</span> 
+				<span> {{paginationConfig.pageLengthTitle}}</span> 
 				<span class="gts-print-pagination-page-selected"> {{selectedPageLength}}</span> 
 				<span class="gts-print-pagination-icon" @click="togglePagination"><v-icon>{{ "mdi-chevron-down" }}</v-icon></span> 
 			</div>
 			
 			<div v-if="pageLengthDisplayed" class="gts-print-pagination-page-length-menu">
-				<span v-for="page in pageLength" :key="page" class="gts-print-pagination-page-length-menu-item" @click="handlePageChange(page)"> {{page}} </span>
+				<span v-for="page in paginationConfig.pageLength" :key="page" class="gts-print-pagination-page-length-menu-item" @click="handlePageChange(page)"> {{page}} </span>
 			</div>
 			
 		</div>
 
 		<!-- Total records -->
 		<div class="gts-print-pagination-total-records">
-			<span> {{ pageStart }} - {{ pageEnd }} of {{ totalRecords }} </span>
+			<span> {{ pageStart }} - {{ pageEnd }} {{paginationConfig.totalRecordsTitle}} {{ paginationConfig.totalRecords }} </span>
 		</div>
 
 		<!-- Pagination controls (left/right arrows) -->
@@ -55,17 +55,9 @@ export default {
 	emits : ['change-page'],
 
 	props: {
-		
-		pageLength: {
-			type: Array,
-			required: false,
-			default(){
-				return [10, 20, 25, 50, 100]
-			}
-		},
-
-		totalRecords: {
-			type: Number,
+	
+		paginationConfig: {
+			type: Object,
 			required: true
 		},
 
@@ -73,7 +65,7 @@ export default {
   
 	data () {
 		return {
-			selectedPageLength: this.pageLength[0],
+			selectedPageLength: this.paginationConfig.pageLength[0],
       currentPage: 1,
       pageLengthDisplayed: false
 		}
@@ -82,7 +74,7 @@ export default {
 	computed: {
 
 		totalPages() {
-      return Math.ceil(this.totalRecords / this.selectedPageLength);
+      return Math.ceil(this.paginationConfig.totalRecords / this.selectedPageLength);
     },
 
 		pageStart() {
@@ -91,7 +83,7 @@ export default {
 
     pageEnd() {
       let end = this.currentPage * this.selectedPageLength;
-      return end > this.totalRecords ? this.totalRecords : end;
+      return end > this.paginationConfig.totalRecords ? this.paginationConfig.totalRecords : end;
     },
 
     isFirstPage() {

@@ -1,5 +1,5 @@
 <template>
-  <div class="table-wrapper">
+  <div :class="cssClass.tableWrapperClass">
 
     <div class="table-container" ref="tableContainer">
   
@@ -8,7 +8,7 @@
         <thead>
           <tr class="table-header">
             <th class="table-header-container" v-for="header in headers" :key="header">
-              <div :class="headersClass"> 
+              <div :class="cssClass.tableHeadersClass"> 
                 <div v-if="isMenuVisible(header.name)" class="table-header-menu">
                   <span class="table-header-menu-item" @click="unsort(header.name)"> Unsort </span>
                   <span class="table-header-menu-item" @click="sortAsc(header.name)"> Sort ASC </span>
@@ -22,7 +22,7 @@
 
             <!-- display actions  -->
             <th v-if="displayActions" class="table-header-container">
-              <div :class="headersClass">
+              <div :class="cssClass.tableHeadersClass">
                 <span class="table-header-title">Actions </span> 
               </div>
             </th>
@@ -47,7 +47,7 @@
       <div class="scrollbar-content"></div>
     </div>
 
-    <DataTablePagination :pageStart="1" :totalRecords="50"/>
+    <DataTablePagination :paginationConfig="paginationConfig"/>
   </div>
 
 
@@ -82,11 +82,15 @@ export default {
 				return true;
 			}
     },
-    headersClass: {
-      type: String,
+
+    cssClass: {
+      type: Object,
       required: false,
       default(){
-				return "table-header-data";
+				return {
+          tableWrapperClass:"table-wrapper",
+          tableHeadersClass:"table-header-data",
+        }
 			}
     }
   },
@@ -114,8 +118,14 @@ export default {
 
   data () {
     return {
-      data : undefined,
       visibleMenus:{},
+      paginationConfig:{
+        pageLengthTitle: "Row per page",
+        totalRecordsTitle: "of",
+        pageStart: 1,
+        totalRecords: 50,
+        pageLength :[10, 20, 25, 50, 100]
+      },
     }
   },
 
@@ -135,18 +145,22 @@ export default {
     },
     
     unsort(fieldName) {
+      this.visibleMenus = {};
       console.log("Unsort", fieldName);
     },
 
     sortAsc(fieldName) {
+      this.visibleMenus = {};
       console.log("Sort ASC", fieldName);
     },
 
     sortDesc(fieldName) {
+      this.visibleMenus = {};
       console.log("Sort DESC", fieldName);
     },
 
     hideColumn(fieldName) {
+      this.visibleMenus = {};
       console.log("Hide column", fieldName);
     },
 
@@ -169,12 +183,11 @@ export default {
 .table-wrapper {
   position: relative;
   width: 1100px;
-  margin: 50px auto 10px;
+  margin: 50px auto;
 
   .table-container {
 
     height: 684px;
-    width: 1100px;
     margin: 50px auto 10px;  // to be removed
     border-radius: 12px;
     border: 1px solid $neutral-color-100;

@@ -177,7 +177,8 @@ export default {
           linkedin: "linkedin.com"
         },
 
-      ]
+      ],
+
     };
   }
 }
