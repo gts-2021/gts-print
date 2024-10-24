@@ -2,8 +2,6 @@
     <div class="barside-container">
         <div class="barside-logo">Logo</div>
 
-        
-
         <div v-for="(items, index) in menus" :key="index">
             
             <BarSideMenu @barsideItemClicked="onItemClicked($event)" :items="items"  :itemActiveTitle="itemActiveTitle"/>
@@ -18,10 +16,11 @@
 
 <script>
 
-import BarSideMenu from '@/components/barside/BarSideMenu.vue';
+import BarSideMenu from './BarSideMenu.vue';
 
 
 export default {
+    name: 'BarSide', 
     components: { BarSideMenu },
 
     props: {
