@@ -1,7 +1,9 @@
 <template>
 
-
+ 
 <InputExemple />
+<BarSideExemple />
+
 
   
 
@@ -12,12 +14,14 @@
  
  
  
+import BarSideExemple from './components/barside/BarSideExemple.vue';
 import InputExemple from './components/input/InputExemple.vue';
 export default {
 
   components: { 
-     
-    InputExemple
+    BarSideExemple,
+    InputExemple,
+    
   },
 
   data() {
@@ -30,6 +34,7 @@ export default {
 </script>
 
 <style lang="scss">
+
 
  
 
