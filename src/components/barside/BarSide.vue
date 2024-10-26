@@ -31,6 +31,10 @@ export default {
         menus: {
             type: Array,
             required: true
+        },
+        onItemSelected : {
+            type: Function,
+            required: false
         }
     },
     data : function () {
@@ -41,7 +45,9 @@ export default {
     methods : {
         onItemClicked : function (barsideItemTitle) {
            this.itemActiveTitle = barsideItemTitle
-           
+           if(this.onItemSelected){
+            this.onItemSelected(barsideItemTitle);
+           }
             
         }
     }
@@ -51,7 +57,7 @@ export default {
 
 <style lang="scss">
 .barside-container {
-    color: $primary-color400;
+    color: $primary-color-400;
     background-color: #F2EDEB26;
     width: 272px;
     height: 100vh;

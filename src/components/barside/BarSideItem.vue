@@ -47,7 +47,7 @@ export default {
 <style lang="scss">
  
  .barside-item {
-        color: $primary-color700;
+        color: $primary-color-700;
         display: flex;
         align-items: center;
         margin-bottom: 5px;
@@ -77,13 +77,13 @@ export default {
     }
 
     .barside-item.active {
-        color: $primary-color400;
+        color: $primary-color-400;
         .barside-item-selected-border {
-            background-color: $primary-color400;
+            background-color: $primary-color-400;
         }
 
         .barside-item-content { 
-            background-color: #{$primary-color400}33;
+            background-color: #{$primary-color-400}33;
         }
     }
 
