@@ -1,22 +1,29 @@
 <template>
 
+  <testComponent :formatter="formatter()"/>
+
   <!-- 
   <BarSide :menus="menus" />-->
 
-  <DataTable :headers="tabelHeaders" :items="tabelContent"/>
-
+  <DataTable :headers="tabelHeaders" :items="tabelContent"/> 
+  
 </template>
 
 <script>
 
 //import BarSide from '@/components/barside/BarSide.vue';
 import DataTable from '@/components/table/DataTable.vue';
+import { defineComponent } from 'vue';
+import testComponent from '@/Test.vue';
+import { VIcon } from 'vuetify/lib/components/index.mjs';
 
 export default {
 
   components: { 
-    //BarSide, 
+    testComponent,
     DataTable 
+    //BarSide, 
+    
   },
 
   data() {
@@ -62,13 +69,20 @@ export default {
           title: "Name",
           name: "companyName",
           sortable: true,
+          formatter:(item, index) =>{
+            return index+"#"+item.companyCode+"#"+item.companyName
+          }
+         
      
         },
         {
           title: "Email",
           name: "companyEmail",
           sortable: true,
-     
+          formatter:(item, index) =>{
+            return index+"#"+item.companyEmail
+          }
+              
         },
         {
           title: "Domain",
@@ -103,7 +117,10 @@ export default {
           title: "Facebook",
           name: "facebook",
           sortable: true,
-     
+          formatter:(item) =>{
+            const facebookLink = `<a href="${item.facebook}" target="_blank">${item.facebook}</a>`;
+            return facebookLink;
+          }
         },
         {
           title: "Instagram",
@@ -115,11 +132,27 @@ export default {
           title: "LinkedIn",
           name: "linkedin",
           sortable: true,
-        }
+        
+        },
+        {
+          title: "Actions",
+          name: "actions",
+          sortable: false,
+          
+          formatter() {
+      
+            return defineComponent({
+              components: {
+                  VIcon
+              },
+              template: '<span class="table-content-actions-icon update-icon">  <v-icon>mdi-pencil-outline</v-icon> test </span> '
+              
+            });
+          },
+        },
       ],
 
       tabelContent: [
-        
       
         {
           companyCode: "123456",
@@ -179,8 +212,33 @@ export default {
 
       ],
 
+      
     };
-  }
+  },
+
+  methods : {
+
+    updateItem() {
+      console.log("updateItem");
+    },
+    deleteItem(item){
+      console.log("deleteItem", item);
+    },
+
+    formatter() {
+      
+      return defineComponent({
+        components: {
+            VIcon
+        },
+        template: '<span class="table-content-actions-icon update-icon">  <v-icon>mdi-pencil-outline</v-icon> test </span> '
+         
+      });
+    },
+    
+
+},
+
 }
 
 </script>
