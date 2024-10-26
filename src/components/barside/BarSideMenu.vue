@@ -1,7 +1,7 @@
 <template>
     <div class="barside-menu">
 
-        <BarSideItem v-for="item in items" :active="itemActiveTitle == item.title" :title="item.title" :icon="item.icon" @barsideItemClicked="onItemClicked" :key="item.title" />
+        <BarSideItem v-for="item in items" :active="itemActiveTitle == item.title" :title="item.title" :icon="item.icon" :isExternal="item.isExternal" @barsideItemClicked="onItemClicked" :key="item.title" />
          
 
     </div>
