@@ -25,7 +25,7 @@
 		<div class="gts-print-pagination-steps">
 
       <span 
-				class="gts-print-pagination-icon"
+		class="gts-print-pagination-icon"
         @click="previousPage"
         :class="{ 'disabled': isFirstPage }"
       >
