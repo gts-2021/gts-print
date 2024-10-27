@@ -1,13 +1,20 @@
 <template>
 
+
   <!-- <BarSide :menus="menus" />-->
 
   <DataTable :headers="tabelHeaders" :items="tabelContent" />
+
+  <InputExemple />
+  <BarSideExemple />
+
 
 </template>
 
 <script>
 
+import BarSideExemple from './components/barside/BarSideExemple.vue';
+import InputExemple from './components/input/InputExemple.vue';
 //import BarSide from '@/components/barside/BarSide.vue';
 import DataTable from '@/components/table/DataTable.vue';
 import { defineComponent } from 'vue';
@@ -15,14 +22,16 @@ import { VIcon } from 'vuetify/lib/components/index.mjs';
 
 export default {
 
-  components: {
-    DataTable
-    //BarSide, 
-
+  components: { 
+    BarSideExemple,
+    InputExemple,
+     DataTable
+    //BarSide,
   },
 
   data() {
     return {
+
       menus: [
         [
           {
@@ -229,8 +238,6 @@ export default {
         },
 
       ],
-
-
     };
   },
 
@@ -261,4 +268,9 @@ export default {
 
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+
+
+ 
+
+</style>

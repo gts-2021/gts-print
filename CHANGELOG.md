@@ -12,7 +12,14 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 ### Added
 
-* Creating `BarSide`component with multiple `BarSideMenu` and `BarSideItem`. [GTS-PRINT#32](https://quire.io/w/GTS-PRINT31/2)
+* Exporting css colors file to be used in external projects. [GTS-PRINT#11](https://quire.io/w/GTS-PRINT31/11)
+* Adding `BarSideExemple` page that allows us to generate all possible BarSide component creations. [GTS-PRINT#5](https://quire.io/w/GTS-PRINT31/5)
+* Adding `TextInputExemple` page that allows us to generate all possible Input component creations. [GTS-PRINT#5](https://quire.io/w/GTS-PRINT31/5)
+* Adding `TextInput` component. [GTS-PRINT#5](https://quire.io/w/GTS-PRINT31/5)
+* Adding `TextInputArea` component. [GTS-PRINT#5](https://quire.io/w/GTS-PRINT31/5)
+* Adding `TextInput` test suites. [GTS-PRINT#5](https://quire.io/w/GTS-PRINT31/5)
+* Adding `BarSide` test suites. [GTS-PRINT#6](https://quire.io/w/GTS-PRINT31/6)
+* Creating `BarSide`component with multiple `BarSideMenu` and `BarSideItem`. [GTS-PRINT#2](https://quire.io/w/GTS-PRINT31/2)
 
 ### Changed
 

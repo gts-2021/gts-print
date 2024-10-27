@@ -1,7 +1,7 @@
 <template>
     <div class="barside-menu">
 
-        <BarSideItem v-for="item in items" :active="itemActiveTitle == item.title" :title="item.title" :icon="item.icon" @barsideItemClicked="onItemClicked" :key="item.title" />
+        <BarSideItem v-for="item in items" :active="itemActiveTitle == item.title" :title="item.title" :icon="item.icon" :isExternal="item.isExternal" @barsideItemClicked="onItemClicked" :key="item.title" />
          
 
     </div>
@@ -9,9 +9,10 @@
 
 <script>
 
-import BarSideItem from '@/components/barside/BarSideItem.vue'
+import BarSideItem from './BarSideItem.vue'
 
 export default {
+    name: 'BarSideMenu', 
     components: {BarSideItem},
     props: {
         items: {
@@ -19,7 +20,7 @@ export default {
             required: true
         },
         itemActiveTitle : {
-            type: Boolean,
+            type: String,
             required : true
         }
     },

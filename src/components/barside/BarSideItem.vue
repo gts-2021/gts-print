@@ -3,7 +3,10 @@
     <div :class="'barside-item '+ (active ? 'active' : '') " @click="onSelectedItem">
         <span class="barside-item-selected-border"></span>
         <div class="barside-item-content">
-            <span class="barside-item-icon"><v-icon>{{ icon }}</v-icon></span>
+            <span class="barside-item-icon">
+                <component v-if="isExternal" :is="icon" />
+                <v-icon v-else>{{ icon }}</v-icon>
+            </span>
             <span class="barside-item-title">{{title}}</span>
         </div>
     </div>
@@ -12,6 +15,7 @@
 
 <script>
 export default {
+    name: 'BarSideItem', 
     props: {
         title: {
             type: String,
@@ -22,6 +26,11 @@ export default {
             required: false
         },
         active: {
+            type: Boolean,
+            required: false,
+            default: false
+        },
+        isExternal: {
             type: Boolean,
             required: false,
             default: false
@@ -46,7 +55,7 @@ export default {
 <style lang="scss">
  
  .barside-item {
-        color: $primary-color700;
+        color: $primary-color-700;
         display: flex;
         align-items: center;
         margin-bottom: 5px;
@@ -73,16 +82,20 @@ export default {
             height: 32px;
             
         }
+
+        .barside-item-icon {
+            display: flex;
+        }
     }
 
     .barside-item.active {
-        color: $primary-color400;
+        color: $primary-color-400;
         .barside-item-selected-border {
-            background-color: $primary-color400;
+            background-color: $primary-color-400;
         }
 
         .barside-item-content { 
-            background-color: #{$primary-color400}33;
+            background-color: #{$primary-color-400}33;
         }
     }
 

@@ -5,27 +5,33 @@
 		<div class="gts-print-pagination-page-length-container"> 
 
 			<div>
+
 				<span> {{paginationConfig.pageLengthTitle}}</span> 
+
 				<span class="gts-print-pagination-page-selected"> {{selectedPageLength}}</span> 
 				<span class="gts-print-pagination-icon" @click="togglePagination"><v-icon>{{ "mdi-chevron-down" }}</v-icon></span> 
 			</div>
 			
 			<div v-if="pageLengthDisplayed" class="gts-print-pagination-page-length-menu">
+
 				<span v-for="page in paginationConfig.pageLength" :key="page" class="gts-print-pagination-page-length-menu-item" @click="handlePageChange(page)"> {{page}} </span>
+        
 			</div>
 			
 		</div>
 
 		<!-- Total records -->
 		<div class="gts-print-pagination-total-records">
+
 			<span> {{ pageStart }} - {{ pageEnd }} {{paginationConfig.totalRecordsTitle}} {{ paginationConfig.totalRecords }} </span>
+
 		</div>
 
 		<!-- Pagination controls (left/right arrows) -->
 		<div class="gts-print-pagination-steps">
 
       <span 
-		class="gts-print-pagination-icon"
+		    class="gts-print-pagination-icon"
         @click="previousPage"
         :class="{ 'disabled': isFirstPage }"
       >
@@ -55,7 +61,7 @@ export default {
 	emits : ['change-page'],
 
 	props: {
-	
+  
 		paginationConfig: {
 			type: Object,
 			required: true
@@ -139,7 +145,7 @@ export default {
 
 	.gts-print-pagination-icon{
 		cursor: pointer;
-		color: $primary-color700;
+		color: $primary-color-700;
 		&.disabled {
       pointer-events: none;
       color: grey;
@@ -151,13 +157,13 @@ export default {
 		margin: 0px 10px;
 		font-weight: 500;
 		font-size: 14px;
-		color: $primary-color500;
+		color: $primary-color-500;
 
 		.gts-print-pagination-page-selected{
 			margin: 0px 5px;
 		}
 		.gts-print-pagination-page-length-menu{
-			color: $primary-color600;
+			color: $primary-color-600;
 			position: absolute;
 			right: 0;
 			display: flex;
@@ -166,7 +172,7 @@ export default {
 			align-items: center;
 			width: 70px;
 			border-radius: 8px;
-			border: 1px solid $primary-color400;
+			border: 1px solid $primary-color-400;
 			background-color: $color-white;
 			margin-bottom: 10px;
 
@@ -177,13 +183,13 @@ export default {
 				font-weight: 500;
 				text-align: center;
 				line-height: 24px;
-				color: $primary-color500;
+				color: $primary-color-500;
 				border-radius: 4px;
 				cursor: pointer;
 			}
 
 			.gts-print-pagination-page-length-menu-item:hover{
-				background: $primary-color500;
+				background: $primary-color-500;
 				color: $color-white;
 				transition: background-color 0.5s ease-out;
 			}
@@ -192,7 +198,7 @@ export default {
 
 	.gts-print-pagination-total-records{
 		margin: 0px 10px;
-		color: $primary-color500;
+		color: $primary-color-500;
 	}
 
 	.gts-print-pagination-steps{

@@ -2,8 +2,6 @@
     <div class="barside-container">
         <div class="barside-logo">Logo</div>
 
-        
-
         <div v-for="(items, index) in menus" :key="index">
             
             <BarSideMenu @barsideItemClicked="onItemClicked($event)" :items="items"  :itemActiveTitle="itemActiveTitle"/>
@@ -18,10 +16,11 @@
 
 <script>
 
-import BarSideMenu from '@/components/barside/BarSideMenu.vue';
+import BarSideMenu from './BarSideMenu.vue';
 
 
 export default {
+    name: 'BarSide', 
     components: { BarSideMenu },
 
     props: {
@@ -32,6 +31,10 @@ export default {
         menus: {
             type: Array,
             required: true
+        },
+        onItemSelected : {
+            type: Function,
+            required: false
         }
     },
     data : function () {
@@ -42,7 +45,9 @@ export default {
     methods : {
         onItemClicked : function (barsideItemTitle) {
            this.itemActiveTitle = barsideItemTitle
-           
+           if(this.onItemSelected){
+            this.onItemSelected(barsideItemTitle);
+           }
             
         }
     }
@@ -52,7 +57,7 @@ export default {
 
 <style lang="scss">
 .barside-container {
-    color: $primary-color400;
+    color: $primary-color-400;
     background-color: #F2EDEB26;
     width: 272px;
     height: 100vh;

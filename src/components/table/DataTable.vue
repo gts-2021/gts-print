@@ -1,4 +1,5 @@
 <template>
+
   <div :class="cssClass.tableWrapperClass">
 
     <div class="gts-print-table-container" ref="gtsPrintTableContainer">
@@ -19,11 +20,12 @@
                 <span v-if="header.sortable" class="gts-print-table-header-icon"  @click="toggleMenu(header.name)"><v-icon>{{ "mdi-dots-vertical" }}</v-icon></span> 
               </div>
             </th>
-
+            
           </tr>
         </thead>
 
         <tbody>
+        
           <tr class="gts-print-table-content" v-for="(item, index) in items" :key="item">
             <td class="gts-print-table-content-data" v-for="(header) in headers" :key="header.name">
 
@@ -38,7 +40,6 @@
               <span v-else>{{ item[header.name] }} </span>
                       
             </td> 
- 
           </tr>
         </tbody>
 
@@ -52,8 +53,7 @@
 
     <DataTablePagination :paginationConfig="paginationConfig"/>
   </div>
-
-
+  
 </template>
 
 <script>
@@ -67,7 +67,7 @@ export default {
     DataTablePagination
   },
 
-  props: {
+ props: { 
     headers: {
       type: Array,
       required: true
@@ -97,13 +97,12 @@ export default {
 			}
     }
   },
-
+  
   mounted() {
-    console.log("headers", this.headers);
+
     
     const tableContainer = this.$refs.gtsPrintTableContainer;
     const scrollbarContainer = this.$refs.gtsPrintScrollbarContainer;
-
     scrollbarContainer.addEventListener('scroll', () => {
       tableContainer.scrollLeft = scrollbarContainer.scrollLeft;
     });
@@ -137,11 +136,12 @@ export default {
 
     toggleMenu(fieldName) {
       if (this.visibleMenus[fieldName]) {
-      this.visibleMenus = {};
+        this.visibleMenus = {};
       } else {
         this.visibleMenus = {}; 
         this.visibleMenus[fieldName] = true;
       }
+
     },
     
     isMenuVisible(fieldName) {
@@ -167,7 +167,6 @@ export default {
       this.visibleMenus = {};
       console.log("Hide column", fieldName);
     },
-
     
   }
 
