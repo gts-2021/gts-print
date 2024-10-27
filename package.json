@@ -4,8 +4,10 @@
   "private": true,
   "main": "dist/gts-print.common.js",
   "module": "dist/gts-print.umd.min.js",
+  "style": "src/styles/colors.scss",
   "files": [
-    "dist"
+    "dist",
+    "src/styles/colors.scss"
   ],
   "scripts": {
     "serve": "vue-cli-service serve",
