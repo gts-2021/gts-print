@@ -6,10 +6,12 @@
 
 			<div>
 
-				<span> {{paginationConfig.pageLengthTitle}}</span> 
+				<span class="gts-print-pagination-page-length-title"> {{paginationConfig.pageLengthTitle}}</span> 
 
-				<span class="gts-print-pagination-page-selected"> {{selectedPageLength}}</span> 
+				<span class="gts-print-pagination-page-selected"> {{selectedPageLength}}</span>
+				
 				<span class="gts-print-pagination-icon" @click="togglePagination"><v-icon>{{ "mdi-chevron-down" }}</v-icon></span> 
+
 			</div>
 			
 			<div v-if="pageLengthDisplayed" class="gts-print-pagination-page-length-menu">
@@ -31,7 +33,7 @@
 		<div class="gts-print-pagination-steps">
 
       <span 
-		    class="gts-print-pagination-icon"
+				class="gts-print-pagination-icon"
         @click="previousPage"
         :class="{ 'disabled': isFirstPage }"
       >
@@ -58,7 +60,7 @@ export default {
   
 	name: "DataTablePagiation",
   
-	emits : ['change-page'],
+	emits : ['changePage'],
 
 	props: {
   
@@ -118,14 +120,14 @@ export default {
       
 			this.currentPage++;
 			console.log("nextPage ", this.currentPage);
-			this.$emit("change-page", this.currentPage);
+			this.$emit("changePage", this.currentPage);
      
     },
 
     previousPage() {
 			this.currentPage--;
 			console.log("previousPage ", this.currentPage);
-			this.$emit("change-page", this.currentPage);
+			this.$emit("changePage", this.currentPage);
       
     }
 
