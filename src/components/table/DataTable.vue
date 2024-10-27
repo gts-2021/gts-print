@@ -1,40 +1,44 @@
 <template>
-  <div class="table-wrapper">
 
-    <div class="table-container" ref="tableContainer">
+  <div :class="cssClass.tableWrapperClass">
+
+    <div class="gts-print-table-container" ref="gtsPrintTableContainer">
   
-      <table class="table">
+      <table class="gts-print-table">
 
         <thead>
-          <tr class="table-header">
-            <th class="table-header-container" v-for="header in headers" :key="header">
-              <div class="table-header-data"> 
-                <div v-if="isMenuVisible(header.name)" class="table-header-menu">
-                  <span class="table-header-menu-item" @click="unsort(header.name)"> Unsort </span>
-                  <span class="table-header-menu-item" @click="sortAsc(header.name)"> Sort ASC </span>
-                  <span class="table-header-menu-item" @click="sortDesc(header.name)"> Sort DESC </span>
-                  <span class="table-header-menu-item" @click="hideColumn(header.name)"> Hide </span>
+          <tr class="gts-print-table-header">
+            <th class="gts-print-table-header-container" v-for="header in headers" :key="header">
+              <div :class="cssClass.tableHeadersClass"> 
+                <div v-if="isMenuVisible(header.name)" class="gts-print-table-header-menu">
+                  <span class="gts-print-table-header-menu-item" @click="unsort(header.name)"> Unsort </span>
+                  <span class="gts-print-table-header-menu-item" @click="sortAsc(header.name)"> Sort ASC </span>
+                  <span class="gts-print-table-header-menu-item" @click="sortDesc(header.name)"> Sort DESC </span>
+                  <span class="gts-print-table-header-menu-item" @click="hideColumn(header.name)"> Hide </span>
                 </div>
-                <span class="table-header-title"> {{header.title}} </span> 
-                <span v-if="header.sortable" class="table-header-icon"  @click="toggleMenu(header.name)"><v-icon>{{ "mdi-dots-vertical" }}</v-icon></span> 
+                <span class="gts-print-table-header-title"> {{header.title}} </span> 
+                <span v-if="header.sortable" class="gts-print-table-header-icon"  @click="toggleMenu(header.name)"><v-icon>{{ "mdi-dots-vertical" }}</v-icon></span> 
               </div>
             </th>
-
-            <!-- display actions  -->
-            <th v-if="displayActions" class="table-header-container">
-              <div class="table-header-data">
-                <span class="table-header-title">Actions </span> 
-              </div>
-            </th>
+            
           </tr>
         </thead>
 
         <tbody>
-          <tr class="table-content" v-for="item in items" :key="item">
-            <td class="table-content-data" v-for="header in headers" :key="header.name">{{ item[header.name] }}</td> 
-            <td v-if="displayActions" class="table-content-data"> 
-              <span class="table-content-actions-icon update-icon"  @click="updateItem(item)"><v-icon>{{ "mdi-pencil-outline" }}</v-icon></span> 
-              <span class="table-content-actions-icon remove-icon"  @click="deleteItem(item)"><v-icon>{{ "mdi-delete-outline" }}</v-icon></span> 
+        
+          <tr class="gts-print-table-content" v-for="(item, index) in items" :key="item">
+            <td class="gts-print-table-content-data" v-for="(header) in headers" :key="header.name">
+
+              <span v-if="header.componentFormatter"> 
+
+                <component :item="item" :is="header.componentFormatter"></component>
+ 
+              </span>
+
+              <span v-else-if="header.textFormatter"> {{ header.textFormatter(item, index) }} </span>
+
+              <span v-else>{{ item[header.name] }} </span>
+                      
             </td> 
           </tr>
         </tbody>
@@ -43,13 +47,13 @@
 
     </div>
 
-    <div class="table-scrollbar-container" ref="scrollbarContainer">
-      <div class="scrollbar-content"></div>
+    <div class="gts-print-table-scrollbar-container" ref="gtsPrintScrollbarContainer">
+      <div class="gts-print-scrollbar-content"></div>
     </div>
 
+    <DataTablePagination :paginationConfig="paginationConfig"/>
   </div>
-
-  <DataTablePagination :pageStart="1" :totalRecords="50"/>
+  
 </template>
 
 <script>
@@ -63,7 +67,7 @@ export default {
     DataTablePagination
   },
 
-  props: {
+ props: { 
     headers: {
       type: Array,
       required: true
@@ -80,14 +84,25 @@ export default {
       default(){
 				return true;
 			}
+    },
+
+    cssClass: {
+      type: Object,
+      required: false,
+      default(){
+				return {
+          tableWrapperClass:"gts-print-table-wrapper",
+          tableHeadersClass:"gts-print-table-header-data",
+        }
+			}
     }
   },
-
+  
   mounted() {
 
-    const tableContainer = this.$refs.tableContainer;
-    const scrollbarContainer = this.$refs.scrollbarContainer;
-
+    
+    const tableContainer = this.$refs.gtsPrintTableContainer;
+    const scrollbarContainer = this.$refs.gtsPrintScrollbarContainer;
     scrollbarContainer.addEventListener('scroll', () => {
       tableContainer.scrollLeft = scrollbarContainer.scrollLeft;
     });
@@ -99,22 +114,34 @@ export default {
     // Ajuster la largeur de la fausse barre de défilement en fonction du contenu réel du tableau
     this.$nextTick(() => {
       const tableWidth = tableContainer.scrollWidth;
-      scrollbarContainer.querySelector(".scrollbar-content").style.width = `${tableWidth}px`;
+      scrollbarContainer.querySelector(".gts-print-scrollbar-content").style.width = `${tableWidth}px`;
     });
 
   },
 
   data () {
     return {
-      data : undefined,
       visibleMenus:{},
+      paginationConfig:{
+        pageLengthTitle: "Row per page",
+        totalRecordsTitle: "of",
+        pageStart: 1,
+        totalRecords: 50,
+        pageLength :[10, 20, 25, 50, 100]
+      },
     }
   },
 
   methods : {
 
     toggleMenu(fieldName) {
-      this.visibleMenus[fieldName] = !this.visibleMenus[fieldName];
+      if (this.visibleMenus[fieldName]) {
+        this.visibleMenus = {};
+      } else {
+        this.visibleMenus = {}; 
+        this.visibleMenus[fieldName] = true;
+      }
+
     },
     
     isMenuVisible(fieldName) {
@@ -122,29 +149,24 @@ export default {
     },
     
     unsort(fieldName) {
+      this.visibleMenus = {};
       console.log("Unsort", fieldName);
     },
 
     sortAsc(fieldName) {
+      this.visibleMenus = {};
       console.log("Sort ASC", fieldName);
     },
 
     sortDesc(fieldName) {
+      this.visibleMenus = {};
       console.log("Sort DESC", fieldName);
     },
 
     hideColumn(fieldName) {
+      this.visibleMenus = {};
       console.log("Hide column", fieldName);
     },
-
-    updateItem(item){
-      console.log("updateItem ", item);
-    },
-
-    deleteItem(item){
-      console.log("deleteItem ", item);
-    },
-
     
   }
 
@@ -153,15 +175,12 @@ export default {
 
 <style lang="scss">
 
-.table-wrapper {
+.gts-print-table-wrapper {
   position: relative;
   width: 1100px;
-  margin: 50px auto 10px;
+  margin: 50px auto;
 
-  .table-container {
-
-    height: 684px;
-    width: 1100px;
+  .gts-print-table-container {
     margin: 50px auto 10px;  // to be removed
     border-radius: 12px;
     border: 1px solid $neutral-color-100;
@@ -169,29 +188,25 @@ export default {
     overflow-y: hidden;
 
   
-    .table{
+    .gts-print-table{
       border-collapse: collapse;
       white-space: nowrap;
       
-      .table-header{
+      .gts-print-table-header{
       
-        .table-header-container{
-      
-          width: 184px;
-          height: 44px !important;
+        .gts-print-table-header-container{
           
-          .table-header-data{
+          .gts-print-table-header-data{
             position: relative;
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 12px 24px;
-            width: 184px;
             border-right: 1px solid $neutral-color-100;
             border-bottom: 1px solid $neutral-color-100;
             background: $primary-color-50;
 
-            .table-header-menu{
+            .gts-print-table-header-menu{
               position: absolute;
               top: 60px;
               right: 10px;
@@ -202,10 +217,10 @@ export default {
               width: 158px;
               height: 226px;
               border-radius: 8px;
-              border: 1px solid $primary-color-400;
+              border: 1px solid $primary-color400;
               background-color: $color-white;
 
-              .table-header-menu-item{
+              .gts-print-table-header-menu-item{
                 padding: 12px 8px;
                 width: 150px;
                 height: 48px;
@@ -213,26 +228,26 @@ export default {
                 font-size: 16px;
                 text-align: left;
                 line-height: 24px;
-                color: $primary-color-500;
+                color: $primary-color500;
                 border-radius: 4px;
                 cursor: pointer;
               }
-              .table-header-menu-item:hover{
-                background: $primary-color-500;
+              .gts-print-table-header-menu-item:hover{
+                background: $primary-color500;
                 color: $color-white;
                 transition:  background-color 0.5s ease-out;
               }
             }
           }
 
-          .table-header-title{
+          .gts-print-table-header-title{
             font-size: 16px;
             line-height: 24px;
-            color:$primary-color-400;
+            color:$primary-color400;
             text-wrap: nowrap;
           }
 
-          .table-header-icon{
+          .gts-print-table-header-icon{
             height: 24px;
             width: 24px;
             cursor: pointer;
@@ -241,32 +256,32 @@ export default {
 
       }
 
-      .table-content{
+      .gts-print-table-content{
 
-        .table-content-data{
+        .gts-print-table-content-data{
           padding: 12px 24px;
           width: 184px;
           height: 64px;
           font-size: 14px;
           text-align: center;
           border-bottom: 1px dashed $neutral-color-100;
-          color:$primary-color-700;
+          color:$primary-color700;
 
-          .table-content-actions-icon{
+          .gts-print-table-content-actions-icon{
             margin: 0px 5px;
             cursor: pointer;
           }
-          .table-content-actions-icon.update-icon{
-            color: $primary-color-700;
+          .gts-print-table-content-actions-icon.update-icon{
+            color: $primary-color700;
           }
-          .table-content-actions-icon.remove-icon{
+          .gts-print-table-content-actions-icon.remove-icon{
             color: $accent-dark-red-color;
           }
         
         }
 
         &:nth-child(even) {
-          .table-content-data {
+          .gts-print-table-content-data {
             background-color: #DEE8EA6B;
           }
         }
@@ -277,7 +292,7 @@ export default {
   }
 
   // design scroller
-  .table-scrollbar-container {
+  .gts-print-table-scrollbar-container {
     width: 100%;
     height: 12px;
     border-radius: 50px;
@@ -294,13 +309,13 @@ export default {
     }
 
     &::-webkit-scrollbar-thumb {
-      background-color: $primary-color-500; // Couleur du curseur
+      background-color: $primary-color500; // Couleur du curseur
       border-radius: 10px; // Arrondir le curseur
-      border: 2px solid $primary-color-500; // Bordure autour du curseur
+      border: 2px solid $primary-color500; // Bordure autour du curseur
     }
 
     &::-webkit-scrollbar-thumb:hover {
-      background-color: $primary-color-500; // Couleur du curseur au survol
+      background-color: $primary-color500; // Couleur du curseur au survol
     }
 
     &::-webkit-scrollbar-button {
@@ -308,9 +323,9 @@ export default {
     }
 
     // Pour Firefox
-    scrollbar-color: $primary-color-500 $primary-color-50; // Couleur du curseur et de la piste
+    scrollbar-color: $primary-color500 $primary-color-50; // Couleur du curseur et de la piste
     
-    .scrollbar-content {
+    .gts-print-scrollbar-content {
       height: 1px;
       width: 100%;
     }
