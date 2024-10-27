@@ -12,7 +12,8 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 ### Added
 
-
+* Adding `ButtonExample` component .[GTS-PRINT#4](https://quire.io/w/GTS-PRINT31/4)
+* Adding `ButtonComponent` component .[GTS-PRINT#4](https://quire.io/w/GTS-PRINT31/4)
 * Adding `DataTablePagiation.spec.js` fot testing `DataTablePagiation` componement.[GTS-PRINT#1](https://quire.io/w/GTS-PRINT31/1)
 * Adding `DataTablePagiation` component for handling pagination of table.[GTS-PRINT#1](https://quire.io/w/GTS-PRINT31/1)
 * Adding `DataTable` component for displaying a specific datas and actions.[GTS-PRINT#1](https://quire.io/w/GTS-PRINT31/1)
