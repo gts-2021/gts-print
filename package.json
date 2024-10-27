@@ -5,7 +5,9 @@
   "main": "dist/gts-print.common.js",
   "module": "dist/gts-print.umd.min.js",
   "files": [
-    "dist"
+    "dist",
+    "src/styles/colors.scss",
+    "src/styles/fonts.scss"
   ],
   "scripts": {
     "serve": "vue-cli-service serve",
