@@ -217,7 +217,7 @@ export default {
               width: 158px;
               height: 226px;
               border-radius: 8px;
-              border: 1px solid $primary-color400;
+              border: 1px solid $primary-color-400;
               background-color: $color-white;
 
               .gts-print-table-header-menu-item{
@@ -228,12 +228,12 @@ export default {
                 font-size: 16px;
                 text-align: left;
                 line-height: 24px;
-                color: $primary-color500;
+                color: $primary-color-500;
                 border-radius: 4px;
                 cursor: pointer;
               }
               .gts-print-table-header-menu-item:hover{
-                background: $primary-color500;
+                background: $primary-color-500;
                 color: $color-white;
                 transition:  background-color 0.5s ease-out;
               }
@@ -243,7 +243,7 @@ export default {
           .gts-print-table-header-title{
             font-size: 16px;
             line-height: 24px;
-            color:$primary-color400;
+            color:$primary-color-400;
             text-wrap: nowrap;
           }
 
@@ -265,14 +265,14 @@ export default {
           font-size: 14px;
           text-align: center;
           border-bottom: 1px dashed $neutral-color-100;
-          color:$primary-color700;
+          color:$primary-color-700;
 
           .gts-print-table-content-actions-icon{
             margin: 0px 5px;
             cursor: pointer;
           }
           .gts-print-table-content-actions-icon.update-icon{
-            color: $primary-color700;
+            color: $primary-color-700;
           }
           .gts-print-table-content-actions-icon.remove-icon{
             color: $accent-dark-red-color;
@@ -309,13 +309,13 @@ export default {
     }
 
     &::-webkit-scrollbar-thumb {
-      background-color: $primary-color500; // Couleur du curseur
+      background-color: $primary-color-500; // Couleur du curseur
       border-radius: 10px; // Arrondir le curseur
-      border: 2px solid $primary-color500; // Bordure autour du curseur
+      border: 2px solid $primary-color-500; // Bordure autour du curseur
     }
 
     &::-webkit-scrollbar-thumb:hover {
-      background-color: $primary-color500; // Couleur du curseur au survol
+      background-color: $primary-color-500; // Couleur du curseur au survol
     }
 
     &::-webkit-scrollbar-button {
@@ -323,7 +323,7 @@ export default {
     }
 
     // Pour Firefox
-    scrollbar-color: $primary-color500 $primary-color-50; // Couleur du curseur et de la piste
+    scrollbar-color: $primary-color-500 $primary-color-50; // Couleur du curseur et de la piste
     
     .gts-print-scrollbar-content {
       height: 1px;
