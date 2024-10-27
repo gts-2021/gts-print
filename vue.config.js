@@ -5,7 +5,7 @@ module.exports = defineConfig({
   transpileDependencies: true,
 
   devServer: {
-    port: 8585,  // Changez le port ici
+    port: 5555,  // Changez le port ici
   },
   css: {
     loaderOptions: {

@@ -24,15 +24,16 @@
         </thead>
 
         <tbody>
-          <tr class="gts-print-table-content" v-for="item in items" :key="item">
+          <tr class="gts-print-table-content" v-for="(item, index) in items" :key="item">
             <td class="gts-print-table-content-data" v-for="(header) in headers" :key="header.name">
 
-              <span v-if="header.formatter"> 
+              <span v-if="header.componentFormatter"> 
 
-                <component :is="header.formatter"></component>
-
+                <component :item="item" :is="header.componentFormatter"></component>
  
               </span>
+
+              <span v-else-if="header.textFormatter"> {{ header.textFormatter(item, index) }} </span>
 
               <span v-else>{{ item[header.name] }} </span>
                       
@@ -167,14 +168,6 @@ export default {
       console.log("Hide column", fieldName);
     },
 
-    updateItem(item){
-      console.log("updateItem ", item);
-    },
-
-    deleteItem(item){
-      console.log("deleteItem ", item);
-    },
-
     
   }
 
@@ -189,8 +182,6 @@ export default {
   margin: 50px auto;
 
   .gts-print-table-container {
-
-    height: 684px;
     margin: 50px auto 10px;  // to be removed
     border-radius: 12px;
     border: 1px solid $neutral-color-100;
@@ -205,9 +196,6 @@ export default {
       .gts-print-table-header{
       
         .gts-print-table-header-container{
-      
-          width: 184px;
-          height: 44px !important;
           
           .gts-print-table-header-data{
             position: relative;
