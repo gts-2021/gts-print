@@ -12,6 +12,8 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 ### Added
 
+* Adding buttons desing for all classe in `buttons.js` file[GTS-PRINT#4](https://quire.io/w/GTS-PRINT31/4)
+* Adding `buttons.js` file which contain constant button css class [GTS-PRINT#4](https://quire.io/w/GTS-PRINT31/4)
 * Adding `ButtonExample` component .[GTS-PRINT#4](https://quire.io/w/GTS-PRINT31/4)
 * Adding `ButtonComponent` component .[GTS-PRINT#4](https://quire.io/w/GTS-PRINT31/4)
 * Adding `DataTablePagiation.spec.js` fot testing `DataTablePagiation` componement.[GTS-PRINT#1](https://quire.io/w/GTS-PRINT31/1)

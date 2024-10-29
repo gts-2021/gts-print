@@ -1,40 +1,107 @@
 <template>
 
   <div id="exemple-container">
-    <ButtonComponent 
+
+    <!-- without -->
+    <div>
+      <ButtonComponent 
+      class="mb-20"
       :buttonTitle="'without icon'" 
       :classStyle="'gts-button'"
-    />
+      />
 
-    <ButtonComponent 
-      :icon="leftIcon"
-      :classStyle="'gts-button'"
-    />
-  
-    <ButtonComponent 
-      :buttonTitle="'with left icon'" 
-      :icon="leftIcon"
-      :classStyle="'gts-button'"
-    />
-
+      <ButtonComponent 
+        class="mb-20"
+        :icon="leftIcon"
+        :classStyle="'gts-button'"
+      />
     
-    <ButtonComponent 
-      :buttonTitle="'with right icon'" 
-      :icon="rightIcon"
-      :classStyle="'gts-button'"
-    />
+      <ButtonComponent 
+        class="mb-20"
+        :buttonTitle="'with left icon'" 
+        :icon="leftIcon"
+        :classStyle="'gts-button'"
+      />
+  
+      <ButtonComponent 
+        class="mb-20"
+        :buttonTitle="'with right icon'" 
+        :icon="rightIcon"
+        :classStyle="'gts-button'"
+      />
 
-    <ButtonComponent 
-      :buttonTitle="'with svg left icon'" 
-      :icon="svgLeftIcon"
-      :classStyle="'gts-button'"
-    />
+      <ButtonComponent 
+        class="mb-20"    
+        :buttonTitle="'with svg left icon'" 
+        :icon="svgLeftIcon"
+        :classStyle="'gts-button'"
+      />
 
-    <ButtonComponent 
-      :buttonTitle="'with svg right icon'" 
-      :icon="svgRightIcon"
-      :classStyle="'gts-button'"
-    />
+      <ButtonComponent
+        class="mb-20" 
+        :buttonTitle="'with svg right icon'" 
+        :icon="svgRightIcon"
+        :classStyle="'gts-button'"
+      />
+    </div>
+  
+    <!-- with theme -->
+    <div>
+        
+      <ButtonComponent 
+        class="mb-20"
+        :buttonTitle="'PRIMARY'" 
+        :icon="leftIcon"
+        :theme="PRIMARY"
+      />
+
+      <ButtonComponent 
+        class="mb-20"
+        :buttonTitle="'PRIMARY_INVERSE'" 
+        :icon="leftIcon"
+        :theme="PRIMARY_INVERSE"
+      />
+
+      <ButtonComponent
+        class="mb-20" 
+        :buttonTitle="'PRIMARY_50'" 
+        :icon="leftIcon"
+        :theme="PRIMARY_50"
+      />
+
+      <ButtonComponent
+        class="mb-20" 
+        :buttonTitle="'PRIMARY_50_INVERSE'" 
+        :icon="leftIcon"
+        :theme="PRIMARY_50_INVERSE"
+      />
+      <ButtonComponent
+        class="mb-20" 
+        :buttonTitle="'DANGER'" 
+        :icon="leftIcon"
+        :theme="DANGER"
+      />
+
+      <ButtonComponent
+        class="mb-20" 
+        :buttonTitle="'DANGER_INVERSE'" 
+        :icon="leftIcon"
+        :theme="DANGER_INVERSE"
+      />
+      <ButtonComponent 
+        class="mb-20"
+        :buttonTitle="'DANGER_LIGHT'" 
+        :icon="leftIcon"
+        :theme="DANGER_LIGHT"
+      />
+      <ButtonComponent 
+        class="mb-20"
+        :buttonTitle="'DANGER_LIGHT_INVERSE'" 
+        :icon="leftIcon"
+        :theme="DANGER_LIGHT_INVERSE"
+      />
+    </div>
+  
     
   </div>
 
@@ -44,6 +111,8 @@
 
 import ButtonComponent from '@/components/button/ButtonComponent.vue';
 import { defineComponent } from 'vue';
+
+import { PRIMARY, PRIMARY_INVERSE, PRIMARY_50, PRIMARY_50_INVERSE, DANGER, DANGER_INVERSE, DANGER_LIGHT, DANGER_LIGHT_INVERSE  } from '@/constants/buttons.js';
 
 export default {
 
@@ -55,6 +124,15 @@ export default {
 
   data() {
 		return {
+      PRIMARY,
+      PRIMARY_INVERSE,
+      PRIMARY_50,
+      PRIMARY_50_INVERSE,
+      DANGER,
+      DANGER_INVERSE,
+      DANGER_LIGHT,
+      DANGER_LIGHT_INVERSE,
+      
 			icon: {
 
         isExternalIcon: false,
@@ -155,9 +233,11 @@ export default {
 <style lang="scss">
 
 #exemple-container {
-  padding: 20px;
   display: flex;
   justify-content: space-around;
 }
 
+.mb-20 {
+  margin-bottom: 20px;
+}
 </style>
