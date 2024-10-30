@@ -15,6 +15,9 @@
 
     <TextInputArea rror="You should give a valid value" label="Eroor Input"   placeholder="This is an error input" />
     
+
+    <ListBox    :options="[{'label':'Select domain','value':'0'},{'label':'Software Ingenering','value':'1'}]" label="ListBox" type="password" placeholder="Hide yout password" />
+
   </div>
 
 </template>
@@ -23,12 +26,14 @@
 
 import TextInput from '@/components/input/TextInput.vue';
 import TextInputArea from '@/components/input/TextInputArea.vue';
+import ListBox from './ListBox.vue';
 
 export default {
 
   components: {
     TextInput,
-    TextInputArea
+    TextInputArea,
+    ListBox
 
   },
 
@@ -46,6 +51,8 @@ export default {
 <style lang="scss">
 
 #exemple-container {
+  display: flex;
+  flex-direction: column;
   padding: 20px;;
 }
 

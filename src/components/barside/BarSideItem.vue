@@ -74,6 +74,7 @@ export default {
 
             .barside-item-title {
                 margin-left: 10px;
+                transition-duration: 0.5s;
             }
         }
         .barside-item-selected-border {
@@ -97,6 +98,10 @@ export default {
         .barside-item-content { 
             background-color: #{$primary-color-400}33;
         }
+    }
+
+    .barside-item:hover .barside-item-title {
+        padding-left: 10px;
     }
 
 
