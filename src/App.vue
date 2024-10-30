@@ -1,13 +1,13 @@
 <template>
 
 
-  <!-- <BarSide :menus="menus" />-->
+  <!-- <BarSide :menus="menus" /> -->
 
-  <DataTable :headers="tabelHeaders" :items="tabelContent" />
-
+  <!-- <DataTable :headers="tabelHeaders" :items="tabelContent" />  -->
   <InputExemple />
   <BarSideExemple />
 
+  <ButtonExample />
 
 </template>
 
@@ -15,8 +15,10 @@
 
 import BarSideExemple from './components/barside/BarSideExemple.vue';
 import InputExemple from './components/input/InputExemple.vue';
+import ButtonExample from './components/button/ButtonExample.vue';
+
 //import BarSide from '@/components/barside/BarSide.vue';
-import DataTable from '@/components/table/DataTable.vue';
+//import DataTable from '@/components/table/DataTable.vue';
 import { defineComponent } from 'vue';
 import { VIcon } from 'vuetify/lib/components/index.mjs';
 
@@ -25,8 +27,10 @@ export default {
   components: { 
     BarSideExemple,
     InputExemple,
-     DataTable
+    //DataTable,
     //BarSide,
+    ButtonExample
+
   },
 
   data() {
