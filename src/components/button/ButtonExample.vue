@@ -6,43 +6,50 @@
     <div>
       <ButtonComponent 
       class="mb-20"
-      :buttonTitle="'without icon'" 
-      :classStyle="'gts-button'"
+      :title="'without icon'" 
+      :className="'gts-button'"
       />
 
       <ButtonComponent 
         class="mb-20"
         :icon="leftIcon"
-        :classStyle="'gts-button'"
+        :className="'gts-button'"
       />
     
       <ButtonComponent 
         class="mb-20"
-        :buttonTitle="'with left icon'" 
+        :title="'with left icon'" 
         :icon="leftIcon"
-        :classStyle="'gts-button'"
+        :className="'gts-button'"
       />
   
       <ButtonComponent 
         class="mb-20"
-        :buttonTitle="'with right icon'" 
+        :title="'with right icon'" 
         :icon="rightIcon"
-        :classStyle="'gts-button'"
+        :className="'gts-button'"
       />
 
       <ButtonComponent 
         class="mb-20"    
-        :buttonTitle="'with svg left icon'" 
+        :title="'with svg left icon'" 
         :icon="svgLeftIcon"
-        :classStyle="'gts-button'"
+        :className="'gts-button'"
       />
 
       <ButtonComponent
         class="mb-20" 
-        :buttonTitle="'with svg right icon'" 
+        :title="'with svg right icon'" 
         :icon="svgRightIcon"
-        :classStyle="'gts-button'"
+        :className="'gts-button'"
       />
+      
+      <ButtonComponent
+        class="mb-20" 
+        :title="'TEST'" 
+        :className="'gts-test'"
+      />
+      
     </div>
   
     <!-- with theme -->
@@ -50,53 +57,53 @@
         
       <ButtonComponent 
         class="mb-20"
-        :buttonTitle="'PRIMARY'" 
+        :title="'PRIMARY'" 
         :icon="leftIcon"
         :theme="PRIMARY"
       />
 
       <ButtonComponent 
         class="mb-20"
-        :buttonTitle="'PRIMARY_INVERSE'" 
+        :title="'PRIMARY_INVERSE'" 
         :icon="leftIcon"
         :theme="PRIMARY_INVERSE"
       />
 
       <ButtonComponent
         class="mb-20" 
-        :buttonTitle="'PRIMARY_50'" 
+        :title="'PRIMARY_50'" 
         :icon="leftIcon"
         :theme="PRIMARY_50"
       />
 
       <ButtonComponent
         class="mb-20" 
-        :buttonTitle="'PRIMARY_50_INVERSE'" 
+        :title="'PRIMARY_50_INVERSE'" 
         :icon="leftIcon"
         :theme="PRIMARY_50_INVERSE"
       />
       <ButtonComponent
         class="mb-20" 
-        :buttonTitle="'DANGER'" 
+        :title="'DANGER'" 
         :icon="leftIcon"
         :theme="DANGER"
       />
 
       <ButtonComponent
         class="mb-20" 
-        :buttonTitle="'DANGER_INVERSE'" 
+        :title="'DANGER_INVERSE'" 
         :icon="leftIcon"
         :theme="DANGER_INVERSE"
       />
       <ButtonComponent 
         class="mb-20"
-        :buttonTitle="'DANGER_LIGHT'" 
+        :title="'DANGER_LIGHT'" 
         :icon="leftIcon"
         :theme="DANGER_LIGHT"
       />
       <ButtonComponent 
         class="mb-20"
-        :buttonTitle="'DANGER_LIGHT_INVERSE'" 
+        :title="'DANGER_LIGHT_INVERSE'" 
         :icon="leftIcon"
         :theme="DANGER_LIGHT_INVERSE"
       />
@@ -240,4 +247,22 @@ export default {
 .mb-20 {
   margin-bottom: 20px;
 }
+
+.gts-test{
+		display: flex;
+		border-radius: 12px;
+		padding: 12px 20px;
+		font-size: 14px;
+		text-align: center;
+		line-height: 24px;
+		font-weight: 600;
+		background: $accent-error-red-color;
+		color: $color-white;
+	}
+
+	.gts-test:hover{
+		background: $color-white;
+		color: $accent-error-red-color;
+		border: 1px solid $accent-error-red-color;
+	}
 </style>
