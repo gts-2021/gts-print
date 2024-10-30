@@ -2,7 +2,7 @@
 
     <CommonInput v-bind="$props">
         <input :disabled="disabled" v-model="inputValue"  ref="gtsInput"
-                :class="'gts-input '+(disabled ? 'gts-input-disabled' : ' ')+(error ? 'gts-input-error' : '')" :type="type" :placeholder="placeholder">
+                :class="'gts-input gts-input-calendar'+(disabled ? 'gts-input-disabled' : ' ')+(error ? ' gts-input-error' : '')" :type="type" :placeholder="placeholder">
             <v-icon v-if="type == 'date'" @click="onCalendarIconClick" class="gts-calendar-icon">mdi
                 mdi-calendar-month</v-icon>
     </CommonInput>
@@ -46,13 +46,15 @@ export default {
 
 .gts-calendar-icon {
     position: absolute;
-    color: gray !important;
-    right: 10px;
+    color: $primary-color-400 !important;
+    left: 10px;
     top: 11px;
     cursor: pointer;
 }
 
-
+input[type='date'] {
+    padding-left: 40px !important;
+}
 
 input[type='date']::-webkit-calendar-picker-indicator {
     background: transparent;

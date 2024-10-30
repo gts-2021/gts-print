@@ -1,7 +1,8 @@
 import { mount } from '@vue/test-utils';
 import TextInput from '../TextInput.vue';
+import ListBox from '../ListBox.vue';
  
-describe('TextInput.vue', () => {
+describe('Tests for TextInput component', () => {
    
   it('Test basic input display', () => {
     const label = "First Name"
@@ -84,4 +85,71 @@ describe('TextInput.vue', () => {
 
    
   
+});
+
+describe('Tests for ListBox component', () => {
+
+  const options = [
+    { label: 'Option 1', value: 1 },
+    { label: 'Option 2', value: 2 },
+    { label: 'Option 3', value: 3 },
+  ];
+
+  it('Should use first option as default valuet', () => {
+    const wrapper = mount(ListBox, {
+      propsData: { options }
+    });
+    expect(wrapper.find('.gts-listbox-value').text()).toBe('Option 1');
+  });
+
+  it('Should toggle open/close Listbox when click', async () => {
+    const wrapper = mount(ListBox, {
+      propsData: { options }
+    });
+    const dropdownIcon = wrapper.find('.gts-listbox-dropdown');
+    
+    
+    await dropdownIcon.trigger('click');
+    expect(wrapper.vm.isOpen).toBe(true);
+    expect(wrapper.find('.gts-listbox-option-container').exists()).toBe(true);
+
+     
+    await dropdownIcon.trigger('click');
+    expect(wrapper.vm.isOpen).toBe(false);
+    expect(wrapper.find('.gts-listbox-option-container').exists()).toBe(false);
+  });
+
+  it('Should select display option selected and close ListBox', async () => {
+    const wrapper = mount(ListBox, {
+      propsData: { options }
+    });
+    const dropdownIcon = wrapper.find('.gts-listbox-dropdown');
+    await dropdownIcon.trigger('click');  
+
+     
+    const secondOption = wrapper.findAll('.gts-listbox-option').at(1);
+    await secondOption.trigger('click');
+    
+    expect(wrapper.vm.inputValue).toEqual(options[1]);
+    expect(wrapper.find('.gts-listbox-value').text()).toBe('Option 2');
+    expect(wrapper.find('.gts-listbox-option-container').exists()).toBe(false);
+  });
+
+  it('Should not open ListBox if disabled', async () => {
+    const wrapper = mount(ListBox, {
+      propsData: { options, disabled: true }
+    });
+    const dropdownIcon = wrapper.find('.gts-listbox-dropdown');
+    await dropdownIcon.trigger('click');
+    
+    expect(wrapper.vm.isOpen).toBe(false);
+    expect(wrapper.find('.gts-listbox-option-container').exists()).toBe(false);
+  });
+
+  it('Should use style for error', () => {
+    const wrapper = mount(ListBox, {
+      propsData: { options, error: true }
+    });
+    expect(wrapper.find('.gts-input').classes()).toContain('gts-input-error');
+  });
 });
