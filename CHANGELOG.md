@@ -12,6 +12,7 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 ### Added
 
+* Exporting constant buttons file to be used in external projects. [GTS-PRINT#4](https://quire.io/w/GTS-PRINT31/4)
 * Adding documentation for `BarSide`, `Input`, `DataTable`. [GTS-PRINT#14](https://quire.io/w/GTS-PRINT31/14)
 * Adding `ButtonsComponent` in `index.js` file. [GTS-PRINT#4](https://quire.io/w/GTS-PRINT31/4)
 * Adding `Buttons.spec.js` for testing `ButtonComponent` componement. [GTS-PRINT#4](https://quire.io/w/GTS-PRINT31/4)
@@ -37,6 +38,7 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 * Creating `BarSide`component with multiple `BarSideMenu` and `BarSideItem`. [GTS-PRINT#2](https://quire.io/w/GTS-PRINT31/2)
 
 ### Changed
+* Updating button README file [GTS-PRINT#4](https://quire.io/w/GTS-PRINT31/4)
 
 ### Deprecated
 
