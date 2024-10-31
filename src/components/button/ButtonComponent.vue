@@ -1,19 +1,19 @@
 <template>
 
 	<div class="gts-button-container">
-		<button :class="[classStyle, theme]" @click="onButtonClick">
+		<button :class="[className, theme]" @click="onButtonClick">
 
 			<div class="gts-button-content">
 
 				<span v-if="icon && icon.position === 'left'" class="gts-button-icon">
-					<component v-if="icon.isExternalIcon" :is="icon.svg" />
+					<component v-if="icon.isExternalIcon" :is="icon.svg"/>
 					<v-icon v-else>{{ icon.class }}</v-icon>
 				</span>
 
-				<span v-if="buttonTitle" class="gts-button-title">{{ buttonTitle }}</span>
+				<span v-if="title" class="gts-button-title">{{ title }}</span>
 
 				<span v-if="icon && icon.position === 'right'" class="gts-button-icon">
-					<component v-if="icon.isExternalIcon" :is="icon.svg" />
+					<component v-if="icon.isExternalIcon" :is="icon.svg"/>
 					<v-icon v-else>{{ icon.class }}</v-icon>
 				</span>
 
@@ -36,7 +36,7 @@ export default {
 
 	props:{
 
-		buttonTitle: {
+		title: {
 			type: String,
       required: false,
     },
@@ -54,16 +54,17 @@ export default {
       required: false,
     },
 
-		classStyle: {
+		className: {
       type: String,
       required: false,
 			default(){
-				return '';
+				return 'gts-button';
 			}
     },
 
 		iconPosition: {
 			type: String,
+			required: false,
 			default(){
 				return 'left';
 			}
@@ -71,6 +72,7 @@ export default {
 
 		theme: {
 			type: String,
+			required: false,
 			default(){
 				return PRIMARY;
 			}
@@ -90,7 +92,7 @@ export default {
 
 <style lang="scss">
  
- .gts-button-container{
+.gts-button-container{
 
 	.gts-button-content{
 		display: flex;
