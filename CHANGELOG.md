@@ -12,6 +12,7 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 ### Added
 
+* Adding `RadioButton`and `RadioGroup` components with his tests and documentation. [GTS-PRINT#15](https://quire.io/w/GTS-PRINT31/15)
 * Adding `BasicDialog` and `ConfirmationDialog` with his tests and documentation. [GTS-PRINT#7](https://quire.io/w/GTS-PRINT31/7)
 * Adding documentation for `BarSide`, `Input`, `DataTable`. [GTS-PRINT#14](https://quire.io/w/GTS-PRINT31/14)
 * Adding `ButtonsComponent` in `index.js` file. [GTS-PRINT#4](https://quire.io/w/GTS-PRINT31/4)
@@ -27,7 +28,6 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 * Adding `DataTablePagiation.spec.js` for testing `DataTablePagiation` componement.[GTS-PRINT#1](https://quire.io/w/GTS-PRINT31/1)
 * Adding `DataTablePagiation` component for handling pagination of table.[GTS-PRINT#1](https://quire.io/w/GTS-PRINT31/1)
 * Adding `DataTable` component for displaying a specific datas and actions.[GTS-PRINT#1](https://quire.io/w/GTS-PRINT31/1)
-
 * Exporting css colors file to be used in external projects. [GTS-PRINT#11](https://quire.io/w/GTS-PRINT31/11)
 * Adding `BarSideExemple` page that allows us to generate all possible BarSide component creations. [GTS-PRINT#5](https://quire.io/w/GTS-PRINT31/5)
 * Adding `TextInputExemple` page that allows us to generate all possible Input component creations. [GTS-PRINT#5](https://quire.io/w/GTS-PRINT31/5)
