@@ -4,6 +4,7 @@
   <!-- <BarSide :menus="menus" /> -->
 
   <!-- <DataTable :headers="tabelHeaders" :items="tabelContent" />  -->
+   <DialogExample />
   <InputExemple />
   <BarSideExemple />
 
@@ -21,6 +22,7 @@ import ButtonExample from './components/button/ButtonExample.vue';
 //import DataTable from '@/components/table/DataTable.vue';
 import { defineComponent } from 'vue';
 import { VIcon } from 'vuetify/lib/components/index.mjs';
+import DialogExample from './components/dialog/DialogExample.vue';
 
 export default {
 
@@ -29,7 +31,8 @@ export default {
     InputExemple,
     //DataTable,
     //BarSide,
-    ButtonExample
+    ButtonExample,
+    DialogExample
 
   },
 
