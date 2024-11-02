@@ -1,4 +1,4 @@
-import { shallowMount } from '@vue/test-utils';
+import { mount, shallowMount } from '@vue/test-utils';
 import RadioButton from '../RadioButton.vue';
 import RadioGroup from '../RadioGroup.vue';
 
@@ -26,6 +26,18 @@ describe('Tests for RadioButton component', () => {
     await wrapper.trigger('click');
     expect(wrapper.emitted('onChecked')).toBeTruthy();
     expect(wrapper.emitted('onChecked')[0]).toEqual([id]);
+  });
+
+
+  it('Should checked if isChecked props is true', async () => {
+    const isChecked = true;
+    const wrapper = mount(RadioButton, {
+      props: { isChecked }
+    });
+
+    console.log(wrapper.html());
+    
+    expect(wrapper.find('.gts-radio-checked').exists()).toBe(true);
   });
 
    

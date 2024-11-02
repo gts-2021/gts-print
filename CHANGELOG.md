@@ -13,6 +13,7 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 ### Added
 
 * Exporting constant buttons file to be used in external projects. [GTS-PRINT#4](https://quire.io/w/GTS-PRINT31/4)
+* Adding `CheckBox` component with his tests and documentation. [GTS-PRINT#16](https://quire.io/w/GTS-PRINT31/16)
 * Adding `RadioButton`and `RadioGroup` components with his tests and documentation. [GTS-PRINT#15](https://quire.io/w/GTS-PRINT31/15)
 * Adding `BasicDialog` and `ConfirmationDialog` with his tests and documentation. [GTS-PRINT#7](https://quire.io/w/GTS-PRINT31/7)
 * Adding documentation for `BarSide`, `Input`, `DataTable`. [GTS-PRINT#14](https://quire.io/w/GTS-PRINT31/14)
@@ -47,6 +48,7 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 ### Fixed
 
+* `RadioButton` default checked not working. [GTS-PRINT#15](https://quire.io/w/GTS-PRINT31/15)
 
 ### Security
 
