@@ -8,10 +8,10 @@ The `ButtonComponent` is a customizable button that supports various themes, ico
 
 | Prop            | Type       | Required | Default         | Description                                                                                      |
 |-----------------|------------|----------|-----------------|--------------------------------------------------------------------------------------------------|
-| `buttonTitle`   | `String`   | No       | `null`          | Text displayed as the button's title.                                                            |
+| `title`   | `String`   | No       | `null`          | Text displayed as the button' title.                                                            |
 | `isExternalIcon`| `Boolean`  | No       | `false`         | If `true`, specifies that the icon is an external SVG component.                                 |
 | `icon`          | `Object`   | No       | `null`          | An object defining icon details (e.g., `position`, `svg`, or `class`).                           |
-| `classStyle`    | `String`   | No       | `''`            | Custom class applied to the button for additional styling.                                       |
+| `className`    | `String`   | No       | `''`            | Custom class applied to the button for additional styling.                                       |
 | `iconPosition`  | `String`   | No       | `'left'`        | Position of the icon within the button (`'left'` or `'right'`).                                  |
 | `theme`         | `String`   | No       | `PRIMARY`       | Button theme, supporting styles like `primary`, `primary-inverse`, `danger`, etc. from constants. |
 
@@ -41,13 +41,12 @@ The button component includes multiple CSS classes for styling, with SCSS used f
 
 ## Usage Examples
 
-### Basic Button with Title Only
+### Basic Button with title only
 
 ```vue
 <template>
   <ButtonComponent 
-    buttonTitle="Submit" 
-    theme="gts-button-primary"
+    buttonTitle="Submit"
     @buttonClicked="handleButtonClick"
   />
 </template>
@@ -65,16 +64,86 @@ export default {
 };
 </script>
 ```
-
-### Basic Button with Title Only
+### Button with title and icon
 
 ```vue
 <template>
   <ButtonComponent 
-    buttonTitle="Save" 
+    :title="'submit'" 
+    :icon="leftIcon"
+    @buttonClicked="handleButtonClick"
+  />
+</template>
+
+<script>
+import ButtonComponent from './ButtonComponent.vue';
+
+export default {
+  components: { ButtonComponent },
+  data() {
+		return {
+      leftIcon: {
+        isExternalIcon: false,
+        class: "mdi-plus",
+        position: "left"
+      },
+    }
+  },
+  methods: {
+    handleSaveClick() {
+      console.log('Save button clicked!');
+    }
+  }
+};
+</script>
+```
+
+### Button with specific theme
+
+```vue
+<template>
+  <ButtonComponent 
+    :title="'submit'" 
+    :icon="leftIcon"
+    :theme="PRIMARY"
+    @buttonClicked="handleButtonClick"
+  />
+</template>
+
+<script>
+import ButtonComponent from './ButtonComponent.vue';
+import { PRIMARY } from '@/constants/buttons.js';
+
+export default {
+  components: { ButtonComponent },
+  data() {
+		return {
+      PRIMARY,
+      leftIcon: {
+        isExternalIcon: false,
+        class: "mdi-plus",
+        position: "left"
+      },
+    }
+  },
+  methods: {
+    handleSaveClick() {
+      console.log('Save button clicked!');
+    }
+  }
+};
+</script>
+```
+
+
+### Button with specific style
+
+```vue
+<template>
+  <ButtonComponent 
+    buttonTitle="submit" 
     :icon="{ class: 'mdi-content-save', position: 'left' }" 
-    classStyle="custom-button-style"
-    theme="gts-button-primary-inverse"
+    className="custom-button-style"
     @buttonClicked="handleSaveClick"
   />
 </template>
