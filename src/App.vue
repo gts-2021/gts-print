@@ -4,6 +4,8 @@
   <!-- <BarSide :menus="menus" /> -->
 
   <!-- <DataTable :headers="tabelHeaders" :items="tabelContent" />  -->
+  <RadioExemple />
+  <DialogExample />
   <InputExemple />
   <BarSideExemple />
 
@@ -21,15 +23,20 @@ import ButtonExample from './components/button/ButtonExample.vue';
 //import DataTable from '@/components/table/DataTable.vue';
 import { defineComponent } from 'vue';
 import { VIcon } from 'vuetify/lib/components/index.mjs';
+import DialogExample from './components/dialog/DialogExample.vue';
+import RadioExemple from './components/radio/RadioExemple.vue';
 
 export default {
 
-  components: { 
+  components: {
     BarSideExemple,
     InputExemple,
     //DataTable,
     //BarSide,
-    ButtonExample
+    ButtonExample,
+    DialogExample,
+    RadioExemple
+
 
   },
 
@@ -125,9 +132,9 @@ export default {
           name: "facebook",
           sortable: true,
 
-          componentFormatter :
+          componentFormatter:
             defineComponent({
-              props:{
+              props: {
                 item: {},
               },
               template: `<a href="item.facebook" target="_blank">{{item.facebook}}</a>`,
@@ -158,8 +165,8 @@ export default {
                 VIcon
               },
 
-              props:{
-                index : {},
+              props: {
+                index: {},
                 item: {},
               },
 
@@ -167,12 +174,12 @@ export default {
                 <span class="gts-print-table-content-actions-icon update-icon" @click=updateItem(item)>  <v-icon>mdi-pencil-outline</v-icon> </span> 
                 <span class="gts-print-table-content-actions-icon remove-icon" @click=deleteItem(item)>  <v-icon>mdi-delete-outline</v-icon> </span>`,
 
-              methods : {
-                updateItem(item){
+              methods: {
+                updateItem(item) {
                   console.log("updateItem ", item);
                 },
 
-                deleteItem(item){
+                deleteItem(item) {
                   console.log("deleteItem ", item);
                 },
               }
@@ -272,9 +279,4 @@ export default {
 
 </script>
 
-<style lang="scss">
-
-
- 
-
-</style>
+<style lang="scss"></style>
