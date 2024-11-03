@@ -4,6 +4,7 @@
   <!-- <BarSide :menus="menus" /> -->
 
   <!-- <DataTable :headers="tabelHeaders" :items="tabelContent" />  -->
+   <CheckBoxExemple />
   <RadioExemple />
   <DialogExample />
   <InputExemple />
@@ -25,6 +26,7 @@ import { defineComponent } from 'vue';
 import { VIcon } from 'vuetify/lib/components/index.mjs';
 import DialogExample from './components/dialog/DialogExample.vue';
 import RadioExemple from './components/radio/RadioExemple.vue';
+import CheckBoxExemple from './components/checkbox/CheckBoxExemple.vue';
 
 export default {
 
@@ -35,7 +37,8 @@ export default {
     //BarSide,
     ButtonExample,
     DialogExample,
-    RadioExemple
+    RadioExemple,
+    CheckBoxExemple
 
 
   },
