@@ -3,7 +3,7 @@
   <div id="container">
 
     <RadioButton label="Click me please !" />
-
+    <RadioButton :isChecked="true" label="Default checked  " />
     <RadioButton label="Independent Radio " />
 
     <br>

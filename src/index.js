@@ -9,6 +9,7 @@ import BasicDialog from '@/components/dialog/BasicDialog.vue';
 import ConfirmationDialog from '@/components/dialog/ConfirmationDialog.vue';
 import RadioButton from '@/components/radio/RadioButton.vue';
 import RadioGroup from '@/components/radio/RadioGroup.vue';
+import CheckBox from './components/checkbox/CheckBox.vue';
 
 
 const GtsPrint = {
@@ -20,9 +21,10 @@ const GtsPrint = {
     app.component('ButtonComponent', ButtonComponent);
     app.component('ListBox', ListBox);
     app.component('BasicDialog', BasicDialog);
-    app.component('ConfirmationDialog', ConfirmationDialog)
-    app.component('RadioButton', RadioButton)
-    app.component('RadioGroup', RadioGroup)
+    app.component('ConfirmationDialog', ConfirmationDialog);
+    app.component('RadioButton', RadioButton);
+    app.component('RadioGroup', RadioGroup);
+    app.component('CheckBox', CheckBox);
   }
 };
 

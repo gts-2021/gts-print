@@ -1,10 +1,11 @@
 <template>
 
-  <div  class="gts-radio-container">
-    <div @click="checkRadio" class="gts-radio">
-      <span v-if="isRadioChecked"  class="gts-radio-checked"></span>
+  <div class="gts-checkbox-container">
+    <div @click="onToggle" class="gts-checkbox">
+       
+      <svg v-if="isRadioChecked" fill="white"  class="gts-checkbox-checked" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>check-bold</title><path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z" /></svg>
     </div>
-    <span @click="checkRadio" class="gts-radio-label">{{label}}</span>
+    <span @click="onToggle" class="gts-checkbox-label">{{label}}</span>
   </div>
 
 </template>
@@ -13,7 +14,7 @@
 
 
 export default {
-  name: 'RadioButton',
+  name: 'CheckBox',
   props: {
     id: {
       type: String,
@@ -40,9 +41,9 @@ export default {
   },
 
   methods: {
-    checkRadio(){
-      this.isRadioChecked = true;
-      this.$emit('onChecked', this.id)
+    onToggle(){
+      this.isRadioChecked = !this.isRadioChecked;
+      this.$emit('onToggle', this.isRadioChecked)
     }
 
   },
@@ -61,33 +62,35 @@ export default {
 </script>
 
 <style lang="scss">
-.gts-radio-container {
+.gts-checkbox-container {
   display: flex;
   flex-direction: row;
   align-items: center;
  
 
-  .gts-radio {
+  .gts-checkbox {
     display: flex;
     width: 20px;
     height: 20px;
-    padding: 4px;
+    padding: 1.3px;
     background-color: white;
     border: 1px solid $primary-color-400;
-    border-radius: 10px;
+    border-radius: 2px;
     margin-right: 10px;
-    cursor: pointer !important;
+    box-shadow: 0 0 0.08cm $primary-color-400;
+    cursor: pointer;
 
-    .gts-radio-checked {
+    .gts-checkbox-checked {
       display: inline-block;
+      padding: 2px;
       width: 100%;
       height: 100%;
       background-color: $primary-color-400;
-      border-radius: 10px;
+      border-radius: 2px;
     }
   }
 
-  .gts-radio-label {
+  .gts-checkbox-label {
     cursor: pointer;
   }
 
