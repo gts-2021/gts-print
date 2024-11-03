@@ -4,7 +4,7 @@
 
         <div v-for="(items, index) in menus" :key="index">
             
-            <BarSideMenu @barsideItemClicked="onItemClicked($event)" :items="items"  :itemActiveTitle="itemActiveTitle"/>
+            <BarSideMenu @barsideItemClicked="onItemClicked($event)" :items="items" :itemActiveTitle="itemActiveTitle"/>
 
             <div v-if="index < menus.length - 1" class="barside-menu-separation"></div>
         </div>
@@ -39,7 +39,7 @@ export default {
     },
     data : function () {
         return {
-            itemActiveTitle : undefined
+            itemActiveTitle : ''
         }
     },
     methods : {

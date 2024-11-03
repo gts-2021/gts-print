@@ -12,6 +12,7 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 ### Added
 
+* Adding `DataTablePagiation` component for handling pagination of table.[GTS-PRINT#1](https://quire.io/w/GTS-PRINT31/1)
 * Exporting constant buttons file to be used in external projects. [GTS-PRINT#4](https://quire.io/w/GTS-PRINT31/4)
 * Adding `CheckBox` component with his tests and documentation. [GTS-PRINT#16](https://quire.io/w/GTS-PRINT31/16)
 * Adding `RadioButton`and `RadioGroup` components with his tests and documentation. [GTS-PRINT#15](https://quire.io/w/GTS-PRINT31/15)
@@ -43,6 +44,10 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 * Creating `BarSide`component with multiple `BarSideMenu` and `BarSideItem`. [GTS-PRINT#2](https://quire.io/w/GTS-PRINT31/2)
 
 ### Changed
+
+* updating `DataTable` style to handle full width [GTS-PRINT#1](https://quire.io/w/GTS-PRINT31/1)
+* updating icon type to accept multiple value`[String, Object]` [GTS-PRINT#1](https://quire.io/w/GTS-PRINT31/1)
+* updating paginationConfig and move it form `DataTablePagiation` to `DataTable` [GTS-PRINT#1](https://quire.io/w/GTS-PRINT31/1)
 * Updating button README file [GTS-PRINT#4](https://quire.io/w/GTS-PRINT31/4)
 
 ### Deprecated
@@ -51,7 +56,8 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 ### Fixed
 
-* `RadioButton` default checked not working. [GTS-PRINT#15](https://quire.io/w/GTS-PRINT31/15)
+* Adding `markRaw` to remove vue warn.[GTS-PRINT#1](https://quire.io/w/GTS-PRINT31/1)
+* Adding `RadioButton` default checked not working. [GTS-PRINT#15](https://quire.io/w/GTS-PRINT31/15)
 
 ### Security
 

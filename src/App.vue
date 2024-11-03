@@ -3,7 +3,6 @@
 
   <!-- <BarSide :menus="menus" /> -->
 
-  <!-- <DataTable :headers="tabelHeaders" :items="tabelContent" />  -->
    <CheckBoxExemple />
   <RadioExemple />
   <DialogExample />
@@ -12,6 +11,12 @@
 
   <ButtonExample />
 
+
+  <DataTable :headers="tabelHeaders" :items="tabelContent" :paginationConfig ="paginationConfig"
+    @unsort="unsort" 
+    @sort-asc="sortAsc"
+    @sort-desc="sortDesc"
+    @hide-column="hideColumn"/>
 </template>
 
 <script>
@@ -21,8 +26,8 @@ import InputExemple from './components/input/InputExemple.vue';
 import ButtonExample from './components/button/ButtonExample.vue';
 
 //import BarSide from '@/components/barside/BarSide.vue';
-//import DataTable from '@/components/table/DataTable.vue';
-import { defineComponent } from 'vue';
+import DataTable from '@/components/table/DataTable.vue';
+import { defineComponent, markRaw} from 'vue';
 import { VIcon } from 'vuetify/lib/components/index.mjs';
 import DialogExample from './components/dialog/DialogExample.vue';
 import RadioExemple from './components/radio/RadioExemple.vue';
@@ -33,7 +38,7 @@ export default {
   components: {
     BarSideExemple,
     InputExemple,
-    //DataTable,
+    DataTable,
     //BarSide,
     ButtonExample,
     DialogExample,
@@ -136,12 +141,12 @@ export default {
           sortable: true,
 
           componentFormatter:
-            defineComponent({
+          markRaw(defineComponent({
               props: {
                 item: {},
               },
               template: `<a href="item.facebook" target="_blank">{{item.facebook}}</a>`,
-            })
+            }))
 
         },
         {
@@ -163,7 +168,7 @@ export default {
 
           componentFormatter:
 
-            defineComponent({
+          markRaw(defineComponent({
               components: {
                 VIcon
               },
@@ -188,7 +193,7 @@ export default {
               }
 
 
-            })
+            }))
 
         },
       ],
@@ -252,6 +257,14 @@ export default {
         },
 
       ],
+
+      paginationConfig:{
+        pageLengthTitle: "Row per page",
+        totalRecordsTitle: "of",
+        pageStart: 1,
+        totalRecords: 50,
+        pageLength :[10, 20, 25, 50, 100]
+      },
     };
   },
 
@@ -264,17 +277,21 @@ export default {
       console.log("deleteItem", item);
     },
 
-    formatter() {
-
-      return defineComponent({
-        components: {
-          VIcon
-        },
-        template: '<span class="table-content-actions-icon update-icon">  <v-icon>mdi-pencil-outline</v-icon> test </span> '
-
-      });
+    unsort(fieldName) {
+      console.log(fieldName)   
     },
 
+    sortAsc(fieldName) {
+      console.log(fieldName)   
+    },
+
+    sortDesc(fieldName) {
+      console.log(fieldName)   
+    },
+
+    hideColumn(fieldName) {
+      console.log(fieldName)   
+    },
 
   },
 
