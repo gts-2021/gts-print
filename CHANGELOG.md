@@ -56,6 +56,8 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 ### Fixed
 
+* Adding scroll to `ListBox` to prevent a Long liste rendering. [GTS-PRINT#18](https://quire.io/w/GTS-PRINT31/18)
+* `ListBox` push next item when option displaying. [GTS-PRINT#18](https://quire.io/w/GTS-PRINT31/18)
 * Adding `markRaw` to remove vue warn.[GTS-PRINT#1](https://quire.io/w/GTS-PRINT31/1)
 * Adding `RadioButton` default checked not working. [GTS-PRINT#15](https://quire.io/w/GTS-PRINT31/15)
 
