@@ -16,7 +16,7 @@
     <TextInputArea rror="You should give a valid value" label="Eroor Input" placeholder="This is an error input" />
     
 
-    <ListBox    :options="[{'label':'Select domain','value':'0'},{'label':'Software Ingenering','value':'1'}]" label="ListBox" type="password" placeholder="Hide yout password" />
+    <ListBox    :options="listBoxOptions" label="ListBox" type="password" placeholder="Hide yout password" />
 
   </div>
 
@@ -40,7 +40,22 @@ export default {
   data() {
     return {
 
-
+      listBoxOptions: [
+        {'label':'Select domain','value':'0'},
+        {'label':'Software Ingenering 1','value':'1'},
+        {'label':'Software Ingenering 2','value':'1'},
+        {'label':'Software Ingenering 3','value':'1'},
+        {'label':'Software Ingenering 4','value':'1'},
+        {'label':'Software Ingenering 5','value':'1'},
+        {'label':'Software Ingenering 6','value':'1'},
+        {'label':'Software Ingenering 6','value':'1'},
+        {'label':'Software Ingenering 8','value':'1'},
+        {'label':'Software Ingenering 9','value':'1'},
+        {'label':'Software Ingenering 10','value':'1'},
+        {'label':'Software Ingenering 11','value':'1'},
+        {'label':'Software Ingenering 12','value':'1'},
+        {'label':'Software Ingenering 13','value':'1'}
+      ]
 
     };
   }
