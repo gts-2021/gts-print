@@ -63,6 +63,8 @@ export default {
 
   name: "DataTable",
 
+  emits : ['unsort', 'sort-asc', 'sort-desc', 'hide-column'],
+
   components : {
     DataTablePagination
   },
@@ -95,12 +97,16 @@ export default {
           tableHeadersClass:"gts-print-table-header-data",
         }
 			}
-    }
+    },
+
+    paginationConfig: {
+			type: Object,
+			required: true
+		},
   },
   
   mounted() {
 
-    
     const tableContainer = this.$refs.gtsPrintTableContainer;
     const scrollbarContainer = this.$refs.gtsPrintScrollbarContainer;
     scrollbarContainer.addEventListener('scroll', () => {
@@ -122,13 +128,6 @@ export default {
   data () {
     return {
       visibleMenus:{},
-      paginationConfig:{
-        pageLengthTitle: "Row per page",
-        totalRecordsTitle: "of",
-        pageStart: 1,
-        totalRecords: 50,
-        pageLength :[10, 20, 25, 50, 100]
-      },
     }
   },
 
@@ -150,22 +149,22 @@ export default {
     
     unsort(fieldName) {
       this.visibleMenus = {};
-      console.log("Unsort", fieldName);
+      this.$emit('unsort', fieldName);
     },
 
     sortAsc(fieldName) {
       this.visibleMenus = {};
-      console.log("Sort ASC", fieldName);
+      this.$emit('sort-asc', fieldName);
     },
 
     sortDesc(fieldName) {
       this.visibleMenus = {};
-      console.log("Sort DESC", fieldName);
+      this.$emit('sort-desc', fieldName);
     },
 
     hideColumn(fieldName) {
       this.visibleMenus = {};
-      console.log("Hide column", fieldName);
+      this.$emit('hide-column', fieldName);
     },
     
   }
@@ -177,20 +176,19 @@ export default {
 
 .gts-print-table-wrapper {
   position: relative;
-  width: 1100px;
+  width: 100%;
   margin: 50px auto;
 
   .gts-print-table-container {
-    margin: 50px auto 10px;  // to be removed
     border-radius: 12px;
     border: 1px solid $neutral-color-100;
     overflow-x: hidden;
-    overflow-y: hidden;
-
+    overflow-y: visible;
   
     .gts-print-table{
       border-collapse: collapse;
       white-space: nowrap;
+      width: 100%;
       
       .gts-print-table-header{
       
@@ -209,16 +207,14 @@ export default {
             .gts-print-table-header-menu{
               position: absolute;
               top: 60px;
-              right: 10px;
               display: flex;
               flex-direction: column;
               justify-content: center;
               align-items: center;
-              width: 158px;
-              height: 226px;
               border-radius: 8px;
               border: 1px solid $primary-color-400;
               background-color: $color-white;
+              z-index: 1;
 
               .gts-print-table-header-menu-item{
                 padding: 12px 8px;

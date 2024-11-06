@@ -108,25 +108,21 @@ export default {
 		handlePageChange(page){
 			this.selectedPageLength = page;
 			this.pageLengthDisplayed = !this.pageLengthDisplayed;
-			console.log("selected - page ", this.selectedPageLength);
 		},
 
 		togglePagination(){
 			this.pageLengthDisplayed = !this.pageLengthDisplayed;
-			console.log("pageLengthDisplayed", this.pageLengthDisplayed);
 		},
 
 		nextPage() {
       
 			this.currentPage++;
-			console.log("nextPage ", this.currentPage);
 			this.$emit("changePage", this.currentPage);
      
     },
 
     previousPage() {
 			this.currentPage--;
-			console.log("previousPage ", this.currentPage);
 			this.$emit("changePage", this.currentPage);
       
     }
@@ -142,7 +138,7 @@ export default {
 		display: flex;
 		justify-content: end;
 		align-items: center;
-		width: 1100px;
+		width: 100%;
 		margin: 0px auto;
 
 	.gts-print-pagination-icon{
