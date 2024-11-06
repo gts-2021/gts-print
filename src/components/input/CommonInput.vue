@@ -19,7 +19,7 @@ import InputCommonProps from './InputCommonProps';
 
 export default {
     name: 'CommonInput',
-    mixins:[InputCommonProps],
+    mixins: [InputCommonProps],
     data() {
         return {
             inputValue: this.value
@@ -36,9 +36,8 @@ export default {
         }
     },
     watch: {
-
-        inputValue(newVal) {
-             this.onInputValueChanged(newVal)
+        modelValue(newVal) {
+            this.onInputValueChanged(newVal)
         }
     },
 
@@ -46,9 +45,6 @@ export default {
 </script>
 
 <style lang="scss">
- 
- 
-
 .gts-calendar-icon {
     position: absolute;
     color: gray !important;
@@ -70,5 +66,4 @@ input[type='date']::-webkit-calendar-picker-indicator {
     top: 0;
     width: 0;
 }
- 
 </style>

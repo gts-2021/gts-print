@@ -12,6 +12,7 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 ### Added
 
+* Adding two-way binding for `value` prop from `TextInput`and `TextInputArea`. [GTS-PRINT#19](https://quire.io/w/GTS-PRINT31/19)
 * Adding `DataTablePagiation` component for handling pagination of table.[GTS-PRINT#1](https://quire.io/w/GTS-PRINT31/1)
 * Exporting constant buttons file to be used in external projects. [GTS-PRINT#4](https://quire.io/w/GTS-PRINT31/4)
 * Adding `CheckBox` component with his tests and documentation. [GTS-PRINT#16](https://quire.io/w/GTS-PRINT31/16)
@@ -45,6 +46,7 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 ### Changed
 
+* Remove `value` prop from `TextInput`and `TextInputArea`. [GTS-PRINT#19](https://quire.io/w/GTS-PRINT31/19)
 * updating `DataTable` style to handle full width [GTS-PRINT#1](https://quire.io/w/GTS-PRINT31/1)
 * updating icon type to accept multiple value`[String, Object]` [GTS-PRINT#1](https://quire.io/w/GTS-PRINT31/1)
 * updating paginationConfig and move it form `DataTablePagiation` to `DataTable` [GTS-PRINT#1](https://quire.io/w/GTS-PRINT31/1)

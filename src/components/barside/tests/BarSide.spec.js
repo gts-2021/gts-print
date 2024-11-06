@@ -15,7 +15,7 @@ describe('BarSide.vue', () => {
     ],
   ];
 
-  // Test 1: Vérifier que le composant se monte correctement avec plusieurs BarSideMenu
+  
   it('Should Affiche multiple menus', () => {
     const wrapper = mount(BarSide, {
       propsData: {
@@ -29,7 +29,7 @@ describe('BarSide.vue', () => {
      
     barSideMenus.forEach((menuWrapper, index) => {
       expect(menuWrapper.props('items')).toEqual(menus[index]);
-      expect(menuWrapper.props('itemActiveTitle')).toBe(undefined); // no item selected by default
+      expect(menuWrapper.props('itemActiveTitle')).toBe(""); 
     });
   });
 

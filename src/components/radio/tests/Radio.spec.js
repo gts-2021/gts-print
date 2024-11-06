@@ -23,7 +23,7 @@ describe('Tests for RadioButton component', () => {
       props: { id }
     });
 
-    await wrapper.trigger('click');
+    await wrapper.find('.gts-radio-label').trigger('click');
     expect(wrapper.emitted('onChecked')).toBeTruthy();
     expect(wrapper.emitted('onChecked')[0]).toEqual([id]);
   });
