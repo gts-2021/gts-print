@@ -1,8 +1,8 @@
 <template>
 
     <CommonInput v-bind="$props">
-        <textarea :disabled="disabled" v-model="inputValue"  ref="gtsInput"
-                :class="'gts-input gts-text-area'+(disabled ? 'gts-input-disabled' : ' ')+(error ? 'gts-input-error' : '')" :type="type" :placeholder="placeholder" ></textarea>
+        <textarea @input="emitInput" :disabled="disabled" v-model="inputValue"  ref="gtsInput"
+                :class="'gts-input gts-text-area'+(disabled ? 'gts-input-disabled' : ' ')+(error ? 'gts-input-error' : '')"   :placeholder="placeholder" ></textarea>
     </CommonInput>
 
 </template>
@@ -17,22 +17,8 @@ export default {
         CommonInput
     },
     mixins:[InputCommonProps],
-    props: {
-        type: {
-            type: String,
-            default: "text",
-            required: false
-        },
-         
-    },
-    methods: {
-
-        onCalendarIconClick() {
-            this.$refs.gtsInput.focus();
-            this.$refs.gtsInput.showPicker();
-        },
-         
-    },
+     
+     
     
 
 }

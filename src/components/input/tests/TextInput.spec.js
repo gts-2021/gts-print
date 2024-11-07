@@ -148,7 +148,7 @@ describe('Tests for ListBox component', () => {
 
   it('Should use style for error', () => {
     const wrapper = mount(ListBox, {
-      propsData: { options, error: true }
+      propsData: { options, error: "input has error" }
     });
     expect(wrapper.find('.gts-input').classes()).toContain('gts-input-error');
   });

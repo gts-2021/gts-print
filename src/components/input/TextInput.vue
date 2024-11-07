@@ -1,7 +1,7 @@
 <template>
 
     <CommonInput v-bind="$props">
-        <input :disabled="disabled" v-model="inputValue"  ref="gtsInput"
+        <input @input="emitInput" :disabled="disabled" v-model="inputValue"  ref="gtsInput"
                 :class="'gts-input gts-input-calendar'+(disabled ? 'gts-input-disabled' : ' ')+(error ? ' gts-input-error' : '')" :type="type" :placeholder="placeholder">
             <v-icon v-if="type == 'date'" @click="onCalendarIconClick" class="gts-calendar-icon">mdi
                 mdi-calendar-month</v-icon>
@@ -28,7 +28,7 @@ export default {
          
     },
     methods: {
-
+       
         onCalendarIconClick() {
             this.$refs.gtsInput.focus();
             this.$refs.gtsInput.showPicker();

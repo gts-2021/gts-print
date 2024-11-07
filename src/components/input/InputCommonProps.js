@@ -1,6 +1,10 @@
- 
+
 export default {
     props: {
+        modelValue: {
+            type: String,
+            default: ''
+        },
         label: {
             type: String,
             required: true
@@ -35,22 +39,22 @@ export default {
     },
     data() {
         return {
-            inputValue: this.value
+            inputValue: this.modelValue
         };
     },
     methods: {
-
-        
+        emitInput(event) {
+            this.$emit('update:modelValue', event.target.value);  
+          },
         onInputValueChanged(value) {
             this.$emit('onValueChanged', value)
+            this.inputValue = value;
 
         }
     },
     watch: {
-
-        inputValue(newVal) {
-             this.onInputValueChanged(newVal)
+        modelValue(newVal) {
+            this.onInputValueChanged(newVal)
         }
     },
-  };
-  
+};

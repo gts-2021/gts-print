@@ -2,8 +2,8 @@
 
 
   <div id="exemple-container">
-    <TextInput @OnValueChanged="(v)=> console.log(v)" label="First Name" :required="true" placeholder="Your name please" />
-
+    <TextInput v-model="inp1Val" @OnValueChanged="(v)=> console.log(v)" label="First Name" :required="true" placeholder="Your name please" />
+<span>Input is binding : {{ inp1Val }}</span> <br>
     <TextInput label="Password" type="password" placeholder="Hide yout password" />
 
     <TextInput disabled  label="Disabled Input" value="Disabled input"   placeholder="This is a disabled input" />
@@ -11,10 +11,15 @@
   
     <TextInput label="Date of Birth" :required="true" type="date" />
 
-    <TextInput error="You should give a valid value" label="Eroor Input" placeholder="This is an error input" />
+    <TextInput   label="Textarea Input" placeholder="This is a textarea" />
 
-    <TextInputArea rror="You should give a valid value" label="Eroor Input" placeholder="This is an error input" />
+    <TextInputArea label="Comment" placeholder="This is a comment" />
     
+    <TextInputArea error="You should give a valid value" label="Eroor Input" placeholder="This is an error input" />
+    
+
+    <TextInputArea v-model="textAreaVal"  label="Binding text area" placeholder="This is an error input" />
+    <span>TextArea is binding : {{ textAreaVal }}</span> <br>
 
     <ListBox    :options="listBoxOptions" label="ListBox" type="password" placeholder="Hide yout password" />
 
@@ -55,7 +60,10 @@ export default {
         {'label':'Software Ingenering 11','value':'1'},
         {'label':'Software Ingenering 12','value':'1'},
         {'label':'Software Ingenering 13','value':'1'}
-      ]
+      ],
+      inp1Val:"",
+      textAreaVal:""
+
 
     };
   }

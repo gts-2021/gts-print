@@ -21,7 +21,8 @@ Le composant `<TextInput />` est un champ de saisie personnalisable permettant �
 |-------------|----------|--------|-------------------|--------------------------------------------------------------|
 | `label`     | `String` | Oui    | N/A               | L'étiquette pour le champ de saisie.                        |
 | `placeholder` | `String` | Non    | `""`              | Texte d'espace réservé pour le champ.                       |
-| `value`     | `String` | Non    | `""`              | Valeur actuelle du champ.                                   |
+| `value`     | `String` | Non    | `""`              | Valeur actuelle du champ.(deprecated)                       |
+ v-model="variable"    | `String` | Oui    | `""`     | 2-way binding                       |
 | `required`  | `Boolean`| Non    | `false`           | Indique si le champ est obligatoire.                        |
 | `type`      | `String` | Non    | `"text"`          | Spécifie le type de champ d'entrée (`text`, `date`, etc.). |
 | `disabled`  | `Boolean`| Non    | `false`           | Si `true`, désactive le champ de saisie.                   |
