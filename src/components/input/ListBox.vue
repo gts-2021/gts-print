@@ -4,7 +4,7 @@
 
   <CommonInput v-bind="$props">
     <div tabindex="0" @blur="closeList" @click="onDropDownClick" class="gts-listbox-container">
-      <v-icon @click="onDropDownClick" class="gts-listbox-dropdown">mdi mdi-arrow-down-drop-circle-outline</v-icon>
+      <v-icon @click="onDropDownClick" class="gts-listbox-dropdown">mdi mdi-chevron-down</v-icon>
       <div :class="'gts-input gts-listbox ' + (disabled ? 'gts-input-disabled ' : ' ') + (error ? 'gts-input-error' : '')"
         ref="gtsInput">
         <span class="gts-listbox-value">{{ inputValue.label }}</span>

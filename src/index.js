@@ -9,7 +9,9 @@ import BasicDialog from '@/components/dialog/BasicDialog.vue';
 import ConfirmationDialog from '@/components/dialog/ConfirmationDialog.vue';
 import RadioButton from '@/components/radio/RadioButton.vue';
 import RadioGroup from '@/components/radio/RadioGroup.vue';
-import CheckBox from './components/checkbox/CheckBox.vue';
+import CheckBox from '@/components/checkbox/CheckBox.vue';
+import AccordionPanel from '@/components/accordion/AccordionPanel.vue';
+import AccordionComponent from '@/components/accordion/AccordionComponent.vue';
 
 
 const GtsPrint = {
@@ -25,6 +27,8 @@ const GtsPrint = {
     app.component('RadioButton', RadioButton);
     app.component('RadioGroup', RadioGroup);
     app.component('CheckBox', CheckBox);
+    app.component('AccordionPanel', AccordionPanel);
+    app.component('AccordionComponent', AccordionComponent);
   }
 };
 
