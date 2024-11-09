@@ -12,6 +12,7 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 ### Added
 
+* Adding `AccordionPanel` and `AccordionComponent` components with `README.md`. [GTS-PRINT#19](https://quire.io/w/GTS-PRINT31/19) 
 * Adding two-way binding for `value` prop from `TextInput`and `TextInputArea`. [GTS-PRINT#19](https://quire.io/w/GTS-PRINT31/19)
 * Adding `DataTablePagiation` component for handling pagination of table.[GTS-PRINT#1](https://quire.io/w/GTS-PRINT31/1)
 * Exporting constant buttons file to be used in external projects. [GTS-PRINT#4](https://quire.io/w/GTS-PRINT31/4)

@@ -3,6 +3,7 @@
 
   <!-- <BarSide :menus="menus" /> -->
 
+  <AccordionExemple />
    <CheckBoxExemple />
   <RadioExemple />
   <DialogExample />
@@ -32,6 +33,7 @@ import { VIcon } from 'vuetify/lib/components/index.mjs';
 import DialogExample from './components/dialog/DialogExample.vue';
 import RadioExemple from './components/radio/RadioExemple.vue';
 import CheckBoxExemple from './components/checkbox/CheckBoxExemple.vue';
+import AccordionExemple from './components/accordion/AccordionExemple.vue';
 
 export default {
 
@@ -43,7 +45,8 @@ export default {
     ButtonExample,
     DialogExample,
     RadioExemple,
-    CheckBoxExemple
+    CheckBoxExemple,
+    AccordionExemple
 
 
   },
