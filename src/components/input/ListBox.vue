@@ -61,6 +61,7 @@ export default {
       event.stopPropagation();
       this.closeList();
       this.inputValue = option;
+      this.$emit('onValueChanged', option)
     },
     closeList() {
       this.isOpen = false;
