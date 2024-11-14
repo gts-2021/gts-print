@@ -2,10 +2,14 @@
 
   <div class="gts-checkbox-container">
     <div @click="onToggle" class="gts-checkbox">
-       
-      <svg v-if="isRadioChecked" fill="white"  class="gts-checkbox-checked" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>check-bold</title><path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z" /></svg>
+
+      <svg v-if="isRadioChecked" fill="white" class="gts-checkbox-checked" xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24">
+        <title>check-bold</title>
+        <path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z" />
+      </svg>
     </div>
-    <span @click="onToggle" class="gts-checkbox-label">{{label}}</span>
+    <span @click="onToggle" class="gts-checkbox-label">{{ label }}</span>
   </div>
 
 </template>
@@ -19,7 +23,7 @@ export default {
     id: {
       type: String,
       required: false,
-       
+
     },
     label: {
       type: String,
@@ -34,14 +38,14 @@ export default {
 
   },
 
-  data(){
+  data() {
     return {
       isRadioChecked: false,
     }
   },
 
   methods: {
-    onToggle(){
+    onToggle() {
       this.isRadioChecked = !this.isRadioChecked;
       this.$emit('onToggle', this.isRadioChecked)
     }
@@ -49,11 +53,11 @@ export default {
   },
 
   watch: {
-    isChecked(newVal){
+    isChecked(newVal) {
       this.isRadioChecked = newVal;
     }
   },
-  created(){
+  created() {
     this.isRadioChecked = this.isChecked
   }
 
@@ -66,18 +70,16 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: center;
- 
+
 
   .gts-checkbox {
     display: flex;
     width: 20px;
     height: 20px;
-    padding: 1.3px;
     background-color: white;
-    border: 1px solid $primary-color-400;
-    border-radius: 2px;
+    border: 1px solid $neutral-color-300;
+    border-radius: 4px;
     margin-right: 10px;
-    box-shadow: 0 0 0.08cm $primary-color-400;
     cursor: pointer;
 
     .gts-checkbox-checked {
@@ -86,8 +88,13 @@ export default {
       width: 100%;
       height: 100%;
       background-color: $primary-color-400;
-      border-radius: 2px;
+      border-radius: 4px;
     }
+  }
+
+  .gts-checkbox:has(>.gts-checkbox-checked) {
+
+    border: none !important;
   }
 
   .gts-checkbox-label {
