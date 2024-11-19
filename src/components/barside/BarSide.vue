@@ -1,6 +1,8 @@
 <template>
     <div class="barside-container">
-        <div class="barside-logo">Logo</div>
+        <div class="barside-logo">
+            <component :is="logo" />
+        </div>
 
         <div v-for="(items, index) in menus" :key="index">
             
