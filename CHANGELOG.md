@@ -47,6 +47,7 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 ### Changed
 
+* BarSide `Logo` section now take a component. [GTS-PRINT#28](https://quire.io/w/GTS-PRINT31/28)
 * Remove `value` prop from `TextInput`and `TextInputArea`. [GTS-PRINT#19](https://quire.io/w/GTS-PRINT31/19)
 * updating `DataTable` style to handle full width [GTS-PRINT#1](https://quire.io/w/GTS-PRINT31/1)
 * updating icon type to accept multiple value`[String, Object]` [GTS-PRINT#1](https://quire.io/w/GTS-PRINT31/1)
