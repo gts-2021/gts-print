@@ -20,6 +20,7 @@
   "dependencies": {
     "@mdi/font": "5.9.55",
     "core-js": "^3.8.3",
+    "maska": "^3.0.3",
     "roboto-fontface": "*",
     "vue": "^3.2.13",
     "webfontloader": "^1.0.0"
