@@ -19,14 +19,16 @@ Le composant `<TextInput />` est un champ de saisie personnalisable permettant �
 
 | Prop        | Type     | Requis | Valeur par défaut | Description                                                  |
 |-------------|----------|--------|-------------------|--------------------------------------------------------------|
-| `label`     | `String` | Oui    | N/A               | L'étiquette pour le champ de saisie.                        |
-| `placeholder` | `String` | Non    | `""`              | Texte d'espace réservé pour le champ.                       |
-| `value`     | `String` | Non    | `""`              | Valeur actuelle du champ.(deprecated)                       |
- v-model="variable"    | `String` | Oui    | `""`     | 2-way binding                       |
-| `required`  | `Boolean`| Non    | `false`           | Indique si le champ est obligatoire.                        |
-| `type`      | `String` | Non    | `"text"`          | Spécifie le type de champ d'entrée (`text`, `date`, etc.). |
-| `disabled`  | `Boolean`| Non    | `false`           | Si `true`, désactive le champ de saisie.                   |
-| `error`     | `String` | Non    | `""`              | Message d'erreur à afficher sous le champ de saisie.       |
+| `label`     | `String` | Oui    | N/A               | L'étiquette pour le champ de saisie.                         |
+| `placeholder` | `String` | Non  | `""`              | Texte d'espace réservé pour le champ.                        |
+| `value`     | `String` | Non    | `""`              | Valeur actuelle du champ.(deprecated)                        |
+ v-model="variable"    | `String` | Oui    | `""`     | 2-way binding                                                |
+| `required`  | `Boolean`| Non    | `false`           | Indique si le champ est obligatoire.                         |
+| `type`      | `String` | Non    | `"text"`          | Spécifie le type de champ d'entrée (`text`, `date`, etc .).  |
+| `disabled`  | `Boolean`| Non    | `false`           | Si `true`, désactive le champ de saisie.                     |
+| `error`     | `String` | Non    | `""`              | Message d'erreur à afficher sous le champ de saisie.         |
+| `maskPattern`| `String`| Non    | `""`              | elle prend un patten pour le mask souhaité.                  |
+| `maskToken`  | `String`| Non    | `""`              | elle prend un object object pour appliquer le mask souhaité. |
 
 ## Événements
 
@@ -34,3 +36,12 @@ Le composant `<TextInput />` est un champ de saisie personnalisable permettant �
 |-------------------|----------------------------------------------------------|
 | `onValueChanged`  | Émis lorsque la valeur du champ change.                  |
 
+## Maska library
+we are using maska library from : https://beholdr.github.io/maska/v3/#/install 
+
+** mask token
+{
+  '#': { pattern: /[0-9]/ },       // digits
+  '@': { pattern: /[a-zA-Z]/ },    // letters
+  '*': { pattern: /[a-zA-Z0-9]/ }, // letters & digits
+}

@@ -3,15 +3,16 @@
 
   <div id="exemple-container">
     <TextInput v-model="inp1Val" @OnValueChanged="(v)=> console.log(v)" label="First Name" :required="true" placeholder="Your name please" />
-<span>Input is binding : {{ inp1Val }}</span> <br>
+    <span>Input is binding : {{ inp1Val }}</span> <br>
+
     <TextInput label="Password" type="password" placeholder="Hide yout password" />
 
-    <TextInput disabled  label="Disabled Input" value="Disabled input"   placeholder="This is a disabled input" />
+    <TextInput disabled  label="Disabled Input" value="Disabled input" placeholder="This is a disabled input" />
 
   
     <TextInput label="Date of Birth" :required="true" type="date" />
 
-    <TextInput   label="Textarea Input" placeholder="This is a textarea" />
+    <TextInput label="Textarea Input" placeholder="This is a textarea" />
 
     <TextInputArea label="Comment" placeholder="This is a comment" />
     
@@ -22,6 +23,18 @@
     <span>TextArea is binding : {{ textAreaVal }}</span> <br>
 
     <ListBox @OnValueChanged="(v)=> console.log(v)"   :options="listBoxOptions" label="ListBox" type="password" placeholder="Hide yout password" />
+    
+    <br>
+      <span>TextInput with mask : </span> 
+    <br>
+
+    <TextInput label="Input Text with mask" placeholder="only text" :maskPattern="'@@@@@@@@@@@@@'" />
+
+    <TextInput label="Input phone with mask" placeholder="only number" :maskPattern="'0# ## ## ## ##'"/>
+
+    <TextInput label="Input Text with mask" placeholder="mixed caracters" :maskPattern="'****************************'" />
+
+    <TextInput label="Input Text with token" placeholder="with token" :maskToken="maskWithToken" />
 
   </div>
 
@@ -34,6 +47,8 @@ import TextInputArea from '@/components/input/TextInputArea.vue';
 import ListBox from './ListBox.vue';
 
 export default {
+
+  name: 'InputExemple',
 
   components: {
     TextInput,
@@ -62,8 +77,11 @@ export default {
         {'label':'Software Ingenering 13','value':'1'}
       ],
       inp1Val:"",
-      textAreaVal:""
-
+      textAreaVal:"",
+      maskWithToken:{
+        pattern:"M",
+        token: "{'M': { 'pattern': '[a-z A-Z]', 'repeated': true } }"
+      }
 
     };
   }
