@@ -75,4 +75,20 @@ describe('BarSide.vue', () => {
     const separators = wrapper.findAll('.barside-menu-separation');
     expect(separators.length).toBe(menus.length - 1); // Vérifie qu'il y a un séparateur entre les menus
   });
+
+  it('Should dynamically select item', async () => {
+    const wrapper = mount(BarSide, {
+      propsData: {
+        menus,
+        selectedItem:'Profile'
+      },
+    });
+
+     
+    const items = wrapper.findAllComponents(BarSideItem);
+    const profileItem = items.find(item => item.props('title') === 'Profile');
+
+    expect(profileItem.classes()).toContain('active');
+   
+  });
 });

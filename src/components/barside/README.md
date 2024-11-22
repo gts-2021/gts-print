@@ -11,6 +11,7 @@ The `BarSide` component is a sidebar container that displays a logo and a list o
 | `logo`          | `Object`   | No       | Object representing the logo displayed in the sidebar. It can contain properties like an image URL. |
 | `menus`         | `Array`    | Yes      | Array of menu items to display. Each item in `menus` is passed to the `BarSideMenu` subcomponent. |
 | `onItemSelected`| `Function` | No       | Callback function triggered when a menu item is selected. It receives the title of the selected item as a parameter. |
+| `selectedItem`| `String` | No       | Used to specify which barside item is selected (used for explicit identifying selected item) |
 
 ## Data Properties
 
