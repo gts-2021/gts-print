@@ -6,7 +6,7 @@
 
         <div v-for="(items, index) in menus" :key="index">
             
-            <BarSideMenu @barsideItemClicked="onItemClicked($event)" :items="items" :itemActiveTitle="itemActiveTitle"/>
+            <BarSideMenu @barsideItemClicked="onItemClicked($event)" :items="items" :itemActiveTitle="selectedItem || itemActiveTitle"/>
 
             <div v-if="index < menus.length - 1" class="barside-menu-separation"></div>
         </div>
@@ -29,6 +29,10 @@ export default {
         logo: {
             type: Object,
             required: false
+        },
+        selectedItem: {
+            type: String,
+            required: false,
         },
         menus: {
             type: Array,
