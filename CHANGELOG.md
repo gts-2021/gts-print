@@ -12,6 +12,7 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 ### Added
 
+* Adding `type` property to `ButtonComponent` component. [GTS-PRINT#66](https://quire.io/w/GTS_Golden_Technology_Solutions/66)
 * Adding the possibility to show/hide password input. [GTS-PRINT#25](https://quire.io/w/GTS-PRINT31/25)  
 * Adding `maska` library to `TextInput` components. [GTS-PRINT#27](https://quire.io/w/GTS-PRINT31/27) 
 * Adding the possibility to specify barside selected item. [GTS-PRINT#29](https://quire.io/w/GTS-PRINT31/29) 

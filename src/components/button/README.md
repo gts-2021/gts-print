@@ -14,6 +14,7 @@ The `ButtonComponent` is a customizable button that supports various themes, ico
 | `className`    | `String`   | No       | `''`            | Custom class applied to the button for additional styling.                                       |
 | `iconPosition`  | `String`   | No       | `'left'`        | Position of the icon within the button (`'left'` or `'right'`).                                  |
 | `theme`         | `String`   | No       | `PRIMARY`       | Button theme, supporting styles like `primary`, `primary-inverse`, `danger`, etc. from constants. |
+| `type`         | `String`   | No       | ``       | Button type |
 
 ## Data Properties
 
