@@ -1,7 +1,7 @@
 <template>
 
 	<div class="gts-button-container">
-		<button :class="[className, theme]" @click="onButtonClick">
+		<button :class="[className, theme]" @click="onButtonClick" :type="type">
 
 			<div class="gts-button-content">
 
@@ -75,6 +75,14 @@ export default {
 			required: false,
 			default(){
 				return PRIMARY;
+			}
+		},
+		
+		type: {
+			type: String,
+			required: false,
+			default(){
+				return '';
 			}
 		}
 
