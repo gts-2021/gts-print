@@ -60,6 +60,24 @@ describe('Tests for TextInput component', () => {
     expect(errorMsg.text()).toBe(error)
   });
 
+  it('Should show password value', () => {
+    const label = "Password"
+    const type = "password"
+    const wrapper = mount(TextInput, {
+      propsData: {
+        label,
+        type
+      },
+    });
+
+    const showPasswordIcon = wrapper.find('.gts-show-password');
+    expect(showPasswordIcon.exists()).toBeTruthy();
+    
+    
+    const hidePasswordIcon = wrapper.find('.gts-hide-password');
+    expect(hidePasswordIcon.exists()).toBeFalsy();
+  });
+
   it('Should show calendar icon for datepicker', async () => {
     const label = "Choose date"
      

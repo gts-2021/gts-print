@@ -75,4 +75,8 @@ input[type='date']::-webkit-calendar-picker-indicator {
     top: 0;
     width: 0;
 }
+
+.gts-input-required {
+	margin-left: 5px;
+}
 </style>

@@ -12,6 +12,7 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 ### Added
 
+* Adding the possibility to show/hide password input. [GTS-PRINT#25](https://quire.io/w/GTS-PRINT31/25)  
 * Adding `maska` library to `TextInput` components. [GTS-PRINT#27](https://quire.io/w/GTS-PRINT31/27) 
 * Adding the possibility to specify barside selected item. [GTS-PRINT#29](https://quire.io/w/GTS-PRINT31/29) 
 * Adding `AccordionPanel` and `AccordionComponent` components with `README.md`. [GTS-PRINT#19](https://quire.io/w/GTS-PRINT31/19) 
