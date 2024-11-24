@@ -54,6 +54,9 @@ export default {
 | `label`     | String   | Texte affiché à côté de la case                | Non    | `''`       |
 | `isChecked` | Boolean  | Définit si la case est initialement cochée     | Non    | `false`    |
 
+`isChecked` can be binded for exemple:
+<CheckBox v-model:isChecked="checkboxBindedVal" label="Checkbox with value binded"/>
+
 ## Événements
 
 | Événement     | Description                                  | Paramètre émis        |

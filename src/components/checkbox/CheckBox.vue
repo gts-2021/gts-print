@@ -48,6 +48,7 @@ export default {
     onToggle() {
       this.isRadioChecked = !this.isRadioChecked;
       this.$emit('onToggle', this.isRadioChecked)
+      this.$emit('update:isChecked', this.isRadioChecked);
     }
 
   },
