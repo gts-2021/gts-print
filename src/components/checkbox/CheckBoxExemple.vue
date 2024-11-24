@@ -6,6 +6,9 @@
 
     <CheckBox :isChecked="true" label="Default checked"/>
 
+    
+    <CheckBox v-model:isChecked="checkboxBindedVal" label="Checkbox with value binded"/>
+
   </div>
 
 </template>
@@ -24,6 +27,17 @@ export default {
   components: {
     CheckBox
   },
+  data(){
+    return {
+      checkboxBindedVal: true
+    }
+  },
+  watch:{
+    checkboxBindedVal(newVal){
+      console.log(newVal);
+      
+    }
+  }
 
 }
 
