@@ -12,6 +12,7 @@ import RadioGroup from '@/components/radio/RadioGroup.vue';
 import CheckBox from '@/components/checkbox/CheckBox.vue';
 import AccordionPanel from '@/components/accordion/AccordionPanel.vue';
 import AccordionComponent from '@/components/accordion/AccordionComponent.vue';
+import BadgeComponent from '@/components/badge/BadgeComponent.vue';
 
 
 const GtsPrint = {
@@ -29,6 +30,7 @@ const GtsPrint = {
     app.component('CheckBox', CheckBox);
     app.component('AccordionPanel', AccordionPanel);
     app.component('AccordionComponent', AccordionComponent);
+    app.component('BadgeComponent', BadgeComponent);
   }
 };
 

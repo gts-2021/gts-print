@@ -3,8 +3,10 @@
 
   <!-- <BarSide :menus="menus" /> -->
 
+  <BadgeExample />
+
   <AccordionExemple />
-   <CheckBoxExemple />
+  <CheckBoxExemple />
   <RadioExemple />
   <DialogExample />
   <InputExemple />
@@ -35,6 +37,8 @@ import RadioExemple from './components/radio/RadioExemple.vue';
 import CheckBoxExemple from './components/checkbox/CheckBoxExemple.vue';
 import AccordionExemple from './components/accordion/AccordionExemple.vue';
 
+import BadgeExample from './components/badge/BadgeExample.vue';
+
 export default {
 
   components: {
@@ -46,7 +50,8 @@ export default {
     DialogExample,
     RadioExemple,
     CheckBoxExemple,
-    AccordionExemple
+    AccordionExemple,
+    BadgeExample
 
 
   },
