@@ -32,21 +32,46 @@ export default {
   components: {
     CommonInput
   },
-  created() {
-    this.inputValue = this.options[0];
-  },
+
   mixins: [InputCommonProps],
+
   props: {
     options: {
       type: Array,
       required: false
     },
+
   },
+
   data() {
     return {
       isOpen: false,
     }
   },
+
+  created() {
+
+    if(this.value)
+      this.setInputValue(this.value)
+    else
+      this.inputValue = this.options[0];
+  },
+
+  watch: {
+
+    options: {
+      deep: true,
+      immediate: true,
+      handler(newOptions) {
+        if (this.value) {
+          this.setInputValue(this.value);
+        } else if (newOptions.length > 0) {
+          this.inputValue = newOptions[0];
+        }
+      },
+    },
+  },
+
   methods: {
     onDropDownClick(event) {
       event.stopPropagation();
@@ -63,6 +88,11 @@ export default {
       this.inputValue = option;
       this.$emit('onValueChanged', option)
     },
+
+    setInputValue(value){
+      this.inputValue = this.options.find(option => option.value == value) || '';
+    },
+
     closeList() {
       this.isOpen = false;
     }
