@@ -12,6 +12,10 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 ### Added
 
+* Adding documentation for `BadgeComponent`. [GTS-PRINT#30](https://quire.io/w/GTS-PRINT31/30)
+* Adding `badges.js` file which contain constant badge css theme class [GTS-PRINT#30](https://quire.io/w/GTS-PRINT31/30)
+* Adding `BadgeExample` component .[GTS-PRINT#30](https://quire.io/w/GTS-PRINT31/30)
+* Adding `BadgeComponent` component .[GTS-PRINT#30](https://quire.io/w/GTS-PRINT31/30)
 * Adding selected value to `listBox` component. [GTS-PRINT#33](https://quire.io/w/GTS-PRINT31/33)  
 * Adding binding `v-model:isChecked` to bind checkbox value.
 * Adding `type` property to `ButtonComponent` component. [GTS-PRINT#66](https://quire.io/w/GTS_Golden_Technology_Solutions/66)

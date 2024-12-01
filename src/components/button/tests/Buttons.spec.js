@@ -1,7 +1,6 @@
 import { shallowMount } from '@vue/test-utils';
 import ButtonComponent from '@/components/button/ButtonComponent.vue';
 import { PRIMARY } from '@/constants/buttons.js';
-import { defineComponent } from 'vue';
 
 describe('ButtonComponent test : ', () => {
   
