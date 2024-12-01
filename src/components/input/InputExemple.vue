@@ -22,8 +22,10 @@
     <TextInputArea v-model="textAreaVal"  label="Binding text area" placeholder="This is an error input" />
     <span>TextArea is binding : {{ textAreaVal }}</span> <br>
 
-    <ListBox @OnValueChanged="(v)=> console.log(v)"   :options="listBoxOptions" label="ListBox" type="password" placeholder="Hide yout password" />
+    <ListBox @OnValueChanged="(v)=> console.log(v)" :options="listBoxOptions" label="ListBox" type="password" placeholder="Hide yout password" />
     
+    <ListBox @OnValueChanged="(v)=> console.log(v)" :options="listBoxOptions" :value="'2'" label="ListBox with selected value" type="password" placeholder="Hide yout password" />
+
     <br>
       <span>TextInput with mask : </span> 
     <br>
@@ -63,18 +65,18 @@ export default {
       listBoxOptions: [
         {'label':'Select domain','value':'0'},
         {'label':'Software Ingenering 1','value':'1'},
-        {'label':'Software Ingenering 2','value':'1'},
-        {'label':'Software Ingenering 3','value':'1'},
-        {'label':'Software Ingenering 4','value':'1'},
-        {'label':'Software Ingenering 5','value':'1'},
-        {'label':'Software Ingenering 6','value':'1'},
-        {'label':'Software Ingenering 6','value':'1'},
-        {'label':'Software Ingenering 8','value':'1'},
-        {'label':'Software Ingenering 9','value':'1'},
-        {'label':'Software Ingenering 10','value':'1'},
-        {'label':'Software Ingenering 11','value':'1'},
-        {'label':'Software Ingenering 12','value':'1'},
-        {'label':'Software Ingenering 13','value':'1'}
+        {'label':'Software Ingenering 2','value':'2'},
+        {'label':'Software Ingenering 3','value':'3'},
+        {'label':'Software Ingenering 4','value':'4'},
+        {'label':'Software Ingenering 5','value':'5'},
+        {'label':'Software Ingenering 6','value':'6'},
+        {'label':'Software Ingenering 6','value':'7'},
+        {'label':'Software Ingenering 8','value':'8'},
+        {'label':'Software Ingenering 9','value':'9'},
+        {'label':'Software Ingenering 10','value':'10'},
+        {'label':'Software Ingenering 11','value':'11'},
+        {'label':'Software Ingenering 12','value':'12'},
+        {'label':'Software Ingenering 13','value':'13'}
       ],
       inp1Val:"",
       textAreaVal:"",
