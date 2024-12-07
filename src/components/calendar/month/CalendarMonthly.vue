@@ -22,7 +22,7 @@
           <tr class="gts-print-calendar-monthly-content" v-for="(week, weekIndex) in calendars" :key="weekIndex">
         
             <td class="gts-print-calendar-monthly-content-data" v-for="(day, index ) in weekDays" :key="index" @click="selectDay(week[index])"
-            :class="dayCssClasses[weekIndex][index]">
+              :class="dayCssClasses[weekIndex][index]">
 
               <CalendarMonthlyInfo :calendarDay="week[index]" :selectedDay="selectedDay"/>
 
@@ -287,79 +287,6 @@ export default {
 
       .gts-print-calendar-monthly-content{
         display: flex;
-  
-        .gts-print-calendar-monthly-content-data{
-         
-          display: flex;
-          flex-direction: column;
-          flex: 1;
-          border-right: 1px solid $neutral-color-200;
-          border-bottom: 1px solid $neutral-color-200;
-          padding: 10px;
-          cursor: pointer;
-
-          .gts-print-calendar-monthly-content-data-header{
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-
-            .gts-print-calendar-header-day{
-              font-size: 18px;
-              color: $neutral-color-500;
-              font-weight: 500;
-            }
-
-            .gts-print-calendar-content-actions-icon{
-              cursor: pointer;
-            }
-          }
-
-          .gts-print-calendar-monthly-content-data-timeslots{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            gap: 7px;
-
-            .gts-print-calendar-monthly-content-data-timeslot{
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              border-radius: 4px;
-              color: $color-white;
-              background: $primary-color-300;
-              padding: 2px 8px;
-              
-              .time-slot-text{
-                font-weight: 500;
-                font-size: 12px;
-                line-height: 20px;
-              }
-
-            }
-          }
-
-        }
-
-        .gts-print-calendar-monthly-content-data.selected{
-          background: $primary-color-50;
-        }
-
-        .gts-print-calendar-monthly-content-data.light-gray{
-          background: $neutral-color-50;
-        }
-
-        .gts-print-calendar-monthly-content-data-empty{
-          text-align: center;
-          padding: 30px;
-          line-height: 20px;
-          font-size: 12px;
-          font-weight: 500;
-          border-radius: 4px;
-          color: $neutral-color-800;
-          background: $neutral-color-200;
-        }
-
       }
     }
 
