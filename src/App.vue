@@ -4,10 +4,10 @@
   <h4> CalendarMonthly </h4>
   <CalendarMonthly/>
   
-  <h4> CalendarWeekly </h4>
+ <!--  <h4> CalendarWeekly </h4>
   <CalendarWeekly/>
 
-  <!-- 
+  
   <BarSide :menus="menus" /> 
 
   <BadgeExample />
@@ -45,17 +45,20 @@ import RadioExemple from './components/radio/RadioExemple.vue';
 import CheckBoxExemple from './components/checkbox/CheckBoxExemple.vue';
 import AccordionExemple from './components/accordion/AccordionExemple.vue';
 
-import BadgeExample from './components/badge/BadgeExample.vue';*/
-
-import CalendarMonthly from './components/calendar/CalendarMonthly.vue';
+import BadgeExample from './components/badge/BadgeExample.vue';
 import CalendarWeekly from './components/calendar/CalendarWeekly.vue';
+*/
+
+import CalendarMonthly from './components/calendar/month/CalendarMonthly.vue';
+
 export default {
 
   components: {
     
     CalendarMonthly,
-    CalendarWeekly
+   
     /*
+     CalendarWeekly
     BarSideExemple,
     InputExemple,
     DataTable,

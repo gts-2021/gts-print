@@ -24,27 +24,8 @@
             <td class="gts-print-calendar-monthly-content-data" v-for="(day, index ) in weekDays" :key="index" @click="selectDay(week[index])"
             :class="dayCssClasses[weekIndex][index]">
 
-              <div class="gts-print-calendar-monthly-content-data-header">
-                <div>
-                  <span class="gts-print-calendar-header-day">{{ week[index].number}} </span>
-                </div>
+              <CalendarMonthlyInfo :calendarDay="week[index]" :selectedDay="selectedDay"/>
 
-                <div v-if="selectedDay === week[index]">
-                  <span class="gts-print-calendar-content-actions-icon" @click=displayMenu(week[index])>  <MenuIcon /></span>                
-                 </div>
-
-              </div>
-
-              <div v-if="week[index].timeSlots.length > 0" class="gts-print-calendar-monthly-content-data-timeslots">
-                <div class="gts-print-calendar-monthly-content-data-timeslot" v-for="timeSlot in week[index].timeSlots" :key="timeSlot">
-                  <span class="time-slot-text"> {{timeSlot}}  </span>
-                </div>
-              </div>
-
-              <!-- empty content -->
-              <div v-else class="gts-print-calendar-monthly-content-data-empty">
-                <span class="time-slot-text"> {{week[index].label}}  </span>
-              </div>
             </td> 
         
           </tr> 
@@ -61,19 +42,16 @@
 
 <script>
 
-import MenuIcon from '@/assets/icons/MenuIcon.vue';
+import CalendarMonthlyInfo from "./CalendarMonthlyInfo";
 
 export default {
 
   name: "CalendarMonthly",
 
   components: {
-    MenuIcon,
+    CalendarMonthlyInfo
   },
 
-  props: { 
-
-  },
 
   data () {
     return {

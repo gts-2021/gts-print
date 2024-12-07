@@ -12,6 +12,7 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 ### Added
 
+* Adding `CalendarMonthlyInfo` component to handle calendar day information. [GTS-PRINT#35] (https://quire.io/w/GTS-PRINT31/35)
 * Adding First part of `CalendarMonthly` component. [GTS-PRINT#35] (https://quire.io/w/GTS-PRINT31/35)
 * Adding First part of `CalendarWeekly` component. [GTS-PRINT#35] (https://quire.io/w/GTS-PRINT31/35)
 * Adding documentation for `BadgeComponent`. [GTS-PRINT#30](https://quire.io/w/GTS-PRINT31/30)
