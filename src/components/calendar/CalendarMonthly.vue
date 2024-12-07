@@ -1,0 +1,394 @@
+<template>
+
+  <div class="gts-print-calendar-monthly-wrapper">
+
+    <div class="gts-print-calendar-monthly-container">
+  
+      <table class="gts-print-calendar-monthly">
+
+        <thead>
+          <tr class="gts-print-calendar-monthly-header">
+            <th class="gts-print-calendar-monthly-header-container" v-for="day in weekDays" :key="day">
+              <div class="gts-print-calendar-monthly-header-data"> 
+                <span class="gts-print-calendar-monthly-header-title"> {{day.title}} </span> 
+              </div>
+            </th>
+            
+          </tr>
+        </thead>
+
+        <tbody>
+        
+          <tr class="gts-print-calendar-monthly-content" v-for="(week, weekIndex) in calendars" :key="weekIndex">
+        
+            <td class="gts-print-calendar-monthly-content-data" v-for="(day, index ) in weekDays" :key="index" @click="selectDay(week[index])"
+            :class="dayCssClasses[weekIndex][index]">
+
+              <div class="gts-print-calendar-monthly-content-data-header">
+                <div>
+                  <span class="gts-print-calendar-header-day">{{ week[index].number}} </span>
+                </div>
+
+                <div v-if="selectedDay === week[index]">
+                  <span class="gts-print-calendar-content-actions-icon" @click=displayMenu(week[index])>  <MenuIcon /></span>                
+                 </div>
+
+              </div>
+
+              <div v-if="week[index].timeSlots.length > 0" class="gts-print-calendar-monthly-content-data-timeslots">
+                <div class="gts-print-calendar-monthly-content-data-timeslot" v-for="timeSlot in week[index].timeSlots" :key="timeSlot">
+                  <span class="time-slot-text"> {{timeSlot}}  </span>
+                </div>
+              </div>
+
+              <!-- empty content -->
+              <div v-else class="gts-print-calendar-monthly-content-data-empty">
+                <span class="time-slot-text"> {{week[index].label}}  </span>
+              </div>
+            </td> 
+        
+          </tr> 
+        
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+  
+</template>
+
+<script>
+
+import MenuIcon from '@/assets/icons/MenuIcon.vue';
+
+export default {
+
+  name: "CalendarMonthly",
+
+  components: {
+    MenuIcon,
+  },
+
+  props: { 
+
+  },
+
+  data () {
+    return {
+      selectedDay: null,
+
+      weekDays: [
+        {
+          title: "SUN",
+        },
+        {
+          title: "MON",
+        },
+        {
+          title: "TUE",
+        },
+        {
+          title: "WED",
+        },
+        {
+          title: "THUR",
+        },
+        {
+          title: "FRI",
+        },
+        {
+          title: "SAT",
+        },
+        ],
+
+      // calendars represent a month which each list is a week with calendars
+      calendars:[
+        
+        [   
+
+          {
+            date: "01/12/2024",
+            day: "SUN",
+            number: "1",
+            label: "Consultation",
+            timeSlots:["09:00-10:30", "14:00-15:30"],
+          },
+
+          {
+          
+            date: "02/12/2024",
+            name:"MON",
+            number: "2",            
+            label:"Change of panel",
+            timeSlots:["09:00-10:30", "14:00-15:30"],
+
+          },
+
+          {
+            date: "03/12/2024",
+            name: "TUE",
+            number: "3",             
+            label: "Holiday",
+            timeSlots:["09:00-10:30", "14:00-15:30"],
+          },
+
+          {
+            date: "04/12/2024",
+            name: "WED",
+            number: "4",
+            label: "Holiday",
+            timeSlots:["09:00-10:30", "14:00-15:30"],
+          },
+
+          {
+            date: "05/12/2024",
+            name: "THUR",
+            number: "5",
+            label: "Holiday",
+            timeSlots:["09:00-10:30", "14:00-15:30"],
+          },
+
+          {
+            date: "06/12/2024",
+            name: "FRI",
+            number: "6",
+            label: "Holiday",
+            timeSlots:[],
+          },
+
+          {
+            date: "07/12/2024",
+            name: "SAT",
+            number: "7",
+            label: "Holiday",
+            timeSlots:[],
+          },
+      
+        ],
+
+        [   
+
+          {
+            date: "08/12/2024",
+            day: "SUN",
+            number: "08",
+            label: "Consultation",
+            timeSlots:["14:00-15:30"],
+          },
+
+          {
+          
+            date: "09/12/2024",
+            name:"MON",
+            number: "09",            
+            label:"Change of panel",
+            timeSlots:["09:00-10:30", "11:00-12:30", "14:00-15:30"],
+
+          },
+
+          {
+            date: "10/12/2024",
+            name: "TUE",
+            number: "10",             
+            timeSlots:["14:00-15:30"],
+          },
+
+          {
+            date: "11/12/2024",
+            name: "WED",
+            number: "11",
+            timeSlots:["09:00-10:30", "14:00-15:30"],
+          },
+
+          {
+            date: "12/12/2024",
+            name: "THUR",
+            number: "12",
+            timeSlots:["09:00-10:30", "14:00-15:30"],
+          },
+
+          {
+            date: "13/12/2024",
+            name: "FRI",
+            number: "13",
+            label: "Holiday",
+            timeSlots:[],
+          },
+
+          {
+            date: "14/12/2024",
+            name: "SAT",
+            number: "14",
+            label: "Holiday",
+            timeSlots:[],
+          },
+      
+        ],
+
+
+        
+     
+      ],
+    }
+  },
+
+  computed: {
+    dayCssClasses() {
+      return this.calendars.map(week =>
+        week.map(day => {
+          if (this.selectedDay === day) {
+            return "selected";
+          }
+          if (day.timeSlots.length === 0) {
+            return "light-gray";
+          }
+          return "";
+        })
+      );
+    },
+  },
+
+  methods : {
+
+    selectDay(day){
+      if(day.timeSlots.length>0)
+        this.selectedDay = day;
+    },
+
+    displayMenu(day){
+      console.log("displayMenu", day);
+    }
+  }
+
+}
+</script>
+
+<style lang="scss">
+
+.gts-print-calendar-monthly-wrapper {
+  position: relative;
+  width: 100%;
+  padding: 20px;
+
+  .gts-print-calendar-monthly-container {
+    border-radius: 12px 12px 0 0;
+    border: 1px solid $neutral-color-200;
+    overflow: hidden;
+  
+    .gts-print-calendar-monthly{
+      border-collapse: collapse;
+      white-space: nowrap;
+      width: 100%;
+      
+      .gts-print-calendar-monthly-header{
+         display: flex;
+        .gts-print-calendar-monthly-header-container{
+           flex: 1;
+          .gts-print-calendar-monthly-header-data{
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 12px 24px;
+            border-right: 1px solid $neutral-color-200;
+            border-bottom: 1px solid $neutral-color-200;
+            background: $color-white;
+          }
+
+          .gts-print-calendar-monthly-header-title{
+            font-size: 16px;
+            line-height: 24px;
+            color: $neutral-color-500;
+            text-wrap: nowrap;
+          }
+
+        }
+
+      }
+
+      .gts-print-calendar-monthly-content{
+        display: flex;
+  
+        .gts-print-calendar-monthly-content-data{
+         
+          display: flex;
+          flex-direction: column;
+          flex: 1;
+          border-right: 1px solid $neutral-color-200;
+          border-bottom: 1px solid $neutral-color-200;
+          padding: 10px;
+          cursor: pointer;
+
+          .gts-print-calendar-monthly-content-data-header{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            .gts-print-calendar-header-day{
+              font-size: 18px;
+              color: $neutral-color-500;
+              font-weight: 500;
+            }
+
+            .gts-print-calendar-content-actions-icon{
+              cursor: pointer;
+            }
+          }
+
+          .gts-print-calendar-monthly-content-data-timeslots{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 7px;
+
+            .gts-print-calendar-monthly-content-data-timeslot{
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              border-radius: 4px;
+              color: $color-white;
+              background: $primary-color-300;
+              padding: 2px 8px;
+              
+              .time-slot-text{
+                font-weight: 500;
+                font-size: 12px;
+                line-height: 20px;
+              }
+
+            }
+          }
+
+        }
+
+        .gts-print-calendar-monthly-content-data.selected{
+          background: $primary-color-50;
+        }
+
+        .gts-print-calendar-monthly-content-data.light-gray{
+          background: $neutral-color-50;
+        }
+
+        .gts-print-calendar-monthly-content-data-empty{
+          text-align: center;
+          padding: 30px;
+          line-height: 20px;
+          font-size: 12px;
+          font-weight: 500;
+          border-radius: 4px;
+          color: $neutral-color-800;
+          background: $neutral-color-200;
+        }
+
+      }
+    }
+
+  }
+
+}
+
+
+    
+</style>

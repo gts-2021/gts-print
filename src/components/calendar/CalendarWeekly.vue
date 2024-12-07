@@ -13,7 +13,7 @@
 
         <div class="gts-print-calendar-weekly-content-separator"></div>
 
-        <div class="gts-print-calendar-weekly-content-data" v-if="day.timeSlots.length > 0">
+        <div v-if="day.timeSlots.length > 0" class="gts-print-calendar-weekly-content-data">
       
           <span class="gts-print-calendar-weekly-content-data-label"> {{ day.label }} </span>
           
@@ -33,7 +33,7 @@
 
       </div>
      
-      <div class="gts-print-calendar-weekly-content-actions" v-if="selectedDay === day">
+      <div  v-if="selectedDay === day" class="gts-print-calendar-weekly-content-actions">
         <component :item="day" :is="day.componentFormatter"></component>
       </div>
     

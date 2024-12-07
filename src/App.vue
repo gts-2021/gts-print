@@ -1,11 +1,13 @@
 <template>
 
  
-  <CalendarWeekly/>
+  <h4> CalendarMonthly </h4>
+  <CalendarMonthly/>
   
+  <h4> CalendarWeekly </h4>
+  <CalendarWeekly/>
 
   <!-- 
-   
   <BarSide :menus="menus" /> 
 
   <BadgeExample />
@@ -45,14 +47,15 @@ import AccordionExemple from './components/accordion/AccordionExemple.vue';
 
 import BadgeExample from './components/badge/BadgeExample.vue';*/
 
+import CalendarMonthly from './components/calendar/CalendarMonthly.vue';
 import CalendarWeekly from './components/calendar/CalendarWeekly.vue';
-
 export default {
 
   components: {
     
+    CalendarMonthly,
     CalendarWeekly
-     /*
+    /*
     BarSideExemple,
     InputExemple,
     DataTable,
