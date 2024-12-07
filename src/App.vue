@@ -3,6 +3,7 @@
 
   <!-- <BarSide :menus="menus" /> -->
 
+  <CardExample />
   <BadgeExample />
 
   <AccordionExemple />
@@ -38,6 +39,7 @@ import CheckBoxExemple from './components/checkbox/CheckBoxExemple.vue';
 import AccordionExemple from './components/accordion/AccordionExemple.vue';
 
 import BadgeExample from './components/badge/BadgeExample.vue';
+import CardExample from './components/card/CardExample.vue';
 
 export default {
 
@@ -51,7 +53,8 @@ export default {
     RadioExemple,
     CheckBoxExemple,
     AccordionExemple,
-    BadgeExample
+    BadgeExample,
+    CardExample
 
 
   },

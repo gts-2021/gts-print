@@ -12,6 +12,7 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 ### Added
 
+* Adding `CardComponent` with test and documentation. [GTS-PRINT#32](https://quire.io/w/GTS-PRINT31/32)
 * Adding documentation for `BadgeComponent`. [GTS-PRINT#30](https://quire.io/w/GTS-PRINT31/30)
 * Adding `badges.js` file which contain constant badge css theme class [GTS-PRINT#30](https://quire.io/w/GTS-PRINT31/30)
 * Adding `BadgeExample` component .[GTS-PRINT#30](https://quire.io/w/GTS-PRINT31/30)
