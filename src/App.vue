@@ -1,33 +1,33 @@
 <template>
-
  
   <h4> CalendarMonthly </h4>
   <CalendarMonthly/>
-    <CalendarWeekly/>
-  <CardExample />
 
- <!--  <h4> CalendarWeekly </h4>
+  <h4> CalendarWeekly </h4>
+  <CalendarWeekly/>
 
+ <!-- 
   
-  <BarSide :menus="menus" /> 
+   <CardExample />
+   <BarSide :menus="menus" /> 
 
-  <BadgeExample />
+    <BadgeExample />
 
-  <AccordionExemple />
-  <CheckBoxExemple />
-  <RadioExemple />
-  <DialogExample />
-  <InputExemple />
-  <BarSideExemple />
+    <AccordionExemple />
+    <CheckBoxExemple />
+    <RadioExemple />
+    <DialogExample />
+    <InputExemple />
+    <BarSideExemple />
 
-  <ButtonExample />
+    <ButtonExample />
 
 
-  <DataTable :headers="tabelHeaders" :items="tabelContent" :paginationConfig ="paginationConfig"
-    @unsort="unsort" 
-    @sort-asc="sortAsc"
-    @sort-desc="sortDesc"
-    @hide-column="hideColumn"/>-->
+    <DataTable :headers="tabelHeaders" :items="tabelContent" :paginationConfig ="paginationConfig"
+      @unsort="unsort" 
+      @sort-asc="sortAsc"
+      @sort-desc="sortDesc"
+      @hide-column="hideColumn"/>-->
 
 </template>
 
@@ -46,11 +46,11 @@ import RadioExemple from './components/radio/RadioExemple.vue';
 import CheckBoxExemple from './components/checkbox/CheckBoxExemple.vue';
 import AccordionExemple from './components/accordion/AccordionExemple.vue';
 
-import BadgeExample from './components/badge/BadgeExample.vue';*/
-import CalendarWeekly from './components/calendar/CalendarWeekly.vue';
-import CalendarMonthly from './components/calendar/month/CalendarMonthly.vue';
-import CardExample from './components/card/CardExample.vue';
+import BadgeExample from './components/badge/BadgeExample.vue';
+import CardExample from './components/card/CardExample.vue';*/
 
+import CalendarMonthly from './components/calendar/month/CalendarMonthly.vue';
+import CalendarWeekly from './components/calendar/week/CalendarWeekly.vue';
 
 export default {
 
@@ -68,11 +68,12 @@ export default {
     CheckBoxExemple,
     AccordionExemple,
     BadgeExample
-    BadgeExample,*/
-    CalendarMonthly,
+    BadgeExample,
+    ,
+    CardExample,*/
+   
     CalendarWeekly,
-    CardExample,
-
+    CalendarMonthly,
 
   },
 
