@@ -13,6 +13,7 @@ import CheckBox from '@/components/checkbox/CheckBox.vue';
 import AccordionPanel from '@/components/accordion/AccordionPanel.vue';
 import AccordionComponent from '@/components/accordion/AccordionComponent.vue';
 import BadgeComponent from '@/components/badge/BadgeComponent.vue';
+import CardComponent from '@/components/card/CardComponent.vue';
 
 
 const GtsPrint = {
@@ -31,6 +32,7 @@ const GtsPrint = {
     app.component('AccordionPanel', AccordionPanel);
     app.component('AccordionComponent', AccordionComponent);
     app.component('BadgeComponent', BadgeComponent);
+    app.component('CardComponent', CardComponent);
   }
 };
 
