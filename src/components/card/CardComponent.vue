@@ -78,7 +78,7 @@ export default {
 	.gts-card-content {
 		width: 100%;
 		height: 100%;
-		border: 1px solid $neutral-color-100;
+		border: 1px solid #D4D4D4;
 		border-radius: 16px;
 		overflow: hidden;
 	}
@@ -107,11 +107,11 @@ export default {
 
 	.gts-card-actions-menu {
 		position: absolute;
-		background-color: $neutral-color-50;
+		background-color: $color-white;
 		top: 15px;
 		right: 65px;
 		width: 170px;
-		border: 1px solid $neutral-color-100;
+		border: 1px solid #D4D4D4;
 		border-radius: 10px;
 		overflow: hidden;
 		z-index: 5;

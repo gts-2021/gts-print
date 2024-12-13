@@ -6,7 +6,7 @@
   <h4> CalendarWeekly </h4>
   <CalendarWeekly/>
 
- <!-- 
+
   
    <CardExample />
    <BarSide :menus="menus" /> 
@@ -27,13 +27,13 @@
       @unsort="unsort" 
       @sort-asc="sortAsc"
       @sort-desc="sortDesc"
-      @hide-column="hideColumn"/>-->
+      @hide-column="hideColumn"/>
 
 </template>
 
 <script>
 
-/*import BarSideExemple from './components/barside/BarSideExemple.vue';
+import BarSideExemple from './components/barside/BarSideExemple.vue';
 import InputExemple from './components/input/InputExemple.vue';
 import ButtonExample from './components/button/ButtonExample.vue';
 
@@ -47,7 +47,7 @@ import CheckBoxExemple from './components/checkbox/CheckBoxExemple.vue';
 import AccordionExemple from './components/accordion/AccordionExemple.vue';
 
 import BadgeExample from './components/badge/BadgeExample.vue';
-import CardExample from './components/card/CardExample.vue';*/
+import CardExample from './components/card/CardExample.vue';
 
 import CalendarMonthly from './components/calendar/month/CalendarMonthly.vue';
 import CalendarWeekly from './components/calendar/week/CalendarWeekly.vue';
@@ -57,7 +57,7 @@ export default {
   components: {
     
     
-    /*
+  
     BarSideExemple,
     InputExemple,
     DataTable,
@@ -67,11 +67,8 @@ export default {
     RadioExemple,
     CheckBoxExemple,
     AccordionExemple,
-    BadgeExample
     BadgeExample,
-    ,
-    CardExample,*/
-   
+    CardExample,
     CalendarWeekly,
     CalendarMonthly,
 
@@ -80,7 +77,7 @@ export default {
   data() {
     return {
 
-     /*menus: [
+     menus: [
         [
           {
             title: "Dashboard",
@@ -293,7 +290,7 @@ export default {
         pageStart: 1,
         totalRecords: 50,
         pageLength :[10, 20, 25, 50, 100]
-      },*/
+      },
     };
   },
 
