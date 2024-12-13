@@ -9,7 +9,7 @@
     </div>
 
     <!-- actions -->
-    <div v-if="selectedDay === calendarDay" class="gts-print-calendar-content-actions-icon" @click=displayMenu(calendarDay)>
+    <div v-if="isSelected" class="gts-print-calendar-content-actions-icon" @click=displayMenu(calendarDay)>
       <MenuIcon />                
     </div>
 
@@ -18,7 +18,7 @@
   <!-- timeslot -->
   <div v-if="calendarDay.timeSlots.length > 0" class="gts-print-calendar-monthly-content-data-timeslots">
     <div class="gts-print-calendar-monthly-content-data-timeslot" v-for="timeSlot in calendarDay.timeSlots" :key="timeSlot">
-      <span class="time-slot-text"> {{timeSlot}}  </span>
+      <span class="time-slot-text"> {{timeSlot.startTime}} - {{timeSlot.endTime}}</span>
     </div>
   </div>
 
@@ -58,6 +58,12 @@ export default {
   data () {
     return {
     }
+  },
+
+  computed: {
+    isSelected() {
+      return this.selectedDay === this.calendarDay;
+    },
   },
 
   methods : {

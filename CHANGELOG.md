@@ -12,8 +12,9 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 ### Added
 
+* Adding `CalendarWeeklyInfo` component to handle calendar day information for week display. [GTS-PRINT#35] (https://quire.io/w/GTS-PRINT31/35)
 * Adding `past, today, future` css class to handle display. [GTS-PRINT#35] (https://quire.io/w/GTS-PRINT31/35)
-* Adding `CalendarMonthlyInfo` component to handle calendar day information. [GTS-PRINT#35] (https://quire.io/w/GTS-PRINT31/35)
+* Adding `CalendarMonthlyInfo` component to handle calendar day information for month display. [GTS-PRINT#35] (https://quire.io/w/GTS-PRINT31/35)
 * Adding First part of `CalendarMonthly` component. [GTS-PRINT#35] (https://quire.io/w/GTS-PRINT31/35)
 * Adding First part of `CalendarWeekly` component. [GTS-PRINT#35] (https://quire.io/w/GTS-PRINT31/35)
 * Adding `CardComponent` with test and documentation. [GTS-PRINT#32](https://quire.io/w/GTS-PRINT31/32)

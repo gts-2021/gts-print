@@ -22,7 +22,7 @@
           <tr class="gts-print-calendar-monthly-content" v-for="(week, weekIndex) in calendars" :key="weekIndex">
         
             <td class="gts-print-calendar-monthly-content-data" v-for="(day, index ) in weekDays" :key="index" @click="selectDay(week[index])"
-              :class="dayCssClasses[weekIndex][index]">
+              :class="getContentCssClass[weekIndex][index]">
 
               <CalendarMonthlyInfo :calendarDay="week[index]" :selectedDay="selectedDay"/>
 
@@ -91,7 +91,16 @@ export default {
             day: "SUN",
             number: "1",
             label: "Consultation",
-            timeSlots:["09:00-10:30", "14:00-15:30"],
+            timeSlots:[
+              {
+                startTime: "09:00",
+                endTime: "10:30",
+              },
+              {
+                startTime: "14:00",
+                endTime: "15:30",
+              }
+            ],
           },
 
           {
@@ -100,7 +109,16 @@ export default {
             name:"MON",
             number: "2",            
             label:"Change of panel",
-            timeSlots:["09:00-10:30", "14:00-15:30"],
+            timeSlots:[
+              {
+                startTime: "09:00",
+                endTime: "10:30",
+              },
+              {
+                startTime: "14:00",
+                endTime: "15:30",
+              }
+            ],
 
           },
 
@@ -109,7 +127,16 @@ export default {
             name: "TUE",
             number: "3",             
             label: "Holiday",
-            timeSlots:["09:00-10:30", "14:00-15:30"],
+            timeSlots:[
+              {
+                startTime: "09:00",
+                endTime: "10:30",
+              },
+              {
+                startTime: "14:00",
+                endTime: "15:30",
+              }
+            ],
           },
 
           {
@@ -117,7 +144,16 @@ export default {
             name: "WED",
             number: "4",
             label: "Holiday",
-            timeSlots:["09:00-10:30", "14:00-15:30"],
+            timeSlots:[
+              {
+                startTime: "09:00",
+                endTime: "10:30",
+              },
+              {
+                startTime: "14:00",
+                endTime: "15:30",
+              }
+            ],
           },
 
           {
@@ -125,7 +161,16 @@ export default {
             name: "THUR",
             number: "5",
             label: "Holiday",
-            timeSlots:["09:00-10:30", "14:00-15:30"],
+            timeSlots:[
+              {
+                startTime: "09:00",
+                endTime: "10:30",
+              },
+              {
+                startTime: "14:00",
+                endTime: "15:30",
+              }
+            ],
           },
 
           {
@@ -153,16 +198,33 @@ export default {
             day: "SUN",
             number: "08",
             label: "Consultation",
-            timeSlots:["14:00-15:30"],
+            timeSlots:[
+              {
+                startTime: "14:00",
+                endTime: "15:30",
+              }
+            ],
           },
 
           {
-          
             date: "09/12/2024",
             name:"MON",
             number: "09",            
             label:"Change of panel",
-            timeSlots:["09:00-10:30", "11:00-12:30", "14:00-15:30"],
+            timeSlots:[
+              {
+                startTime: "09:00",
+                endTime: "10:30",
+              },
+              {
+                startTime: "11:00",
+                endTime: "12:30",
+              },
+              {
+                startTime: "14:00",
+                endTime: "15:30",
+              }
+            ],
 
           },
 
@@ -170,21 +232,44 @@ export default {
             date: "10/12/2024",
             name: "TUE",
             number: "10",             
-            timeSlots:["14:00-15:30"],
+            timeSlots:[
+              {
+                startTime: "14:00",
+                endTime: "15:30",
+              }
+            ],
           },
 
           {
             date: "11/12/2024",
             name: "WED",
             number: "11",
-            timeSlots:["09:00-10:30", "14:00-15:30"],
+            timeSlots:[
+              {
+                startTime: "09:00",
+                endTime: "10:30",
+              },
+              {
+                startTime: "14:00",
+                endTime: "15:30",
+              }
+            ],
           },
 
           {
             date: "12/12/2024",
             name: "THUR",
             number: "12",
-            timeSlots:["09:00-10:30", "14:00-15:30"],
+            timeSlots:[
+              {
+                startTime: "09:00",
+                endTime: "10:30",
+              },
+              {
+                startTime: "14:00",
+                endTime: "15:30",
+              }
+            ],
           },
 
           {
@@ -213,7 +298,7 @@ export default {
   },
 
   computed: {
-    dayCssClasses() {
+    getContentCssClass() {
       return this.calendars.map(week =>
         week.map(day => {
           if (this.selectedDay === day) {
