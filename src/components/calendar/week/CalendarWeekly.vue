@@ -163,7 +163,7 @@ export default {
 <style lang="scss">
 
 .gts-print-calendar-weekly-container{
-
+  padding: 0px 20px;
 
   .gts-print-calendar-weekly-content{
 
@@ -174,12 +174,11 @@ export default {
     padding: 16px;
     gap: 30px;
     border-radius: 12px;
-    margin: 10px;
+    margin-bottom: 15px;
     cursor: pointer;
     
   }
 
 }
-
     
 </style>

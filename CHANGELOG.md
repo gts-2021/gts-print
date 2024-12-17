@@ -12,6 +12,9 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 ### Added
 
+* Adding `calendars.js` file to handle calendars types constants. [GTS-PRINT#35] (https://quire.io/w/GTS-PRINT31/35)
+* Adding `CalendarComponent` component to handle dynamic calendar display. [GTS-PRINT#35] (https://quire.io/w/GTS-PRINT31/35)
+* Adding `CalendarHeader` component to handle calendar types display. [GTS-PRINT#35] (https://quire.io/w/GTS-PRINT31/35)
 * Adding `CalendarWeeklyInfo` component to handle calendar day information for week display. [GTS-PRINT#35] (https://quire.io/w/GTS-PRINT31/35)
 * Adding `past, today, future` css class to handle display. [GTS-PRINT#35] (https://quire.io/w/GTS-PRINT31/35)
 * Adding `CalendarMonthlyInfo` component to handle calendar day information for month display. [GTS-PRINT#35] (https://quire.io/w/GTS-PRINT31/35)
