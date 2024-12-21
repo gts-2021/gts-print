@@ -12,6 +12,7 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 ### Added
 
+* Adding `ContextMenu` component. [GTS-PRINT#37] (https://quire.io/w/GTS-PRINT31/37)
 * Adding `CalendarWeeklyInfo` component to handle calendar day information for week display. [GTS-PRINT#35] (https://quire.io/w/GTS-PRINT31/35)
 * Adding `past, today, future` css class to handle display. [GTS-PRINT#35] (https://quire.io/w/GTS-PRINT31/35)
 * Adding `CalendarMonthlyInfo` component to handle calendar day information for month display. [GTS-PRINT#35] (https://quire.io/w/GTS-PRINT31/35)
