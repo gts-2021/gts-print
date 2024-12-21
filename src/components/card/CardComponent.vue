@@ -1,6 +1,6 @@
 <template>
 
-	<div @click="() => this.isShowMenu = false" :class="['gts-card-container', className]">
+	<div :class="['gts-card-container', className]">
 
 		<div v-if="actions.length != 0" tabindex="0" class="gts-card-actions-btn" @click="toggleMenu">
 			<svg width="8" height="16" viewBox="0 0 8 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -12,15 +12,7 @@
 		</div>
 
 
-		<div v-if="isShowMenu" class="gts-card-actions-menu">
-			<div v-for="(action, index) in actions" :key="index" :class="['gts-card-menu-item', action.className]"
-				@click="action.onClick">
-				<span class="gts-card-menu-item-icon">
-					<component v-if="!action.noIcon" :is="action.icon" />
-				</span>
-				<span class="gts-card-menu-item-title">{{ action.title }}</span>
-			</div>
-		</div>
+		<ContextMenu ref="contextMenu" className="gts-card-actions-menu" :actions="actions" />
 
 
 
@@ -33,12 +25,17 @@
 </template>
 
 <script>
+import ContextMenu from '../contextmenu/ContextMenu.vue';
+
 
 
 
 export default {
 
 	name: 'CardComponent',
+	components: {
+		ContextMenu
+	},
 	props: {
 		className: {
 			type: String,
@@ -51,22 +48,14 @@ export default {
 		},
 
 	},
-	data() {
-		return {
-			isShowMenu: false,
-		}
-	},
 
 	methods: {
 		toggleMenu(event) {
 			event.stopPropagation();
-			this.isShowMenu = !this.isShowMenu;
+			this.$refs.contextMenu.toggleMenu()
 
 		}
 	},
-	mounted(){
-		document.getElementsByTagName("body")[0].addEventListener('click', () => this.isShowMenu = false)
-	}
 
 }
 </script>
@@ -108,38 +97,9 @@ export default {
 
 	.gts-card-actions-menu {
 		position: absolute;
-		background-color: $color-white;
 		top: 15px;
 		right: 65px;
-		width: 170px;
-		border: 1px solid #D4D4D4;
-		border-radius: 10px;
-		overflow: hidden;
-		z-index: 5;
 
-		.gts-card-menu-item {
-			color: $primary-color-600;
-			display: flex;
-			flex-direction: row;
-			align-items: center;
-			padding: 15px;
-			cursor: pointer;
-
-			.gts-card-menu-item-icon {
-				margin-right: 10px;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-			}
-
-			.gts-card-menu-item-title {
-				font-weight: 500;
-			}
-		}
-
-		.gts-card-menu-item:hover {
-			background-color: $primary-color-50;
-		}
 	}
 }
 </style>
