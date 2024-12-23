@@ -1,4 +1,6 @@
 <template>
+
+  <StepperExample />
  
   <h4> CalendarMonthly </h4>
   <CalendarMonthly/>
@@ -51,6 +53,7 @@ import CardExample from './components/card/CardExample.vue';
 
 import CalendarMonthly from './components/calendar/month/CalendarMonthly.vue';
 import CalendarWeekly from './components/calendar/week/CalendarWeekly.vue';
+import StepperExample from './components/stepper/StepperExample.vue';
 
 export default {
 
@@ -71,6 +74,7 @@ export default {
     CardExample,
     CalendarWeekly,
     CalendarMonthly,
+    StepperExample
 
   },
 

@@ -1,8 +1,8 @@
 import { mount } from '@vue/test-utils';
-import CardComponent from '../CardComponent.vue';
+import CardComponent from '../StepperComponent.vue';
 
 
-describe('Tests for  CardComponent', () => {
+describe('Tests for TextInput CardComponent', () => {
     it('Should renders correctly with default props', () => {
         const wrapper = mount(CardComponent, {
             propsData: {
