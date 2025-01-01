@@ -1,35 +1,34 @@
 <template>
 
+  <ToolTipExample />
+
   <StepperExample />
- 
+
   <h4> CalendarMonthly </h4>
-  <CalendarMonthly/>
+  <CalendarMonthly />
 
   <h4> CalendarWeekly </h4>
-  <CalendarWeekly/>
+  <CalendarWeekly />
 
 
-  
-   <CardExample />
-   <BarSide :menus="menus" /> 
 
-    <BadgeExample />
+  <CardExample />
+  <BarSide :menus="menus" />
 
-    <AccordionExemple />
-    <CheckBoxExemple />
-    <RadioExemple />
-    <DialogExample />
-    <InputExemple />
-    <BarSideExemple />
+  <BadgeExample />
 
-    <ButtonExample />
+  <AccordionExemple />
+  <CheckBoxExemple />
+  <RadioExemple />
+  <DialogExample />
+  <InputExemple />
+  <BarSideExemple />
+
+  <ButtonExample />
 
 
-    <DataTable :headers="tabelHeaders" :items="tabelContent" :paginationConfig ="paginationConfig"
-      @unsort="unsort" 
-      @sort-asc="sortAsc"
-      @sort-desc="sortDesc"
-      @hide-column="hideColumn"/>
+  <DataTable :headers="tabelHeaders" :items="tabelContent" :paginationConfig="paginationConfig" @unsort="unsort"
+    @sort-asc="sortAsc" @sort-desc="sortDesc" @hide-column="hideColumn" />
 
 </template>
 
@@ -41,7 +40,7 @@ import ButtonExample from './components/button/ButtonExample.vue';
 
 //import BarSide from '@/components/barside/BarSide.vue';
 import DataTable from '@/components/table/DataTable.vue';
-import { defineComponent, markRaw} from 'vue';
+import { defineComponent, markRaw } from 'vue';
 import { VIcon } from 'vuetify/lib/components/index.mjs';
 import DialogExample from './components/dialog/DialogExample.vue';
 import RadioExemple from './components/radio/RadioExemple.vue';
@@ -54,13 +53,14 @@ import CardExample from './components/card/CardExample.vue';
 import CalendarMonthly from './components/calendar/month/CalendarMonthly.vue';
 import CalendarWeekly from './components/calendar/week/CalendarWeekly.vue';
 import StepperExample from './components/stepper/StepperExample.vue';
+import ToolTipExample from './components/tooltip/ToolTipExample.vue';
 
 export default {
 
   components: {
-    
-    
-  
+
+
+
     BarSideExemple,
     InputExemple,
     DataTable,
@@ -74,14 +74,15 @@ export default {
     CardExample,
     CalendarWeekly,
     CalendarMonthly,
-    StepperExample
+    StepperExample,
+    ToolTipExample
 
   },
 
   data() {
     return {
 
-     menus: [
+      menus: [
         [
           {
             title: "Dashboard",
@@ -171,7 +172,7 @@ export default {
           sortable: true,
 
           componentFormatter:
-          markRaw(defineComponent({
+            markRaw(defineComponent({
               props: {
                 item: {},
               },
@@ -198,7 +199,7 @@ export default {
 
           componentFormatter:
 
-          markRaw(defineComponent({
+            markRaw(defineComponent({
               components: {
                 VIcon
               },
@@ -288,12 +289,12 @@ export default {
 
       ],
 
-      paginationConfig:{
+      paginationConfig: {
         pageLengthTitle: "Row per page",
         totalRecordsTitle: "of",
         pageStart: 1,
         totalRecords: 50,
-        pageLength :[10, 20, 25, 50, 100]
+        pageLength: [10, 20, 25, 50, 100]
       },
     };
   },
@@ -308,19 +309,19 @@ export default {
     },
 
     unsort(fieldName) {
-      console.log(fieldName)   
+      console.log(fieldName)
     },
 
     sortAsc(fieldName) {
-      console.log(fieldName)   
+      console.log(fieldName)
     },
 
     sortDesc(fieldName) {
-      console.log(fieldName)   
+      console.log(fieldName)
     },
 
     hideColumn(fieldName) {
-      console.log(fieldName)   
+      console.log(fieldName)
     },
 
   },
