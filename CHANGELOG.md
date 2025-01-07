@@ -12,6 +12,8 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 ### Added
 
+* Adding `calendarData` props to `CalendarWeekly` & `CalendarMonthly` components. [GTS-PRINT#35] (https://quire.io/w/GTS-PRINT31/35)
+* Centralize calendar information in `CalendarComponent` components to pass it to the childs. [GTS-PRINT#35] (https://quire.io/w/GTS-PRINT31/35)
 * Adding `ToolTip` component. [GTS-PRINT#38] (https://quire.io/w/GTS-PRINT31/38)
 * Adding `ContextMenu` component. [GTS-PRINT#37] (https://quire.io/w/GTS-PRINT31/37)
 * Adding `calendars.js` file to handle calendars types constants. [GTS-PRINT#35] (https://quire.io/w/GTS-PRINT31/35)
