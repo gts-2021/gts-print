@@ -333,7 +333,7 @@ export default {
 .gts-print-calendar-monthly-wrapper {
   position: relative;
   width: 100%;
-  padding: 20px;
+  padding: 0px 20px;
 
   .gts-print-calendar-monthly-container {
     border-radius: 12px 12px 0 0;
