@@ -12,6 +12,8 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 ### Added
 
+* Adding events to `CalendarComponent`. [GTS-PRINT#35] (https://quire.io/w/GTS-PRINT31/35)
+* Adding new properties to `CalendarComponent` to make it fully dynamic. [GTS-PRINT#35] (https://quire.io/w/GTS-PRINT31/35)
 * Adding `calendarData` props to `CalendarWeekly` & `CalendarMonthly` components. [GTS-PRINT#35] (https://quire.io/w/GTS-PRINT31/35)
 * Centralize calendar information in `CalendarComponent` components to pass it to the childs. [GTS-PRINT#35] (https://quire.io/w/GTS-PRINT31/35)
 * Adding `ToolTip` component. [GTS-PRINT#38] (https://quire.io/w/GTS-PRINT31/38)
@@ -70,6 +72,7 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 ### Changed
 
+* Update `CalendarComponent` README file. [GTS-PRINT#35] (https://quire.io/w/GTS-PRINT31/35)
 * BarSide `Logo` section now take a component. [GTS-PRINT#28](https://quire.io/w/GTS-PRINT31/28)
 * Remove `value` prop from `TextInput`and `TextInputArea`. [GTS-PRINT#19](https://quire.io/w/GTS-PRINT31/19)
 * updating `DataTable` style to handle full width [GTS-PRINT#1](https://quire.io/w/GTS-PRINT31/1)
