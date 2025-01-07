@@ -49,6 +49,8 @@ import CardExample from './components/card/CardExample.vue';
 
 import CalendarComponent from './components/calendar/CalendarComponent.vue';
 
+import CalendarComponent from './components/calendar/CalendarComponent.vue';
+
 import StepperExample from './components/stepper/StepperExample.vue';
 import ToolTipExample from './components/tooltip/ToolTipExample.vue';
 
@@ -68,6 +70,12 @@ export default {
     CheckBoxExemple,
     AccordionExemple,
     BadgeExample,
+    ,
+    CardExample,
+   
+    CalendarWeekly,
+    CalendarMonthly,*/
+    CalendarComponent
   
     CardExample,
     CalendarComponent,
