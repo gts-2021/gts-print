@@ -12,6 +12,7 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 ### Added
 
+* Adding `CalendarExample` component. [GTS-PRINT#35] (https://quire.io/w/GTS-PRINT31/35)
 * Adding events to `CalendarComponent`. [GTS-PRINT#35] (https://quire.io/w/GTS-PRINT31/35)
 * Adding new properties to `CalendarComponent` to make it fully dynamic. [GTS-PRINT#35] (https://quire.io/w/GTS-PRINT31/35)
 * Adding `calendarData` props to `CalendarWeekly` & `CalendarMonthly` components. [GTS-PRINT#35] (https://quire.io/w/GTS-PRINT31/35)
