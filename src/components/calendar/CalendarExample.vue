@@ -1,94 +1,45 @@
-# `CalendarComponent` Documentation
+<template>
 
-## Introduction
+  <div id="exemple-container">
+    <CalendarComponent 
+      :headerConfig="headerConfig"
+      :calendarContentConfig="calendarContentConfig"
+      @dateIncremented="handleDateIncremented"
+      @dateDecremented="handleDateDecremented"
+      @displayTypeSelected="handleDisplayTypeSelected"/>
 
-The `CalendarComponent` component is designed for displaying calendar data and `CalendarHeader` acocrding to a specific properties,
-the aim of this component is to display a data on three diffrent display mode `Month`, `Week`, `Day`,
+  </div>
 
+</template>
 
-## Props
+<script>
 
-| Prop                      | Type    | Required  | Default                       | Description                                                    |
-|---------------------------|---------|-----------|-------------------------------|----------------------------------------------------------------|
-| `headerConfig`            | Object  | Yes       | `see default values section`  | Its represent calendar header configuration                    |
-| `calendarContentConfig`   | Object  | Yes       | `see default values section ` | Its represent calendar data content and default caledar display|
+import CalendarComponent from './CalendarComponent.vue';
 
-### Events
+import {CALENDARS_TYPES, CALENDARS_MONTH_TYPE, CALENDARS_WEEK_TYPE} from '@/constants/calendars.js';
+import UpdateIcon from '@/assets/icons/UpdateIcon.vue';
+import DeleteIcon from '@/assets/icons/DeleteIcon.vue';
+import { defineComponent, markRaw } from 'vue';
 
-| Event                   | Description                                        |
-|-------------------------|----------------------------------------------------|
-| `@dateIncremented`      | Emitted when header next button is clicked.        |
-| `@onDateDecremented`    | Emitted when header previous button is clicked.    |
-| `@dispalyTypeSelected`  | Emitted when we change calendar display Type       |
+export default {
 
+  name: "CalendarExample",
 
-### Default Vales
-
- headerConfig: {
-    startDate: '',
-    endDate: '',
-    calendarTypes: [],
-    defaultType: '',
-  },
-    
-  calendarContentConfig: {
-    selectedCalendarComponent: 'CalendarMonthly',
-    calendarData: {},
+  components: {
+    CalendarComponent
   },
 
+  data() {
+    return {
 
-### Details
-
-The `calendarTypes` accept and array of diffrent type example : `["Month", "Week", "Day"]`
-The `defaultType` accept one of the three different type `"Month", "Week" or "Day"`
-The `selectedCalendarComponent` represent the component to display and its accept one of the three different component  `"CalendarMonthly", "CalendarWeekly" or "CalendarDaily"`
-The `calendarData` contain a list of `weekDays` to be displayed as header example `["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"]`,
-it containt a `calendars` list which is a 2D table and each table reprensent one week example :  
-
-calendars: [
-    [
-      {
-        date: "06/12/2024",
-        name: "SUN",
-        number: "6",
-        label: "Holiday",
-        timeSlots: [
-          { startTime: "09:00", endTime: "10:30"},
-          { startTime: "14:00", endTime: "15:30"},
-        ],
+      headerConfig: {
+        startDate: '01 Jan',
+        endDate: '07 Jan',
+        calendarTypes: CALENDARS_TYPES,
+        defaultType: CALENDARS_MONTH_TYPE,
       },
-      {
-        date: "07/12/2024",
-        name: "MON",
-        number: "7",
-        label: "Holiday",
-        timeSlots: [
-          { startTime: "09:00", endTime: "10:30"},
-        ],
-      },
-      ...
-    ],
-  ],
 
-### Usage
-
-```vue
-  <CalendarComponent 
-    :headerConfig="headerConfig"
-    :calendarContentConfig="calendarContentConfig"
-    @dateIncremented="handleDateIncremented"
-    @dateDecremented="handleDateDecremented"
-    @displayTypeSelected="handleDisplayTypeSelected"
-  />
-
-  headerConfig: {
-    startDate: '01 Jan',
-    endDate: '07 Jan',
-    calendarTypes: CALENDARS_TYPES,
-    defaultType: CALENDARS_MONTH_TYPE,
-  },
-
-   calendarContentConfig: {
+      calendarContentConfig: {
         selectedCalendarComponent: 'CalendarMonthly',
         calendarData: {
           weekDays: ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"],
@@ -312,4 +263,33 @@ calendars: [
         ],
       },
       },
-```
+
+    };
+  },
+
+  methods: {
+
+    handleDateIncremented() {
+      console.log('Date incremented');
+    },
+
+    handleDateDecremented() {
+      console.log('Date decremented');
+    },
+
+    handleDisplayTypeSelected(displayType) {
+      console.log('Display type selected:', displayType);
+      if (displayType === CALENDARS_MONTH_TYPE) {
+        this.calendarContentConfig.selectedCalendarComponent = 'CalendarMonthly';
+      } else if (displayType === CALENDARS_WEEK_TYPE) {
+        this.calendarContentConfig.selectedCalendarComponent = 'CalendarWeekly';
+      }
+    },
+
+  }
+
+}
+
+</script>
+
+<style lang="scss"></style>

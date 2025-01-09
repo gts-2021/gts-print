@@ -3,16 +3,21 @@
   <div class="">
     
     <!-- calendar header -->
-    <CalendarHeader :startDate="'08 dec'" :endDate="'12 dec'" 
-      :calendarTypes="calendarTypes" 
-      :defaultType="defaultType"
-      @dateIncremented="incrementDate"
-      @dateDecremented="decrementDate"
-      @dispalyTypeSelected="displayCalendar"
+    <CalendarHeader 
+      :startDate="headerConfig.startDate"
+      :endDate="headerConfig.endDate"
+      :calendarTypes="headerConfig.calendarTypes"
+      :defaultType="headerConfig.defaultType"
+      @dateIncremented="onDateIncremented"
+      @dateDecremented="onDateDecremented"
+      @dispalyTypeSelected="onDisplayTypeSelected"
     />
 
     <!-- dynamic display -->
-    <component :is="selectedCalendarComponent" />
+    <component 
+      :is="calendarContentConfig.selectedCalendarComponent" 
+      :calendarData="calendarContentConfig.calendarData"
+    />
 
   </div>
     
@@ -20,7 +25,6 @@
 
 <script>
 
-import {CALENDARS_TYPES, CALENDARS_MONTH_TYPE, CALENDARS_WEEK_TYPE } from '@/constants/calendars.js';
 import CalendarHeader from './CalendarHeader.vue';
 import CalendarMonthly from './month/CalendarMonthly.vue';
 import CalendarWeekly from './week/CalendarWeekly.vue';
@@ -29,47 +33,52 @@ export default {
 
   name: "CalendarComponent",
 
+  emits: ['dateIncremented', 'dateDecremented', 'displayTypeSelected'],
+
   components: {
     CalendarHeader,
     CalendarMonthly,
     CalendarWeekly,
-
   },
 
-  props: { 
-
+  props: {
+    headerConfig: {
+      type: Object,
+      required: true,
+      default: () => ({
+        startDate: '',
+        endDate: '',
+        calendarTypes: [],
+        defaultType: '',
+      }),
+    },
+    calendarContentConfig: {
+      type: Object,
+      required: true,
+      default: () => ({
+        selectedCalendarComponent: 'CalendarMonthly',
+        calendarData: {},
+      }),
+    },
   },
 
   data () {
     return {
-      calendarTypes : CALENDARS_TYPES,
-      defaultType : CALENDARS_MONTH_TYPE,
-      selectedCalendarComponent:'CalendarMonthly'
-
     }
   },
 
   methods : {
-
-    displayCalendar(displayType){
-      switch (displayType) {
-        case CALENDARS_MONTH_TYPE:
-          this.selectedCalendarComponent = 'CalendarMonthly';
-          break;
-        case CALENDARS_WEEK_TYPE:
-          this.selectedCalendarComponent = 'CalendarWeekly';
-          break;
-
-      }
-
+    
+    onDateIncremented() {
+      this.$emit('dateIncremented');
     },
 
-    incrementDate(){
-      console.log("incrementDate");
+    onDateDecremented() {
+      this.$emit('dateDecremented');
     },
 
-    decrementDate(){
-      console.log("decrementDate");
+    onDisplayTypeSelected(displayType) {
+      this.$emit('displayTypeSelected', displayType);
     },
 
   }
