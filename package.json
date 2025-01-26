@@ -1,18 +1,27 @@
 {
   "name": "gts-print",
-  "version": "1.0.0-SNAPSHOT",
-  "private": true,
+  "version": "1.0.1",
+  "private": false,
+  "main": "dist/gts-print.common.js",
+  "module": "dist/gts-print.umd.min.js",
+  "files": [
+    "dist",
+    "src/styles/colors.scss",
+    "src/styles/fonts.scss",
+    "src/constants/buttons.js",
+    "src/constants/badges.js"
+  ],
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "test": "vue-cli-service test:unit",
-    "lint": "vue-cli-service lint",
     "start": "npm run serve",
-    "sonar": "sonar-scanner -Dsonar.login=%SONAR_TOKEN%"
+    "build": "vue-cli-service build --target lib --name gts-print --dest dist src/index.js",
+    "test": "vue-cli-service test:unit",
+    "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "@mdi/font": "5.9.55",
     "core-js": "^3.8.3",
+    "maska": "^3.0.3",
     "roboto-fontface": "*",
     "vue": "^3.2.13",
     "webfontloader": "^1.0.0"
@@ -20,7 +29,10 @@
   "devDependencies": {
     "@babel/core": "^7.12.16",
     "@babel/eslint-parser": "^7.12.16",
+    "@babel/plugin-transform-runtime": "^7.25.9",
     "@babel/preset-env": "^7.25.4",
+    "@vue/babel-plugin-jsx": "^1.2.5",
+    "@vue/babel-preset-jsx": "^1.4.0",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-eslint": "~5.0.0",
     "@vue/cli-plugin-router": "~5.0.0",

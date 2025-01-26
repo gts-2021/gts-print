@@ -1,0 +1,72 @@
+.gts-input-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 5px;
+}
+
+.gts-input-container {
+    position: relative;
+}
+
+.gts-input {
+    color: $primary-color-700;
+    width: 100%;
+    height: 48px;
+    font-weight: 500;
+    border: 1px solid $neutral-color-300;
+    border-radius: 5px;
+    padding-left: 16px;
+    padding-right: 16px;
+    background-color: $neutral-color-50;
+
+}
+
+.gts-input:focus {
+    border-color: $primary-color-400;
+    outline: 0;
+    box-shadow: 0 0 0 .25rem #{$primary-color-300}30;
+}
+
+.gts-input::placeholder {
+    color: $neutral-color-500;
+     
+    opacity: 1;
+    
+}
+
+
+.gts-label-container {
+    margin-bottom: 4px;
+    font-weight: 500;
+    font-size: 16px;
+
+    .gts-input-label {
+        color: $primary-color-400;
+
+    }
+
+    .gts-input-required {
+        color: $accent-dark-red-color;
+    }
+}
+
+.gts-input-error {
+    border-color: $accent-error-red-color;
+}
+
+.gts-input-disabled {
+    background-color: #{$neutral-color-100}+85;
+}
+
+.gts-input-error::placeholder {
+    color: $accent-dark-red-color;
+    opacity: 0.7;
+    
+}
+
+.gts-input-error-msg {
+    margin-top: 4px;
+    font-size: 11px;
+    color: $accent-dark-red-color;
+    opacity: 0.6;
+}
