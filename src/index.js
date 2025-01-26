@@ -16,6 +16,7 @@ import BadgeComponent from '@/components/badge/BadgeComponent.vue';
 import CardComponent from '@/components/card/CardComponent.vue';
 import StepperComponent from '@/components/stepper/StepperComponent.vue';
 import ToolTip from '@/components/tooltip/ToolTip.vue';
+import CalendarComponent from '@/components/calendar/CalendarComponent.vue';
 
 
 const GtsPrint = {
@@ -37,6 +38,7 @@ const GtsPrint = {
     app.component('CardComponent', CardComponent);
     app.component('StepperComponent', StepperComponent);
     app.component('ToolTip', ToolTip);
+    app.component('CalendarComponent', CalendarComponent);
   }
 };
 
