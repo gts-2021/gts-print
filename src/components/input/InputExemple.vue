@@ -22,6 +22,10 @@
     <TextInputArea v-model="textAreaVal"  label="Binding text area" placeholder="This is an error input" />
     <span>TextArea is binding : {{ textAreaVal }}</span> <br>
 
+
+    <ListBox  :options="[]" label="Empty ListBox"  />
+    
+
     <ListBox @OnValueChanged="(v)=> console.log(v)" :options="listBoxOptions" label="ListBox" type="password" placeholder="Hide yout password" />
     
     <ListBox @OnValueChanged="(v)=> console.log(v)" :options="listBoxOptions" :value="'2'" label="ListBox with selected value" type="password" placeholder="Hide yout password" />

@@ -7,7 +7,7 @@
       <v-icon @click="onDropDownClick" class="gts-listbox-dropdown">mdi mdi-chevron-down</v-icon>
       <div :class="'gts-input gts-listbox ' + (disabled ? 'gts-input-disabled ' : ' ') + (error ? 'gts-input-error' : '')"
         ref="gtsInput">
-        <span class="gts-listbox-value">{{ inputValue.label }}</span>
+        <span class="gts-listbox-value">{{ inputValue?.label }}</span>
       </div>
 
       <div v-if="isOpen" class="gts-listbox-option-container">
