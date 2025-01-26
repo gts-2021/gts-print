@@ -21,6 +21,8 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 ### Fixed
 
+* Empty items `ListBox` crashes. [GTS-PRINT#39] (https://quire.io/w/GTS-PRINT31/39)
+
 ### Security
 
 
