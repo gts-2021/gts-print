@@ -15,18 +15,18 @@
 
   </div>
 
-  <!-- timeslot -->
+  <!-- timeslot  -->
   <div v-if="calendarDay.timeSlots.length > 0" class="gts-print-calendar-monthly-content-data-timeslots">
     <div class="gts-print-calendar-monthly-content-data-timeslot" v-for="timeSlot in calendarDay.timeSlots" :key="timeSlot">
       <span class="time-slot-text"> {{timeSlot.startTime}} - {{timeSlot.endTime}}</span>
     </div>
   </div>
 
-  <!-- empty content -->
+  <!-- empty content  -->
   <div v-else class="gts-print-calendar-monthly-content-data-empty">
     <span class="time-slot-text"> {{calendarDay.label}}  </span>
   </div>
-         
+        
   
 </template>
 

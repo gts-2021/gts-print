@@ -38,6 +38,8 @@
 
     <TextInput label="Input Text with token" placeholder="with token" :maskToken="maskWithToken" />
 
+    <TextInput label="Input address" placeholder="with token" :maskToken="addressMask" />
+
   </div>
 
 </template>
@@ -83,7 +85,23 @@ export default {
       maskWithToken:{
         pattern:"M",
         token: "{'M': { 'pattern': '[a-z A-Z]', 'repeated': true } }"
+      },
+
+      /*addressMask: {
+        pattern: "S, VVVVV, C",       
+        token: "{'S': { 'pattern': '[a-z A-Z 0-9]', 'repeated': true }, 'V': { 'pattern': '[0-9]', 'repeated': true },  'X': { 'pattern': '[a-z A-Z]', 'repeated': true }}"
+      },*/
+
+      addressMask: {
+        pattern: "S, VVVVV, C",       
+        token: {
+          S: { pattern: '[a-zA-Z0-9 ]', repeated: true },  // Adresse : lettres, chiffres et espaces, répétition autorisée
+          V: { pattern: '[0-9]', repeated: true },         // Code postal : uniquement des chiffres, répétition autorisée (jusqu'à 5 chiffres)
+          C: { pattern: '[a-zA-Z ]', repeated: true }      // Pays : lettres et espaces, répétition autorisée
+        }
       }
+
+  
 
     };
   }

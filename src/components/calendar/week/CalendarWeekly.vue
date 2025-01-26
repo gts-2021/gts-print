@@ -2,7 +2,7 @@
 
   <div class="gts-print-calendar-weekly-container">
 
-    <div class="gts-print-calendar-weekly-content" v-for="(day, index) in week" :key="day" :class="getContentCssClass[index]">
+    <div class="gts-print-calendar-weekly-content" v-for="(day, index) in calendarData.calendars[0]" :key="day" :class="getContentCssClass[index]">
 
       <CalendarWeeklyInfo :calendarDay="day" :selectedDay="selectedDay" @daySelected="selectDay(day)"/>
     
@@ -13,9 +13,6 @@
 </template>
 
 <script>
-import { defineComponent, markRaw} from 'vue';
-import UpdateIcon from '@/assets/icons/UpdateIcon.vue';
-import DeleteIcon from '@/assets/icons/DeleteIcon.vue';
 
 import CalendarWeeklyInfo from "./CalendarWeeklyInfo";
 
@@ -27,117 +24,22 @@ export default {
     CalendarWeeklyInfo
   },
 
-  props: { 
-
+  props: {
+    calendarData: {
+      type: Object,
+      required: true,
+    },
   },
 
   data () {
     return {
       selectedDay: null,
-      week:[
-        {
-        
-          name: "SUN",
-          number: "1",
-          label: "Consultation",
-          timeSlots:[
-            {
-              startTime: "09:00",
-              endTime: "10:30",
-            },
-            {
-              startTime: "11:00",
-              endTime: "12:30",
-            },
-            {
-              startTime: "14:00",
-              endTime: "15:30",
-            }
-          ],
-          componentFormatter:
-            markRaw(defineComponent({
-                components: {
-                  UpdateIcon,
-                  DeleteIcon
-                },
-
-                props: {
-                  item: {},
-                },
-
-                template: ` 
-                  <span class="gts-print-calendar-content-actions-icon update-icon" @click=updateItem(item)>  <UpdateIcon /></span> 
-                  <span class="gts-print-calendar-content-actions-icon remove-icon" @click=deleteItem(item)>  <DeleteIcon /> </span>`,
-
-                methods: {
-                  updateItem(item) {
-                    console.log("updateItem ", item);
-                  },
-
-                  deleteItem(item) {
-                    console.log("deleteItem ", item);
-                  },
-                }
-
-
-            }))
-
-        },
-        {
-         
-          name:"MON",
-          number:"2",
-          label:"Change of panel",
-          timeSlots:[
-            {
-              startTime: "09:00",
-              endTime: "10:30",
-            },
-          ],
-          componentFormatter:
-            markRaw(defineComponent({
-                components: {
-                  UpdateIcon,
-                  DeleteIcon
-                },
-
-                props: {
-                  item: {},
-                },
-
-                template: ` 
-                  <span class="gts-print-calendar-content-actions-icon update-icon" @click=updateItem(item)>  <UpdateIcon /></span> 
-                  <span class="gts-print-calendar-content-actions-icon remove-icon" @click=deleteItem(item)>  <DeleteIcon /> </span>`,
-
-                methods: {
-                  updateItem(item) {
-                    console.log("updateItem ", item);
-                  },
-
-                  deleteItem(item) {
-                    console.log("deleteItem ", item);
-                  },
-                }
-
-
-            }))
-
-      
-        },
-        {
-        
-        name: "THUR",
-        number: "6",
-        label: "Holiday",
-        timeSlots:[],
-        },
-      ],
     }
   },
 
   computed: {
     getContentCssClass() {
-      return this.week.map(day => {
+      return this.calendarData.calendars[0].map(day => {
         if (this.selectedDay === day) {
           return "selected";
         }
@@ -163,7 +65,7 @@ export default {
 <style lang="scss">
 
 .gts-print-calendar-weekly-container{
-
+  padding: 0px 20px;
 
   .gts-print-calendar-weekly-content{
 
@@ -174,12 +76,11 @@ export default {
     padding: 16px;
     gap: 30px;
     border-radius: 12px;
-    margin: 10px;
+    margin-bottom: 15px;
     cursor: pointer;
     
   }
 
 }
-
     
 </style>

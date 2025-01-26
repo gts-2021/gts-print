@@ -8,9 +8,9 @@
 
         <thead>
           <tr class="gts-print-calendar-monthly-header">
-            <th class="gts-print-calendar-monthly-header-container" v-for="day in weekDays" :key="day">
+            <th class="gts-print-calendar-monthly-header-container" v-for="day in calendarData.weekDays" :key="day">
               <div class="gts-print-calendar-monthly-header-data"> 
-                <span class="gts-print-calendar-monthly-header-title"> {{day.title}} </span> 
+                <span class="gts-print-calendar-monthly-header-title"> {{day}} </span> 
               </div>
             </th>
             
@@ -19,9 +19,9 @@
 
         <tbody>
         
-          <tr class="gts-print-calendar-monthly-content" v-for="(week, weekIndex) in calendars" :key="weekIndex">
+          <tr class="gts-print-calendar-monthly-content" v-for="(week, weekIndex) in calendarData.calendars" :key="weekIndex">
         
-            <td class="gts-print-calendar-monthly-content-data" v-for="(day, index ) in weekDays" :key="index" @click="selectDay(week[index])"
+            <td class="gts-print-calendar-monthly-content-data" v-for="(day, index ) in calendarData.weekDays" :key="index" @click="selectDay(week[index])"
               :class="getContentCssClass[weekIndex][index]">
 
               <CalendarMonthlyInfo :calendarDay="week[index]" :selectedDay="selectedDay"/>
@@ -52,254 +52,22 @@ export default {
     CalendarMonthlyInfo
   },
 
+  props: {
+    calendarData: {
+      type: Object,
+      required: true,
+    },
+  },
 
   data () {
     return {
       selectedDay: null,
-
-      weekDays: [
-        {
-          title: "SUN",
-        },
-        {
-          title: "MON",
-        },
-        {
-          title: "TUE",
-        },
-        {
-          title: "WED",
-        },
-        {
-          title: "THUR",
-        },
-        {
-          title: "FRI",
-        },
-        {
-          title: "SAT",
-        },
-        ],
-
-      // calendars represent a month which each list is a week with calendars
-      calendars:[
-        
-        [   
-
-          {
-            date: "01/12/2024",
-            day: "SUN",
-            number: "1",
-            label: "Consultation",
-            timeSlots:[
-              {
-                startTime: "09:00",
-                endTime: "10:30",
-              },
-              {
-                startTime: "14:00",
-                endTime: "15:30",
-              }
-            ],
-          },
-
-          {
-          
-            date: "02/12/2024",
-            name:"MON",
-            number: "2",            
-            label:"Change of panel",
-            timeSlots:[
-              {
-                startTime: "09:00",
-                endTime: "10:30",
-              },
-              {
-                startTime: "14:00",
-                endTime: "15:30",
-              }
-            ],
-
-          },
-
-          {
-            date: "03/12/2024",
-            name: "TUE",
-            number: "3",             
-            label: "Holiday",
-            timeSlots:[
-              {
-                startTime: "09:00",
-                endTime: "10:30",
-              },
-              {
-                startTime: "14:00",
-                endTime: "15:30",
-              }
-            ],
-          },
-
-          {
-            date: "04/12/2024",
-            name: "WED",
-            number: "4",
-            label: "Holiday",
-            timeSlots:[
-              {
-                startTime: "09:00",
-                endTime: "10:30",
-              },
-              {
-                startTime: "14:00",
-                endTime: "15:30",
-              }
-            ],
-          },
-
-          {
-            date: "05/12/2024",
-            name: "THUR",
-            number: "5",
-            label: "Holiday",
-            timeSlots:[
-              {
-                startTime: "09:00",
-                endTime: "10:30",
-              },
-              {
-                startTime: "14:00",
-                endTime: "15:30",
-              }
-            ],
-          },
-
-          {
-            date: "06/12/2024",
-            name: "FRI",
-            number: "6",
-            label: "Holiday",
-            timeSlots:[],
-          },
-
-          {
-            date: "07/12/2024",
-            name: "SAT",
-            number: "7",
-            label: "Holiday",
-            timeSlots:[],
-          },
-      
-        ],
-
-        [   
-
-          {
-            date: "08/12/2024",
-            day: "SUN",
-            number: "08",
-            label: "Consultation",
-            timeSlots:[
-              {
-                startTime: "14:00",
-                endTime: "15:30",
-              }
-            ],
-          },
-
-          {
-            date: "09/12/2024",
-            name:"MON",
-            number: "09",            
-            label:"Change of panel",
-            timeSlots:[
-              {
-                startTime: "09:00",
-                endTime: "10:30",
-              },
-              {
-                startTime: "11:00",
-                endTime: "12:30",
-              },
-              {
-                startTime: "14:00",
-                endTime: "15:30",
-              }
-            ],
-
-          },
-
-          {
-            date: "10/12/2024",
-            name: "TUE",
-            number: "10",             
-            timeSlots:[
-              {
-                startTime: "14:00",
-                endTime: "15:30",
-              }
-            ],
-          },
-
-          {
-            date: "11/12/2024",
-            name: "WED",
-            number: "11",
-            timeSlots:[
-              {
-                startTime: "09:00",
-                endTime: "10:30",
-              },
-              {
-                startTime: "14:00",
-                endTime: "15:30",
-              }
-            ],
-          },
-
-          {
-            date: "12/12/2024",
-            name: "THUR",
-            number: "12",
-            timeSlots:[
-              {
-                startTime: "09:00",
-                endTime: "10:30",
-              },
-              {
-                startTime: "14:00",
-                endTime: "15:30",
-              }
-            ],
-          },
-
-          {
-            date: "13/12/2024",
-            name: "FRI",
-            number: "13",
-            label: "Holiday",
-            timeSlots:[],
-          },
-
-          {
-            date: "14/12/2024",
-            name: "SAT",
-            number: "14",
-            label: "Holiday",
-            timeSlots:[],
-          },
-      
-        ],
-
-
-        
-     
-      ],
     }
   },
 
   computed: {
     getContentCssClass() {
-      return this.calendars.map(week =>
+      return this.calendarData.calendars.map(week =>
         week.map(day => {
           if (this.selectedDay === day) {
             return "selected";
@@ -333,7 +101,7 @@ export default {
 .gts-print-calendar-monthly-wrapper {
   position: relative;
   width: 100%;
-  padding: 20px;
+  padding: 0px 20px;
 
   .gts-print-calendar-monthly-container {
     border-radius: 12px 12px 0 0;

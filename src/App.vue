@@ -1,16 +1,11 @@
 <template>
+ 
+ <h4> CalendarComponent </h4>
+  <CalendarExample />
 
   <ToolTipExample />
 
   <StepperExample />
-
-  <h4> CalendarMonthly </h4>
-  <CalendarMonthly />
-
-  <h4> CalendarWeekly </h4>
-  <CalendarWeekly />
-
-
 
   <CardExample />
   <BarSide :menus="menus" />
@@ -50,8 +45,7 @@ import AccordionExemple from './components/accordion/AccordionExemple.vue';
 import BadgeExample from './components/badge/BadgeExample.vue';
 import CardExample from './components/card/CardExample.vue';
 
-import CalendarMonthly from './components/calendar/month/CalendarMonthly.vue';
-import CalendarWeekly from './components/calendar/week/CalendarWeekly.vue';
+import CalendarExample from './components/calendar/CalendarExample.vue';
 import StepperExample from './components/stepper/StepperExample.vue';
 import ToolTipExample from './components/tooltip/ToolTipExample.vue';
 
@@ -72,8 +66,7 @@ export default {
     AccordionExemple,
     BadgeExample,
     CardExample,
-    CalendarWeekly,
-    CalendarMonthly,
+    CalendarExample,
     StepperExample,
     ToolTipExample
 
