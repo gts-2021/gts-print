@@ -1,6 +1,6 @@
 {
   "name": "gts-print",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": false,
   "main": "dist/gts-print.common.js",
   "module": "dist/gts-print.umd.min.js",
