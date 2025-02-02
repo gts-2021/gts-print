@@ -1,5 +1,7 @@
 <template>
  
+ <NoContentExample />
+
  <h4> CalendarComponent </h4>
   <CalendarExample />
 
@@ -49,6 +51,8 @@ import CalendarExample from './components/calendar/CalendarExample.vue';
 import StepperExample from './components/stepper/StepperExample.vue';
 import ToolTipExample from './components/tooltip/ToolTipExample.vue';
 
+import NoContentExample from './components/empty-content/NoContentExample.vue';
+
 export default {
 
   components: {
@@ -68,7 +72,8 @@ export default {
     CardExample,
     CalendarExample,
     StepperExample,
-    ToolTipExample
+    ToolTipExample,
+    NoContentExample
 
   },
 
