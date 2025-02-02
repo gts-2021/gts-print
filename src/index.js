@@ -17,7 +17,7 @@ import CardComponent from '@/components/card/CardComponent.vue';
 import StepperComponent from '@/components/stepper/StepperComponent.vue';
 import ToolTip from '@/components/tooltip/ToolTip.vue';
 import CalendarComponent from '@/components/calendar/CalendarComponent.vue';
-
+import NoContent from '@/components/empty-content/NoContent.vue';
 
 const GtsPrint = {
   install(app) {
@@ -39,6 +39,7 @@ const GtsPrint = {
     app.component('StepperComponent', StepperComponent);
     app.component('ToolTip', ToolTip);
     app.component('CalendarComponent', CalendarComponent);
+    app.component("NoContent", NoContent);
   }
 };
 
