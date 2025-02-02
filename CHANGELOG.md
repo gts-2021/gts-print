@@ -12,6 +12,7 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 ## [Unreleased] 
 
 ### Added
+* Adding `NoContentIcon` component. [GTS-PRINT#24] (https://quire.io/w/GTS-PRINT31/24)
 
 ### Changed
 
