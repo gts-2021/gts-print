@@ -53,6 +53,7 @@ export default {
 | `id`        | String   | Identifiant unique pour la case à cocher       | Non    | `null`     |
 | `label`     | String   | Texte affiché à côté de la case                | Non    | `''`       |
 | `isChecked` | Boolean  | Définit si la case est initialement cochée     | Non    | `false`    |
+| `noBind` | Boolean  | Pour utiliser que la valeur de isChecked et en cas de toggle la valeur ne va pas etre changé et our le changer il faut utiliser le onToggle et changer la valeur passer a isChecked     | Non    | `false`    |
 
 `isChecked` can be binded for exemple:
 <CheckBox v-model:isChecked="checkboxBindedVal" label="Checkbox with value binded"/>
