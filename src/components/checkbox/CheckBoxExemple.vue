@@ -9,6 +9,8 @@
     
     <CheckBox v-model:isChecked="checkboxBindedVal" label="Checkbox with value binded"/>
 
+    <CheckBox  :isChecked="true" :noBind="true" label="Checkbox with no bind"/>
+
   </div>
 
 </template>
