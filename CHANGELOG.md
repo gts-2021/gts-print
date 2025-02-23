@@ -16,6 +16,8 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 ### Changed
 
+* Changed `NoContent`component directory name.
+
 ### Deprecated
 
 ### Removed

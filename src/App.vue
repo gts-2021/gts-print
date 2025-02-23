@@ -50,8 +50,9 @@ import CardExample from './components/card/CardExample.vue';
 import CalendarExample from './components/calendar/CalendarExample.vue';
 import StepperExample from './components/stepper/StepperExample.vue';
 import ToolTipExample from './components/tooltip/ToolTipExample.vue';
+import NoContentExample from './components/nocontent/NoContentExample.vue';
 
-import NoContentExample from './components/empty-content/NoContentExample.vue';
+ 
 
 export default {
 
