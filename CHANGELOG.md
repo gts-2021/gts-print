@@ -12,6 +12,7 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 ### Added
 
+* Exporting all style directory (colors , fonts , ...) to be used in projects hosts .
 * Add `noBind` prop in `CheckBox` to prevent auto toggle on click and juste toggle if `isChecked` changed.  [GTS-PRINT#40] (https://quire.io/w/GTS-PRINT31/40)
 
 ### Changed
