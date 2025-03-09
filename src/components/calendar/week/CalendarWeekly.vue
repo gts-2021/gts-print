@@ -14,7 +14,7 @@
 
 <script>
 
-import CalendarWeeklyInfo from "./CalendarWeeklyInfo";
+import CalendarWeeklyInfo from "./CalendarWeeklyInfo.vue";
 
 export default {
 
