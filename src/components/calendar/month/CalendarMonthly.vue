@@ -42,7 +42,7 @@
 
 <script>
 
-import CalendarMonthlyInfo from "./CalendarMonthlyInfo";
+import CalendarMonthlyInfo from "./CalendarMonthlyInfo.vue";
 
 export default {
 

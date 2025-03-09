@@ -43,5 +43,28 @@ const GtsPrint = {
   }
 };
 
+// Exports nommés pour chaque composant
+export {
+  BarSide,
+  DataTable,
+  TextInput,
+  TextInputArea,
+  ListBox,
+  ButtonComponent,
+  BasicDialog,
+  ConfirmationDialog,
+  RadioButton,
+  RadioGroup,
+  CheckBox,
+  AccordionPanel,
+  AccordionComponent,
+  BadgeComponent,
+  CardComponent,
+  StepperComponent,
+  ToolTip,
+  CalendarComponent,
+  NoContent
+};
+
  
 export default GtsPrint;
