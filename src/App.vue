@@ -329,4 +329,11 @@ export default {
 
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: white;
+  color: $primary-color-700;
+  ;
+}
+</style>
