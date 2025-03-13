@@ -16,6 +16,7 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 ### Changed
 
+* Ajustement of `ButtonComponent` hover. [GTS-PRINT#42] (https://quire.io/w/GTS-PRINT31/42)
 * The name of `CalendarComponent` is changed to `PureCalendar`.
 
 ### Deprecated
