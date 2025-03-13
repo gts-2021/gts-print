@@ -1,6 +1,6 @@
 {
   "name": "gts-print",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "private": false,
   "main": "dist/gts-print.cjs.js",
   "module": "dist/gts-print.es.js",
@@ -23,6 +23,7 @@
     "@mdi/font": "5.9.55",
     "core-js": "^3.8.3",
     "maska": "^3.0.3",
+    "moment": "^2.30.1",
     "roboto-fontface": "*",
     "vite-plugin-vuetify": "^2.1.0",
     "vue": "^3.2.13",

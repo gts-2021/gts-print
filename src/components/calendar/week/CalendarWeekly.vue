@@ -43,7 +43,7 @@ export default {
         if (this.selectedDay === day) {
           return "selected";
         }
-        if (day.timeSlots.length === 0) {
+        if (day.disabled) {
           return "light-gray";
         }
         return "";
