@@ -1,8 +1,8 @@
-# `CalendarComponent` Documentation
+# `PureCalendar` Documentation
 
 ## Introduction
 
-The `CalendarComponent` component is designed for displaying calendar data and `CalendarHeader` acocrding to a specific properties,
+The `PureCalendar` component is designed for displaying calendar data and `CalendarHeader` acocrding to a specific properties,
 the aim of this component is to display a data on three diffrent display mode `Month`, `Week`, `Day`,
 
 
@@ -313,3 +313,34 @@ calendars: [
       },
       },
 ```
+
+
+# `CalendarComponent` Documentation
+
+## Introduction
+
+The `CalendarComponent` component is designed for displaying calendar dates and show specific content into each date cell in the calendar.
+
+
+## Props
+
+| Prop                      | Type    | Required  | Default                       | Description                                                    |
+|---------------------------|---------|-----------|-------------------------------|----------------------------------------------------------------|
+| `startingDate`            | String  | No       | `see default values section`  | Its represent the first month to display when calendar is mounted|
+| `datesContent`   | Array  | No       | `see default values section ` | Its represent calendar data content |
+
+### Events
+
+| Event                   | Description                                        |
+|-------------------------|----------------------------------------------------|
+| `@onDateChanged`      | Emitted when header next/prev button is clicked. the returned data is like : {firstCalendarDate: '01/06/2025', lastCalendarDate: '05/07/2025'}     |
+
+```vue
+<CalendarComponent
+    :datesContent="dummyContent"
+    :startingDate="'25/05/2025'"
+    @onDateChanged="($emit) => console.log($emit)"
+     />
+
+```
+ 

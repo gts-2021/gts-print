@@ -12,12 +12,32 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 ### Added
 
+* Add the a simple `CalendarComponent` with the minimum of configuration (Show Readme)
+
+### Changed
+
+* The name of `CalendarComponent` is changed to `PureCalendar`.
+
+### Deprecated
+
+### Removed
+
+* The handling of timeslots displaying should be in the projects that use this lib.
+
+### Fixed
+
+### Security
+
+
+
+## [1.0.6] 
+
+### Added
+
 * Exporting all style directory (colors , fonts , ...) to be used in projects hosts .
 * Add `noBind` prop in `CheckBox` to prevent auto toggle on click and juste toggle if `isChecked` changed.  [GTS-PRINT#40] (https://quire.io/w/GTS-PRINT31/40)
 
 ### Changed
-
-* Changed `NoContent`component directory name.
 
 ### Deprecated
 
