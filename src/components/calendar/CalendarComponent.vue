@@ -2,7 +2,8 @@
 
   <PureCalendar :headerConfig="headerConfig" :calendarContentConfig="calendarContentConfig"
     @dateIncremented="showNextCalendarIntervalPage" @dateDecremented="showPreviousCalendarIntervalPage"
-    @displayTypeSelected="handleDisplayTypeSelected" />
+    @displayTypeSelected="handleDisplayTypeSelected"
+    @dateSelected="onDateSelected" />
 
 </template>
 
@@ -185,6 +186,11 @@ export default {
 
       }
       this.generateCalendarPage(this.selectedStartDate);
+    },
+
+    onDateSelected(selectedDate){
+      let date = moment(selectedDate).format('DD/MM/YYYY');
+      console.log("onDateSelected", date);
     }
 
   },
