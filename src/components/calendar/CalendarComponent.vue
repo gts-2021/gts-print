@@ -28,15 +28,12 @@ export default {
   created() {
 
     if(this.startingDate){
-      this.selectedStartDate = moment(this.startingDate, 'DD/MM/YYYY');
+      this.selectedStartDate = moment(this.startingDate, this.dateFormat);
     }
-    
-    
-    const currentDateString = this.selectedStartDate.format('DD/MM/YYYY')
 
     this.setUpDaysOfTheWeek();
 
-    this.generateCalendarPage(currentDateString)
+    this.onDateSelected(this.selectedStartDate)
 
   },
 
@@ -57,6 +54,7 @@ export default {
 
   data() {
     return {
+      dateFormat: 'DD/MM/YYYY',
       selectedStartDate: moment(),
       headerConfig: {
         calendarTypes: CALENDARS_TYPES,
@@ -92,7 +90,7 @@ export default {
 
     generateCalendarPage(from) {
 
-      const currentDate = moment(from, 'DD/MM/YYYY');
+      const currentDate = moment(from, this.dateFormat);
 
       let startOfCalendar = undefined;
       let endOfCalendar = undefined;
@@ -113,13 +111,13 @@ export default {
       let day = startOfCalendar.clone();
       for (day; day.isBefore(endOfCalendar) || day.isSame(endOfCalendar, 'day'); day.add(1, 'days')) {
         
-        let dateContent = this.datesContent.find(dateContent => dateContent.date == day.format('DD/MM/YYYY'));
+        let dateContent = this.datesContent.find(dateContent => dateContent.date == day.format(this.dateFormat));
        
         let content = dateContent ? dateContent.content : undefined ;
 
         calendarRange.push(
           {
-            date: day.format('DD/MM/YYYY'),
+            date: day.format(this.dateFormat),
             number: day.format('DD'),
             day: day.format('ddd').toUpperCase(),
             label: "NO EVENT",
@@ -145,10 +143,9 @@ export default {
 
       let { lastCalendarDate } = this.getFirstAndLastCalendarDates();
 
-      const currentDate = moment(lastCalendarDate, 'DD/MM/YYYY').add(1, 'days');
-      this.generateCalendarPage(currentDate.format('DD/MM/YYYY'));
-
-      this.$emit("onDateChanged", this.getFirstAndLastCalendarDates())
+      const currentDate = moment(lastCalendarDate, this.dateFormat).add(1, 'days');
+     
+      this.onDateSelected(currentDate);
 
     },
     showPreviousCalendarIntervalPage() {
@@ -157,9 +154,7 @@ export default {
 
       const currentDate = moment(firstCalendarDate, 'DD/MM/YYYY').add(-1, 'days');
 
-      this.generateCalendarPage(currentDate.format('DD/MM/YYYY'))
-
-      this.$emit("onDateChanged", this.getFirstAndLastCalendarDates())
+      this.onDateSelected(currentDate);
 
     },
 
@@ -186,7 +181,7 @@ export default {
         this.calendarContentConfig.selectedCalendarComponent = 'CalendarWeekly';
 
       }
-      this.generateCalendarPage(this.selectedStartDate);
+      this.onDateSelected(this.selectedStartDate);
     },
 
     onDateSelected(selectedDate){
