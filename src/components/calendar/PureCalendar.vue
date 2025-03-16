@@ -12,6 +12,7 @@
       @dateDecremented="onDateDecremented"
       @dispalyTypeSelected="onDisplayTypeSelected"
       @dateSelected="onDateSelected"
+      @todayClicked="onTodayClicked"
     />
 
     <!-- dynamic display -->
@@ -34,7 +35,7 @@ export default {
 
   name: "PureCalendar",
 
-  emits: ['dateIncremented', 'dateDecremented', 'displayTypeSelected', 'dateSelected'],
+  emits: ['dateIncremented', 'dateDecremented', 'displayTypeSelected', 'dateSelected', 'todayClicked'],
 
   components: {
     CalendarHeader,
@@ -84,6 +85,9 @@ export default {
 
     onDateSelected(selectedDate){
       this.$emit('dateSelected', selectedDate);
+    },
+    onTodayClicked(selectedDate){
+      this.$emit('todayClicked', selectedDate);
     }
 
   }

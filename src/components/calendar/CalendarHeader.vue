@@ -58,7 +58,7 @@ export default {
   
   name: "CalendarHeader",
 
-  emits : ['dispalyTypeSelected', 'dateIncremented', 'dateDecremented', 'dateSelected'],
+  emits : ['dispalyTypeSelected', 'dateIncremented', 'dateDecremented', 'dateSelected', 'todayClicked'],
 
   
   components: {
@@ -123,7 +123,7 @@ export default {
     },
 
     getTodayDate(){
-      this.todayDate = moment().format('DD/MM/YYYY');
+      this.$emit('todayClicked', moment());
     }
 
   }
