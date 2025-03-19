@@ -2,9 +2,7 @@
 
   <PureCalendar :headerConfig="headerConfig" :calendarContentConfig="calendarContentConfig"
     @dateIncremented="showNextCalendarIntervalPage" @dateDecremented="showPreviousCalendarIntervalPage"
-    @displayTypeSelected="handleDisplayTypeSelected"
-    @dateSelected="onDateSelected" 
-    @todayClicked="onDateSelected"/>
+    @displayTypeSelected="handleDisplayTypeSelected" @dateSelected="onDateSelected" @todayClicked="onDateSelected" />
 
 </template>
 
@@ -27,7 +25,7 @@ export default {
 
   created() {
 
-    if(this.startingDate){
+    if (this.startingDate) {
       this.selectedStartDate = moment(this.startingDate, this.dateFormat);
     }
 
@@ -41,12 +39,12 @@ export default {
     startingDate: {
       type: String,
       required: false,
-      default : moment().format('DD/MM/YYYY')
+      default: moment().format('DD/MM/YYYY')
     },
-    datesContent:{
+    datesContent: {
       type: Array,
       required: false,
-      default : Array.of()
+      default: Array.of()
 
     }
 
@@ -110,10 +108,10 @@ export default {
       let calendarRange = [];
       let day = startOfCalendar.clone();
       for (day; day.isBefore(endOfCalendar) || day.isSame(endOfCalendar, 'day'); day.add(1, 'days')) {
-        
+
         let dateContent = this.datesContent.find(dateContent => dateContent.date == day.format(this.dateFormat));
-       
-        let content = dateContent ? dateContent.content : undefined ;
+
+        let content = dateContent ? dateContent.content : undefined;
 
         calendarRange.push(
           {
@@ -144,7 +142,7 @@ export default {
       let { lastCalendarDate } = this.getFirstAndLastCalendarDates();
 
       const currentDate = moment(lastCalendarDate, this.dateFormat).add(1, 'days');
-     
+
       this.onDateSelected(currentDate);
 
     },
@@ -184,11 +182,19 @@ export default {
       this.onDateSelected(this.selectedStartDate);
     },
 
-    onDateSelected(selectedDate){
+    onDateSelected(selectedDate) {
       this.selectedStartDate = moment(selectedDate);
       this.generateCalendarPage(this.selectedStartDate);
       this.$emit("onDateChanged", this.getFirstAndLastCalendarDates())
 
+    },
+
+
+  },
+
+  watch: {
+    datesContent() {
+      this.generateCalendarPage(this.selectedStartDate);
     }
 
   },
