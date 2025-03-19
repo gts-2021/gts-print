@@ -119,6 +119,7 @@ export default {
     align-items: center;
     flex-direction: column;
     gap: 7px;
+    white-space: normal;
 
     .gts-print-calendar-monthly-content-data-timeslot{
       display: flex;

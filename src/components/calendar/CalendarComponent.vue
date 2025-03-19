@@ -189,7 +189,13 @@ export default {
       this.generateCalendarPage(this.selectedStartDate);
       this.$emit("onDateChanged", this.getFirstAndLastCalendarDates())
 
+    },
+
+    watch: {
+    datesContent(){
+      this.generateCalendarPage(this.selectedStartDate);
     }
+  }
 
   },
 
