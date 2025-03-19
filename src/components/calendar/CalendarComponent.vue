@@ -88,7 +88,7 @@ export default {
 
     generateCalendarPage(from) {
 
-      const currentDate = moment(from, this.dateFormat);
+      const currentDate = from;
 
       let startOfCalendar = undefined;
       let endOfCalendar = undefined;
@@ -138,22 +138,30 @@ export default {
       }, []);
     },
     showNextCalendarIntervalPage() {
+      let type = this.headerConfig.defaultType;
+      let dateToGenerate = undefined;
 
-      let { lastCalendarDate } = this.getFirstAndLastCalendarDates();
+      if (type == CALENDARS_MONTH_TYPE) {
+        dateToGenerate = this.selectedStartDate.startOf('month').add(1, 'months');
+      } else {
+        dateToGenerate = this.selectedStartDate.startOf('week').add(1, 'weeks');
 
-      const currentDate = moment(lastCalendarDate, this.dateFormat).add(1, 'days');
-
-      this.onDateSelected(currentDate);
-
+      }
+      this.onDateSelected(dateToGenerate);
     },
     showPreviousCalendarIntervalPage() {
+      let type = this.headerConfig.defaultType;
 
-      let { firstCalendarDate } = this.getFirstAndLastCalendarDates()
+      let dateToGenerate = undefined;
 
-      const currentDate = moment(firstCalendarDate, 'DD/MM/YYYY').add(-1, 'days');
+      if (type == CALENDARS_MONTH_TYPE) {
+        dateToGenerate = this.selectedStartDate.startOf('month').add(-1, 'months');
+      } else {
+        dateToGenerate = this.selectedStartDate.startOf('week').add(-1, 'weeks');
 
-      this.onDateSelected(currentDate);
-
+      }
+      
+      this.onDateSelected(dateToGenerate);
     },
 
     getFirstAndLastCalendarDates() {
