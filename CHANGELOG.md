@@ -30,6 +30,7 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 ### Fixed
 
 * content not synchrone with current date selected. 
+* switching between months and weeks not coherent.
 
 ### Security
 
