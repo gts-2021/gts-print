@@ -12,6 +12,7 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 ### Added
 
+* Pure coded documentation page was added. [GTS-PRINT#8] (https://quire.io/w/GTS-PRINT31/8)
 * Handling today/selectCalendarDate to setup dates display on `CalendarComponent`
 * Add calendar icon & today button to `CalendarHeader`  (https://quire.io/w/GTS-PRINT31/35)
 * Add the a simple `CalendarComponent` with the minimum of configuration (Show Readme)
