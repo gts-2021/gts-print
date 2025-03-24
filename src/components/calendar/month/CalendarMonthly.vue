@@ -105,7 +105,6 @@ export default {
   .gts-print-calendar-monthly-container {
     border-radius: 12px 12px 0 0;
     border: 1px solid $neutral-color-200;
-    overflow: hidden;
   
     .gts-print-calendar-monthly{
       border-collapse: collapse;

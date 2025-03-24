@@ -9,8 +9,9 @@
     </div>
 
     <!-- actions -->
-    <div v-if="isSelected" class="gts-print-calendar-content-actions-icon" @click=displayMenu(calendarDay)>
-      <MenuIcon />                
+    <div v-if="isSelected" class="gts-print-calendar-content-actions-icon" @click="toggleMenu">
+      <MenuIcon />      
+		  <ContextMenu ref="contextMenu" className="gts-card-actions-menu" :actions="actions" />
     </div>
 
   </div>
@@ -31,6 +32,7 @@
 <script>
 
 import MenuIcon from '@/assets/icons/MenuIcon.vue';
+import ContextMenu from '../../contextmenu/ContextMenu.vue';
 
 export default {
 
@@ -38,6 +40,7 @@ export default {
 
   components: {
     MenuIcon,
+    ContextMenu
   },
 
   props: { 
@@ -55,6 +58,23 @@ export default {
 
   data () {
     return {
+
+      actions: [
+        {
+          title: "Edit",
+          onClick: () => {
+            console.log("Edit - selectedDay", this.selectedDay);
+          }
+        },
+        {
+          title: "Delete",
+          onClick: () => {
+            console.log("Delete - selectedDay", this.selectedDay);
+          }
+        },
+         
+      ],
+
     }
   },
 
@@ -66,9 +86,11 @@ export default {
 
   methods : {
 
-    displayMenu(day){
-      console.log("displayMenu", day);
+    toggleMenu(event){
+      event.stopPropagation();
+			this.$refs.contextMenu.toggleMenu();
     }
+  
   }
 
 }
@@ -77,7 +99,7 @@ export default {
 <style lang="scss">
 
 .gts-print-calendar-monthly-content-data{
-         
+  position: relative;       
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -85,6 +107,7 @@ export default {
   border-bottom: 1px solid $neutral-color-200;
   padding: 10px;
   cursor: pointer;
+
 
   .gts-print-calendar-monthly-content-data-header{
     display: flex;
@@ -110,6 +133,13 @@ export default {
 
     .gts-print-calendar-content-actions-icon{
       cursor: pointer;
+
+      .gts-card-actions-menu {
+        position: absolute;
+        top: 40px;
+        right: 10px;
+
+      }
     }
   }
 
