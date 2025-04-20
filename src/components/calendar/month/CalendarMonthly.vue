@@ -24,7 +24,7 @@
             <td class="gts-print-calendar-monthly-content-data" v-for="(day, index ) in calendarData.weekDays" :key="index" @click="selectDay(week[index])"
               :class="getContentCssClass[weekIndex][index]">
 
-              <CalendarMonthlyInfo :calendarDay="week[index]" :selectedDay="selectedDay"/>
+              <CalendarMonthlyInfo :calendarDay="week[index]" :selectedDay="selectedDay" :contextMenuActions="contextMenuActions"/>
 
             </td> 
         
@@ -48,6 +48,8 @@ export default {
 
   name: "CalendarMonthly",
 
+  emits : ['daySelected'],
+
   components: {
     CalendarMonthlyInfo
   },
@@ -57,6 +59,12 @@ export default {
       type: Object,
       required: true,
     },
+    
+    contextMenuActions: {
+			type: Array,
+			required: false,
+			default: () => [],
+		},
   },
 
   data () {
@@ -84,8 +92,11 @@ export default {
   methods : {
 
     selectDay(day){
-      if(!day.disabled)
+      if(!day.disabled){
         this.selectedDay = day;
+        this.$emit("daySelected", this.selectedDay);
+      }
+       
     },
 
     displayMenu(day){

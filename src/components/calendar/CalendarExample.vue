@@ -6,17 +6,19 @@
     <CalendarComponent
     :datesContent="dummyContent"
     :startingDate="'25/05/2025'"
-    @onDateChanged="($emit) => console.log($emit)"
-     /> <br>
+    @onDateChanged="($emit) => console.log($emit)"/> 
+    
+    <br>
 
-
-     <span>PURE CONGURABLE CALENDAR : </span> <br>
+    <span>PURE CONGURABLE CALENDAR : </span> <br>
     <PureCalendar 
       :headerConfig="headerConfig"
       :calendarContentConfig="calendarContentConfig"
+      :contextMenuActions="actions"
       @dateIncremented="handleDateIncremented"
       @dateDecremented="handleDateDecremented"
-      @displayTypeSelected="handleDisplayTypeSelected"/>
+      @displayTypeSelected="handleDisplayTypeSelected"
+      @daySelected="selectDay"/>
 
   </div>
 
@@ -301,6 +303,24 @@ export default {
       },
       },
 
+      selectedDay : null,
+
+      actions: [
+        {
+          title: "Edit",
+          onClick: () => {
+            console.log("CalendarExample - Edit action - selectedDay", this.selectedDay);
+          }
+        },
+        {
+          title: "Delete",
+          onClick: () => {
+            console.log("CalendarExample - Delete action - selectedDay", this.selectedDay);
+          }
+        },
+         
+      ],
+
     };
   },
 
@@ -321,6 +341,10 @@ export default {
       } else if (displayType === CALENDARS_WEEK_TYPE) {
         this.calendarContentConfig.selectedCalendarComponent = 'CalendarWeekly';
       }
+    },
+
+    selectDay(selectedDay){
+      this.selectedDay = selectedDay;
     },
 
   }

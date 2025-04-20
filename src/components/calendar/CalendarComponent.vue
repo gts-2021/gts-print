@@ -1,8 +1,13 @@
 <template>
 
-  <PureCalendar :headerConfig="headerConfig" :calendarContentConfig="calendarContentConfig"
+  <PureCalendar 
+    :headerConfig="headerConfig" 
+    :calendarContentConfig="calendarContentConfig"
+    :contextMenuActions="actions"
     @dateIncremented="showNextCalendarIntervalPage" @dateDecremented="showPreviousCalendarIntervalPage"
-    @displayTypeSelected="handleDisplayTypeSelected" @dateSelected="onDateSelected" @todayClicked="onDateSelected" />
+    @displayTypeSelected="handleDisplayTypeSelected" @dateSelected="onDateSelected" @todayClicked="onDateSelected"
+    @daySelected="selectDay"
+  />
 
 </template>
 
@@ -10,8 +15,6 @@
 import { CALENDARS_MONTH_TYPE, CALENDARS_TYPES } from '@/constants/calendars';
 import PureCalendar from './PureCalendar.vue';
 import moment from 'moment';
-
-
 
 
 export default {
@@ -53,7 +56,9 @@ export default {
   data() {
     return {
       dateFormat: 'DD/MM/YYYY',
+
       selectedStartDate: moment(),
+
       headerConfig: {
         calendarTypes: CALENDARS_TYPES,
         defaultType: CALENDARS_MONTH_TYPE,
@@ -63,6 +68,25 @@ export default {
         selectedCalendarComponent: 'CalendarMonthly',
         calendarData: {},
       },
+
+      selectedDay: null,
+
+      actions: [
+        {
+          title: "Edit",
+          onClick: () => {
+            console.log("CalendarComponent - Edit action - selectedDay", this.selectedDay);
+
+          }
+        },
+        {
+          title: "Delete",
+          onClick: () => {
+            console.log("Delete - selectedDay", this.selectedDay);
+          }
+        },
+         
+      ],
     }
   },
 
@@ -195,6 +219,10 @@ export default {
       this.generateCalendarPage(this.selectedStartDate);
       this.$emit("onDateChanged", this.getFirstAndLastCalendarDates())
 
+    },
+
+    selectDay(selectedDay){
+      this.selectedDay = selectedDay;
     },
 
 

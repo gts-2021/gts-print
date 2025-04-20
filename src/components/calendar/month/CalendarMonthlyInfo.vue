@@ -11,7 +11,7 @@
     <!-- actions -->
     <div v-if="isSelected" class="gts-print-calendar-content-actions-icon" @click="toggleMenu">
       <MenuIcon />      
-		  <ContextMenu ref="contextMenu" className="gts-card-actions-menu" :actions="actions" />
+		  <ContextMenu ref="contextMenu" className="gts-card-actions-menu" :actions="contextMenuActions" />
     </div>
 
   </div>
@@ -54,27 +54,16 @@ export default {
       type: Object,
       required: false
     },
+
+    contextMenuActions: {
+			type: Array,
+			required: false,
+			default: () => [],
+		},
   },
 
   data () {
     return {
-
-      actions: [
-        {
-          title: "Edit",
-          onClick: () => {
-            console.log("Edit - selectedDay", this.selectedDay);
-          }
-        },
-        {
-          title: "Delete",
-          onClick: () => {
-            console.log("Delete - selectedDay", this.selectedDay);
-          }
-        },
-         
-      ],
-
     }
   },
 

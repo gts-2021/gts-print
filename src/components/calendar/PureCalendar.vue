@@ -19,6 +19,8 @@
     <component 
       :is="calendarContentConfig.selectedCalendarComponent" 
       :calendarData="calendarContentConfig.calendarData"
+      :contextMenuActions="contextMenuActions"
+      @daySelected="selectDay"
     />
 
   </div>
@@ -35,7 +37,7 @@ export default {
 
   name: "PureCalendar",
 
-  emits: ['dateIncremented', 'dateDecremented', 'displayTypeSelected', 'dateSelected', 'todayClicked'],
+  emits: ['dateIncremented', 'dateDecremented', 'displayTypeSelected', 'dateSelected', 'todayClicked', 'daySelected'],
 
   components: {
     CalendarHeader,
@@ -54,6 +56,7 @@ export default {
         defaultType: '',
       }),
     },
+
     calendarContentConfig: {
       type: Object,
       required: true,
@@ -62,6 +65,12 @@ export default {
         calendarData: {},
       }),
     },
+
+    contextMenuActions: {
+			type: Array,
+			required: false,
+			default: () => [],
+		},
   },
 
   data () {
@@ -88,7 +97,10 @@ export default {
     },
     onTodayClicked(selectedDate){
       this.$emit('todayClicked', selectedDate);
-    }
+    },
+    selectDay(selectedDay){
+      this.$emit("daySelected", selectedDay);
+    },
 
   }
 
