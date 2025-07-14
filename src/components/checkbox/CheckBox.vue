@@ -34,7 +34,12 @@ export default {
       type: Boolean,
       required: false,
       default: false
-    }
+    },
+    noBind: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
 
   },
 
@@ -46,9 +51,12 @@ export default {
 
   methods: {
     onToggle() {
-      this.isRadioChecked = !this.isRadioChecked;
-      this.$emit('onToggle', this.isRadioChecked)
-      this.$emit('update:isChecked', this.isRadioChecked);
+      this.$emit('onToggle', !this.isRadioChecked)
+      
+      if (!this.noBind) {
+        this.isRadioChecked = !this.isRadioChecked;
+        this.$emit('update:isChecked', this.isRadioChecked);
+      }
     }
 
   },

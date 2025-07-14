@@ -12,15 +12,11 @@
     <div class="gts-print-calendar-weekly-content-separator"></div>
 
     <!-- timeslot -->
-    <div v-if="calendarDay.timeSlots.length > 0" class="gts-print-calendar-weekly-content-data">
+    <div v-if="calendarDay.content" class="gts-print-calendar-weekly-content-data">
   
       <span class="gts-print-calendar-weekly-content-data-label"> {{ calendarDay.label }} </span>
       
-      <div class="gts-print-calendar-weekly-content-data-timeslots">
-        <div class="gts-print-calendar-weekly-content-data-timeslot" v-for="timeSlot in calendarDay.timeSlots" :key="timeSlot">
-          <span class="time-slot-text"> {{timeSlot.startTime}} - {{timeSlot.endTime}}</span>
-        </div>
-      </div>
+      <component :is="calendarDay.content" />
       
     </div>
 

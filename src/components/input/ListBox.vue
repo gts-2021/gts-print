@@ -137,6 +137,7 @@ export default {
     .gts-listbox-option {
       padding: 12px;
       cursor: pointer;
+      color: $primary-color-700;
     }
 
     .gts-listbox-option:hover {

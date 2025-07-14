@@ -153,9 +153,8 @@ export default {
 	}
 
 	.gts-button-primary:hover{
-		background: $color-white;
-		color: $primary-color-400;
-		border: 1px solid $primary-color-400;
+		background: $primary-color-300;
+		color: $color-white;
 	}
 
 	/* PRIMARY_INVERSE */
@@ -173,8 +172,7 @@ export default {
 	}
 
 	.gts-button-primary-inverse:hover{
-		background: $primary-color-400;
-		color: $color-white;
+		background: $primary-color-50;
 	}
 
 	/* PRIMARY_50 */
@@ -191,8 +189,9 @@ export default {
 	}
 
 	.gts-button-primary-50:hover{
-		background: $primary-color-400;
-		color: $primary-color-50;
+		background: #bfe1e8;
+		color: $primary-color-400;
+		border: 0px;
 	}
 	
 	/* PRIMARY_50_INVERSE */
@@ -230,9 +229,10 @@ export default {
 	}
 
 	.gts-button-danger:hover{
-		background: $color-white;
-		color: $accent-error-red-color;
-		border: 1px solid $accent-error-red-color;
+		background: #dc0000;
+		color: $color-white;
+		border-color: #dc0000;
+		 
 	}
 
 		/* DANGER */
@@ -250,8 +250,8 @@ export default {
 	}
 
 	.gts-button-danger-inverse:hover{
-		background: $accent-error-red-color;
-		color: $color-white;
+		background: #ffeaea;
+		color: $accent-error-red-color;
 		border: 1px solid $accent-error-red-color;
 	}
 

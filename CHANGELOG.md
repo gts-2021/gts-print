@@ -8,8 +8,57 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 
-
 ## [Unreleased] 
+
+### Added
+
+* Adding actions props to `PureCalendar`. [GTS-PRINT#8] (https://quire.io/w/GTS-PRINT31/35)
+* Adding context menu to `CalendarMonthlyInfo` . [GTS-PRINT#8] (https://quire.io/w/GTS-PRINT31/35)
+* Pure coded documentation page was added. [GTS-PRINT#8] (https://quire.io/w/GTS-PRINT31/8)
+* Handling today/selectCalendarDate to setup dates display on `CalendarComponent`
+* Add calendar icon & today button to `CalendarHeader`  (https://quire.io/w/GTS-PRINT31/35)
+* Add the a simple `CalendarComponent` with the minimum of configuration (Show Readme)
+
+### Changed
+
+* Ajustement of `ButtonComponent` hover. [GTS-PRINT#42] (https://quire.io/w/GTS-PRINT31/42)
+* The name of `CalendarComponent` is changed to `PureCalendar`.
+
+### Deprecated
+
+### Removed
+
+* The handling of timeslots displaying should be in the projects that use this lib.
+
+### Fixed
+
+* Adding default color to `ListBox`.  [GTS-PRINT#45] (https://quire.io/w/GTS-PRINT31/45)
+* content not synchrone with current date selected. 
+* switching between months and weeks not coherent.
+
+### Security
+
+
+
+## [1.0.6] 
+
+### Added
+
+* Exporting all style directory (colors , fonts , ...) to be used in projects hosts .
+* Add `noBind` prop in `CheckBox` to prevent auto toggle on click and juste toggle if `isChecked` changed.  [GTS-PRINT#40] (https://quire.io/w/GTS-PRINT31/40)
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+
+## [1.0.4] 
 
 ### Added
 

@@ -1,30 +1,35 @@
 {
   "name": "gts-print",
-  "version": "1.0.4",
+  "version": "1.0.7",
   "private": false,
-  "main": "dist/gts-print.common.js",
-  "module": "dist/gts-print.umd.min.js",
+  "main": "dist/gts-print.cjs.js",
+  "module": "dist/gts-print.es.js",
   "files": [
     "dist",
-    "src/styles/colors.scss",
-    "src/styles/fonts.scss",
+    "src/styles/*",
     "src/constants/buttons.js",
     "src/constants/badges.js",
     "src/constants/calendars.js"
   ],
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "start": "npm run serve",
-    "build": "vue-cli-service build --target lib --name gts-print --dest dist src/index.js",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "start": "npm run dev",
     "test": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "@mdi/font": "5.9.55",
     "core-js": "^3.8.3",
+    "marked": "^15.0.7",
     "maska": "^3.0.3",
+    "moment": "^2.30.1",
     "roboto-fontface": "*",
+    "turndown": "^7.2.0",
+    "vite-plugin-vuetify": "^2.1.0",
     "vue": "^3.2.13",
+    "vue-router": "^4.5.0",
     "webfontloader": "^1.0.0"
   },
   "devDependencies": {
@@ -32,6 +37,7 @@
     "@babel/eslint-parser": "^7.12.16",
     "@babel/plugin-transform-runtime": "^7.25.9",
     "@babel/preset-env": "^7.25.4",
+    "@vitejs/plugin-vue": "^5.2.1",
     "@vue/babel-plugin-jsx": "^1.2.5",
     "@vue/babel-preset-jsx": "^1.4.0",
     "@vue/cli-plugin-babel": "~5.0.0",
@@ -49,6 +55,7 @@
     "path": "^0.12.7",
     "sass": "^1.77.8",
     "sass-loader": "^16.0.1",
+    "vite": "^6.2.1",
     "vue-cli-plugin-vuetify": "~2.5.8",
     "vuetify": "^3.7.1",
     "webpack-plugin-vuetify": "^2.0.0-alpha.0"

@@ -9,17 +9,16 @@
     </div>
 
     <!-- actions -->
-    <div v-if="isSelected" class="gts-print-calendar-content-actions-icon" @click=displayMenu(calendarDay)>
-      <MenuIcon />                
+    <div v-if="isSelected" class="gts-print-calendar-content-actions-icon" @click="toggleMenu">
+      <MenuIcon />      
+		  <ContextMenu ref="contextMenu" className="gts-card-actions-menu" :actions="contextMenuActions" />
     </div>
 
   </div>
 
   <!-- timeslot  -->
-  <div v-if="calendarDay.timeSlots.length > 0" class="gts-print-calendar-monthly-content-data-timeslots">
-    <div class="gts-print-calendar-monthly-content-data-timeslot" v-for="timeSlot in calendarDay.timeSlots" :key="timeSlot">
-      <span class="time-slot-text"> {{timeSlot.startTime}} - {{timeSlot.endTime}}</span>
-    </div>
+  <div v-if="calendarDay.content" class="gts-print-calendar-monthly-content-data-timeslots">   
+    <component :is="calendarDay.content" />
   </div>
 
   <!-- empty content  -->
@@ -33,6 +32,7 @@
 <script>
 
 import MenuIcon from '@/assets/icons/MenuIcon.vue';
+import ContextMenu from '../../contextmenu/ContextMenu.vue';
 
 export default {
 
@@ -40,6 +40,7 @@ export default {
 
   components: {
     MenuIcon,
+    ContextMenu
   },
 
   props: { 
@@ -53,6 +54,12 @@ export default {
       type: Object,
       required: false
     },
+
+    contextMenuActions: {
+			type: Array,
+			required: false,
+			default: () => [],
+		},
   },
 
   data () {
@@ -68,9 +75,11 @@ export default {
 
   methods : {
 
-    displayMenu(day){
-      console.log("displayMenu", day);
+    toggleMenu(event){
+      event.stopPropagation();
+			this.$refs.contextMenu.toggleMenu();
     }
+  
   }
 
 }
@@ -79,7 +88,7 @@ export default {
 <style lang="scss">
 
 .gts-print-calendar-monthly-content-data{
-         
+  position: relative;       
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -87,6 +96,7 @@ export default {
   border-bottom: 1px solid $neutral-color-200;
   padding: 10px;
   cursor: pointer;
+
 
   .gts-print-calendar-monthly-content-data-header{
     display: flex;
@@ -112,6 +122,13 @@ export default {
 
     .gts-print-calendar-content-actions-icon{
       cursor: pointer;
+
+      .gts-card-actions-menu {
+        position: absolute;
+        top: 40px;
+        right: 10px;
+
+      }
     }
   }
 
@@ -121,6 +138,7 @@ export default {
     align-items: center;
     flex-direction: column;
     gap: 7px;
+    white-space: normal;
 
     .gts-print-calendar-monthly-content-data-timeslot{
       display: flex;

@@ -1,12 +1,24 @@
 <template>
 
   <div id="exemple-container">
-    <CalendarComponent 
+
+    <span>GTS-CALENDAR : Navigate to Mars and May to show mor effect</span> <br>
+    <CalendarComponent
+    :datesContent="dummyContent"
+    :startingDate="'25/05/2025'"
+    @onDateChanged="($emit) => console.log($emit)"/> 
+    
+    <br>
+
+    <span>PURE CONGURABLE CALENDAR : </span> <br>
+    <PureCalendar 
       :headerConfig="headerConfig"
       :calendarContentConfig="calendarContentConfig"
+      :contextMenuActions="actions"
       @dateIncremented="handleDateIncremented"
       @dateDecremented="handleDateDecremented"
-      @displayTypeSelected="handleDisplayTypeSelected"/>
+      @displayTypeSelected="handleDisplayTypeSelected"
+      @daySelected="selectDay"/>
 
   </div>
 
@@ -14,23 +26,50 @@
 
 <script>
 
-import CalendarComponent from './CalendarComponent.vue';
-
+import PureCalendar from './PureCalendar.vue';
 import {CALENDARS_TYPES, CALENDARS_MONTH_TYPE, CALENDARS_WEEK_TYPE} from '@/constants/calendars.js';
 import UpdateIcon from '@/assets/icons/UpdateIcon.vue';
 import DeleteIcon from '@/assets/icons/DeleteIcon.vue';
 import { defineComponent, markRaw } from 'vue';
+import CalendarComponent from './CalendarComponent.vue';
+ 
 
 export default {
 
   name: "CalendarExample",
 
   components: {
-    CalendarComponent
+    CalendarComponent,
+    PureCalendar
   },
 
   data() {
     return {
+     dummyContent: [
+     {
+       date: '12/03/2025',
+       content: markRaw(defineComponent({
+        template: `<div>i have content for 12/03/2025</div>`
+       }))
+     },
+     {
+       date: '21/03/2025',
+       content: markRaw(defineComponent({
+        template: `<div>i have content for 12/03/2025</div>`
+       }))
+     },
+     {
+       date: '19/05/2025',
+       content: markRaw(defineComponent({
+        methods:{
+          onClick()  {
+            alert("Content clicked !")
+          }
+        },
+        template: `<div class="calendar-content-test" @click="onClick">click me : 19/05/2025</div>`
+       }))
+     }
+    ],
 
       headerConfig: {
         startDate: '01 Jan',
@@ -264,6 +303,24 @@ export default {
       },
       },
 
+      selectedDay : null,
+
+      actions: [
+        {
+          title: "Edit",
+          onClick: () => {
+            console.log("CalendarExample - Edit action - selectedDay", this.selectedDay);
+          }
+        },
+        {
+          title: "Delete",
+          onClick: () => {
+            console.log("CalendarExample - Delete action - selectedDay", this.selectedDay);
+          }
+        },
+         
+      ],
+
     };
   },
 
@@ -286,10 +343,21 @@ export default {
       }
     },
 
+    selectDay(selectedDay){
+      this.selectedDay = selectedDay;
+    },
+
   }
 
 }
 
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+
+
+.calendar-content-test {
+  background-color: green;
+}
+
+</style>
