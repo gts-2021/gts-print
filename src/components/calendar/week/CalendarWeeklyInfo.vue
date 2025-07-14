@@ -14,8 +14,6 @@
     <!-- timeslot -->
     <div v-if="calendarDay.content" class="gts-print-calendar-weekly-content-data">
   
-      <span class="gts-print-calendar-weekly-content-data-label"> {{ calendarDay.label }} </span>
-      
       <component :is="calendarDay.content" />
       
     </div>
@@ -86,6 +84,8 @@ export default {
     display: flex;
     align-items: center;
     gap: 20px;
+    flex-grow: 1;
+    min-width: 0;
 
     .gts-print-calendar-weekly-content-calendarDay{
       display: flex;
@@ -121,6 +121,8 @@ export default {
       flex-direction: column;
       justify-content: center;
       gap: 8px;
+      flex-grow: 1;
+      min-width: 0;
 
       .gts-print-calendar-weekly-content-data-label{
         font-weight: 600;

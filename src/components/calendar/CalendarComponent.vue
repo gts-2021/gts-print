@@ -1,18 +1,21 @@
 <template>
 
-  <PureCalendar 
+    <PureCalendar 
     :headerConfig="headerConfig" 
     :calendarContentConfig="calendarContentConfig"
     :contextMenuActions="actions"
-    @dateIncremented="showNextCalendarIntervalPage" @dateDecremented="showPreviousCalendarIntervalPage"
-    @displayTypeSelected="handleDisplayTypeSelected" @dateSelected="onDateSelected" @todayClicked="onDateSelected"
+    @dateIncremented="showNextCalendarIntervalPage"
+    @dateDecremented="showPreviousCalendarIntervalPage"
+    @displayTypeSelected="handleDisplayTypeSelected" 
+    @dateSelected="onDateSelected" 
+    @todayClicked="onDateSelected"
     @daySelected="selectDay"
   />
 
 </template>
 
 <script>
-import { CALENDARS_MONTH_TYPE, CALENDARS_TYPES } from '@/constants/calendars';
+import { CALENDAR_MONTHLY, CALENDAR_WEEKLY, CALENDARS_MONTH_TYPE, CALENDARS_TYPES, CALENDARS_WEEK_TYPE } from '@/constants/calendars';
 import PureCalendar from './PureCalendar.vue';
 import moment from 'moment';
 
@@ -24,7 +27,7 @@ export default {
   components: {
     PureCalendar
   },
-  emits: ['onDateChanged'],
+  emits: ['onDateChanged', 'onClendarTypeChanged'],
 
   created() {
 
@@ -65,7 +68,7 @@ export default {
       },
 
       calendarContentConfig: {
-        selectedCalendarComponent: 'CalendarMonthly',
+        selectedCalendarComponent: CALENDAR_MONTHLY,
         calendarData: {},
       },
 
@@ -206,11 +209,13 @@ export default {
       this.headerConfig.defaultType = type;
 
       if (type == CALENDARS_MONTH_TYPE) {
-        this.calendarContentConfig.selectedCalendarComponent = 'CalendarMonthly';
+        this.calendarContentConfig.selectedCalendarComponent = CALENDAR_MONTHLY;
       } else {
-        this.calendarContentConfig.selectedCalendarComponent = 'CalendarWeekly';
-
+        this.calendarContentConfig.selectedCalendarComponent = CALENDAR_WEEKLY;
       }
+
+      this.$emit("onClendarTypeChanged", this.calendarContentConfig.selectedCalendarComponent)
+
       this.onDateSelected(this.selectedStartDate);
     },
 

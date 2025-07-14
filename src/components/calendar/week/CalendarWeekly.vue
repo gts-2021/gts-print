@@ -65,6 +65,11 @@ export default {
 <style lang="scss">
 
 .gts-print-calendar-weekly-container{
+  pointer-events: none;
+
+  * {
+    pointer-events: auto;
+  }
 
   .gts-print-calendar-weekly-content{
 
