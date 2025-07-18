@@ -12,6 +12,8 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 ### Added
 
+* Adding `disabledFirstBtn` & `disabledLastBtn` props to `ConfirmationDialog`. [GTS-PRINT#46] (https://quire.io/w/GTS-PRINT31/46)
+* Adding `disabled` props to `ButtonComponent`. [GTS-PRINT#46] (https://quire.io/w/GTS-PRINT31/46)
 * Adding actions props to `PureCalendar`. [GTS-PRINT#8] (https://quire.io/w/GTS-PRINT31/35)
 * Adding context menu to `CalendarMonthlyInfo` . [GTS-PRINT#8] (https://quire.io/w/GTS-PRINT31/35)
 * Pure coded documentation page was added. [GTS-PRINT#8] (https://quire.io/w/GTS-PRINT31/8)

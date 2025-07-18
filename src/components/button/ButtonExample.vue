@@ -107,6 +107,13 @@
         :icon="leftIcon"
         :theme="DANGER_LIGHT_INVERSE"
       />
+
+      <ButtonComponent 
+        class="mb-20"
+        :title="'DISABLED BUTTON'" 
+        :icon="leftIcon"
+        :disabled="true"
+      />
     </div>
   
     

@@ -16,6 +16,7 @@ The `ButtonComponent` is a customizable button that supports various themes, ico
 | `theme`         | `String`   | No       | `PRIMARY`       | Button theme, supporting styles like `primary`, `primary-inverse`, `danger`, etc. from constants. |
 | `type`         | `String`   | No       | ``       | Button type |
 
+| `disabled`| `Boolean`  | No       | `false`         | If `true` button is disabled, no action is allowed.
 ## Data Properties
 
 None.

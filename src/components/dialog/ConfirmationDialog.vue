@@ -5,9 +5,8 @@
 
         <template v-slot:footer>
             <div class="gts-dialog-confirmation-footer">
-                <ButtonComponent @buttonClicked="onFirstBtnClicked"  :theme='this.themeFirstBtn' :title="this.titleFirstBtn" />
-                <ButtonComponent @buttonClicked="onLastBtnClicked" :theme='this.themeLastBtn' :title="this.titleLastBtn" />
-                
+                <ButtonComponent @buttonClicked="onFirstBtnClicked"  :theme='this.themeFirstBtn' :title="this.titleFirstBtn" :disabled="disabledFirstBtn" />
+                <ButtonComponent @buttonClicked="onLastBtnClicked" :theme='this.themeLastBtn' :title="this.titleLastBtn" :disabled="disabledLastBtn" />
             </div>
         </template>
     </BasicDialog>
@@ -48,7 +47,21 @@ export default {
         titleLastBtn: {
             type: String,
             required : true,
-        }
+        },
+        disabledFirstBtn: {
+			type: Boolean,
+			required: false,
+			default() {
+				return false;
+			}
+		},
+        disabledLastBtn: {
+			type: Boolean,
+			required: false,
+			default() {
+				return false;
+			}
+		},
     },
 
     methods: {

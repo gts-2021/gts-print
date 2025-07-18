@@ -56,6 +56,8 @@ The `ConfirmationDialog` component is a pre-configured dialog box extending `Bas
 | `themeLastBtn`   | String  | No       | `'gts-button-primary'`        | CSS class to style the last button.                       |
 | `titleFirstBtn`  | String  | Yes      | `N/A`                         | Text for the first (left) button.                         |
 | `titleLastBtn`   | String  | Yes      | `N/A`                         | Text for the last (right) button.                         |
+| disabledFirstBtn | Boolean | No       | `false`                       | If `true` button is disabled, no action is allowed.       |
+| disabledLastBtn  | Boolean | No       | `false`                       | If `true` button is disabled, no action is allowed.       |
 
 ### Events
 

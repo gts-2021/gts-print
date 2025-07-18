@@ -12,10 +12,21 @@
       The ButtonComponent is a customizable button that supports various themes, icons, and title text. This component includes flexible options for icon position (left or right) and allows for handling button clicks through an emitted event. It’s designed to integrate seamlessly with different styles and themes for primary, secondary, and danger buttons.</p>
    </BasicDialog>
 
-   <ButtonComponent @buttonClicked="() => this.dialog3 = true" title="Open Confirm dialog" />
-   <ConfirmationDialog @onFirstBtnClicked="() => console.log('First Clicked !')"  @onLastBtnClicked="() => console.log('Last Clicked !')" titleColor="red" titleLastBtn="Delete" themeLastBtn="gts-button-danger" titleFirstBtn="Cancel" themeFirstBtn="gts-button-danger-inverse" @onClosedDialog="() => this.dialog3 = false" :isOpen="dialog3" title="Dialog with content">
-  are you sure ?   
-  </ConfirmationDialog>
+    <ButtonComponent @buttonClicked="() => this.dialog3 = true" title="Open Confirm dialog" />
+    <ConfirmationDialog @onFirstBtnClicked="() => console.log('First Clicked !')"  @onLastBtnClicked="() => console.log('Last Clicked !')" titleColor="red" titleLastBtn="Delete" themeLastBtn="gts-button-danger" titleFirstBtn="Cancel" themeFirstBtn="gts-button-danger-inverse" @onClosedDialog="() => this.dialog3 = false" :isOpen="dialog3" title="Dialog with content">
+      are you sure ?   
+    </ConfirmationDialog>
+
+    <ButtonComponent @buttonClicked="() => this.dialog4 = true" title="Open Confirm dialog with disabled buttons" />
+    <ConfirmationDialog 
+       titleColor="red" titleLastBtn="Delete" themeLastBtn="gts-button-danger" titleFirstBtn="Cancel" themeFirstBtn="gts-button-danger-inverse" 
+	   :disabledLastBtn="true"
+	   :disabledFirstBtn="true"
+       @onFirstBtnClicked="() => console.log('First Clicked !')"  
+       @onLastBtnClicked="() => console.log('Last Clicked !')"
+       @onClosedDialog="() => this.dialog4 = false" :isOpen="dialog4" title="Dialog with content disabled buttons">
+      are you sure ?   
+    </ConfirmationDialog>
 
   
     
@@ -44,6 +55,7 @@ export default {
       dialog1 : false,
       dialog2 : false,
       dialog3 : false,
+      dialog4:  false,
      };
 	},
   methods: {
