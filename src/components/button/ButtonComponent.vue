@@ -1,7 +1,11 @@
 <template>
 
 	<div class="gts-button-container">
-		<button :class="[className, theme]" @click="onButtonClick" :type="type">
+		<button 
+			:class="[className, theme, { 'gts-button-disabled': disabled }]" 
+ 			:type="type"
+			:disabled="disabled"
+			@click="onButtonClick">
 
 			<div class="gts-button-content">
 
@@ -84,13 +88,22 @@ export default {
 			default(){
 				return '';
 			}
-		}
+		},
+
+		disabled: {
+			type: Boolean,
+			required: false,
+			default() {
+				return false;
+			}
+		},
 
 	},
 
 	methods: {
 
 		onButtonClick() {
+			if (this.disabled) return;
 			this.$emit('buttonClicked');
 		},
 	},
@@ -293,6 +306,26 @@ export default {
 		background: $accent-light-red-color;
 		color: $accent-error-red-color;
 		border: 1px solid $accent-light-red-color;
+	}
+
+	/* DISABLED */
+	.gts-button-disabled {
+		display: flex;
+		border-radius: 12px;
+		padding: 12px 20px;
+		font-size: 14px;
+		text-align: center;
+		line-height: 24px;
+		font-weight: 600;
+		background: $neutral-color-100;
+		color: $neutral-color-400;
+		border: 1px solid $neutral-color-200;
+	}
+
+	.gts-button-disabled:hover {
+		background: $neutral-color-100;
+		color: $neutral-color-400;
+		border: 1px solid $neutral-color-200;
 	}
 		
  }
