@@ -34,7 +34,7 @@
       <span>TextInput with mask : </span> 
     <br>
 
-    <TextInput label="Input Text with mask" placeholder="only text" :maskPattern="'@@@@@@@@@@@@@'" />
+    <TextInput label="Input Text with mask" placeholder="only text" :maskPattern="'@@@@@@@@@@@@@'" className="my-input" id="id-my-input" />
 
     <TextInput label="Input phone with mask" placeholder="only number" :maskPattern="'0# ## ## ## ##'"/>
 

@@ -1,7 +1,12 @@
 export default {
 
 	props: {
-
+		id: {
+			type: String,
+		},
+		className: {
+			type: String,
+		},
 		modelValue: {
 			type: String,
 			default: ''
