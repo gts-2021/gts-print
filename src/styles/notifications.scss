@@ -1,0 +1,37 @@
+@keyframes scaleIn {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.gts-notification-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  position: absolute;
+  right: 10px;
+  top: 20px;
+  z-index: 9999999999;
+
+  .gts-notification-container {
+    animation: scaleIn 0.2s ease forwards;
+    margin-bottom: 8px;
+  }
+
+  .notification-content {
+    display: flex;
+    flex-direction: row;
+
+    .notification-msg {
+      width: 100%;
+      flex-grow: 1;
+    }
+
+  }
+}

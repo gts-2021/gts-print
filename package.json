@@ -1,6 +1,6 @@
 {
   "name": "gts-print",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "private": false,
   "main": "dist/gts-print.cjs.js",
   "module": "dist/gts-print.es.js",
@@ -9,7 +9,8 @@
     "src/styles/*",
     "src/constants/buttons.js",
     "src/constants/badges.js",
-    "src/constants/calendars.js"
+    "src/constants/calendars.js",
+    "src/constants/notifications.js"
   ],
   "scripts": {
     "dev": "vite",
