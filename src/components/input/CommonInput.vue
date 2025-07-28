@@ -1,6 +1,6 @@
 <template>
 
-	<div class="gts-input-group">
+	<div :class="`gts-input-group ${className || ''}`" :id="id">
 
 		<div class="gts-label-container">
 			<span class="gts-input-label">{{ label }}</span> 

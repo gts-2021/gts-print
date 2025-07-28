@@ -1,6 +1,6 @@
 {
   "name": "gts-print",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "private": false,
   "main": "dist/gts-print.cjs.js",
   "module": "dist/gts-print.es.js",

@@ -1,6 +1,6 @@
 <template>
 
-  <div class="gts-checkbox-container">
+  <div class="gts-checkbox-container" :id="id">
     <div @click="onToggle" class="gts-checkbox">
 
       <svg v-if="isRadioChecked" fill="white" class="gts-checkbox-checked" xmlns="http://www.w3.org/2000/svg"
