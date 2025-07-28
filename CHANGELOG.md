@@ -12,6 +12,7 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 ### Added
 
+* Adding `NotificationComponent` to show localy notification and globaly animated notification via `NotificationPlugin` . [GTS-PRINT#48] (https://quire.io/w/GTS-PRINT31/48)
 * Adding `ClassName` and `id` to inputs. [GTS-PRINT#49] (https://quire.io/w/GTS-PRINT31/49)
 * Adding `disabledFirstBtn` & `disabledLastBtn` props to `ConfirmationDialog`. [GTS-PRINT#46] (https://quire.io/w/GTS-PRINT31/46)
 * Adding `disabled` props to `ButtonComponent`. [GTS-PRINT#46] (https://quire.io/w/GTS-PRINT31/46)
