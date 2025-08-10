@@ -36,6 +36,7 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 ### Fixed
 
+* Fixed display table content to left and adding break lines when column is long.  [GTS-PRINT#50] (https://quire.io/w/GTS-PRINT31/50)
 * Adding default color to `ListBox`.  [GTS-PRINT#45] (https://quire.io/w/GTS-PRINT31/45)
 * content not synchrone with current date selected. 
 * switching between months and weeks not coherent.

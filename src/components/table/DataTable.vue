@@ -182,7 +182,7 @@ export default {
   .gts-print-table-container {
     border-radius: 12px;
     border: 1px solid $neutral-color-100;
-    overflow-x: hidden;
+    overflow-x: auto;
     overflow-y: visible;
   
     .gts-print-table{
@@ -199,7 +199,7 @@ export default {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 24px;
+            padding: 12px;
             border-right: 1px solid $neutral-color-100;
             border-bottom: 1px solid $neutral-color-100;
             background: $primary-color-50;
@@ -255,13 +255,13 @@ export default {
       .gts-print-table-content{
 
         .gts-print-table-content-data{
-          padding: 12px 24px;
+          padding: 12px;
           width: 184px;
           height: 64px;
           font-size: 14px;
-          text-align: center;
           border-bottom: 1px dashed $neutral-color-100;
           color:$primary-color-700;
+          white-space: wrap;
 
           .gts-print-table-content-actions-icon{
             margin: 0px 5px;
