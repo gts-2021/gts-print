@@ -39,7 +39,7 @@ export default {
           const close = () => {
             if (instance) {
               instance.unmount();
-              document.body.removeChild(mountPoint);
+             wrapper.removeChild(mountPoint);
             }
           };
 
