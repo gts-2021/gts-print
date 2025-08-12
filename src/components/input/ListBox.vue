@@ -108,6 +108,7 @@ export default {
   display: flex;
   align-items: center;
   cursor: pointer;
+  padding-right: 41px;
 
 }
 

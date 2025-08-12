@@ -7,8 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
-
 ## [Unreleased] 
+
+### Added
+
+### Changed
+
+* `ButtonComponent` style changed :
+  - the className props it's now affected to `gts-button-container`.
+  - `ButtonComponent` in flex it's occupate available space.
+* Enhance `Accordion` background color.
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+
+## [1.0.13] 
 
 ### Added
 
