@@ -1,47 +1,46 @@
 <template>
 
-  <div id="exemple-container">
+  <div id="btn-exemple-container">
 
-    <!-- without -->
-    <div>
+   
       <ButtonComponent 
       class="mb-20"
       :title="'without icon'" 
-      :className="'gts-button'"
+      :className="'gts-button-tst'"
       />
 
       <ButtonComponent 
         class="mb-20"
         :icon="leftIcon"
-        :className="'gts-button'"
+        :className="'gts-button-tst'"
       />
     
       <ButtonComponent 
         class="mb-20"
         :title="'with left icon'" 
         :icon="leftIcon"
-        :className="'gts-button'"
+        :className="'gts-button-tst'"
       />
   
       <ButtonComponent 
         class="mb-20"
         :title="'with right icon'" 
         :icon="rightIcon"
-        :className="'gts-button'"
+        :className="'gts-button-tst'"
       />
 
       <ButtonComponent 
         class="mb-20"    
         :title="'with svg left icon'" 
         :icon="svgLeftIcon"
-        :className="'gts-button'"
+        :className="'gts-button-tst'"
       />
 
       <ButtonComponent
         class="mb-20" 
         :title="'with svg right icon'" 
         :icon="svgRightIcon"
-        :className="'gts-button'"
+        :className="'gts-button-tst'"
       />
       
       <ButtonComponent
@@ -50,10 +49,9 @@
         :className="'gts-test'"
       />
       
-    </div>
   
-    <!-- with theme -->
-    <div>
+  
+   
         
       <ButtonComponent 
         class="mb-20"
@@ -114,7 +112,6 @@
         :icon="leftIcon"
         :disabled="true"
       />
-    </div>
   
     
   </div>
@@ -246,16 +243,19 @@ export default {
 
 <style lang="scss">
 
-#exemple-container {
+#btn-exemple-container {
   display: flex;
   justify-content: space-around;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 20px;
 }
 
 .mb-20 {
   margin-bottom: 20px;
 }
 
-.gts-test{
+.gts-test .gts-button{
 		display: flex;
 		border-radius: 12px;
 		padding: 12px 20px;
@@ -265,6 +265,7 @@ export default {
 		font-weight: 600;
 		background: $accent-error-red-color;
 		color: $color-white;
+    border: none;
 	}
 
 	.gts-test:hover{

@@ -1,6 +1,6 @@
 <template>
 
-  <div id="exemple-container">
+  <div id="calendar-exemple-container">
 
     <span>GTS-CALENDAR : Navigate to Mars and May to show mor effect</span> <br>
     <CalendarComponent

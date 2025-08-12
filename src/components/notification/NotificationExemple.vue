@@ -1,6 +1,6 @@
 <template>
 
-  <div id="exemple-container">
+  <div id="notification-exemple-container">
  
     <NotificationComponent :theme="PRIMARY">PRIMARY</NotificationComponent> <br>
      <NotificationComponent :theme="DANGER">DANGER</NotificationComponent> <br>
@@ -46,9 +46,11 @@ export default {
 
 <style lang="scss">
 
-#exemple-container {
+#notification-exemple-container {
   display: flex;
+  padding: 20px;
   justify-content: space-around;
+  flex-direction: column;
 
   
 }

@@ -77,8 +77,8 @@ export default {
 .gts-accordion-header {
   display: flex;
   flex-direction: row;
-  background-color: $neutral-color-50;
-  border: 1px solid $neutral-color-100;
+  background-color: $neutral-color-100;
+  border: 1px solid $neutral-color-300;
   padding: 10px;
   border-radius: 5px;
   cursor: pointer;
@@ -100,7 +100,7 @@ export default {
 
 .gts-accordion-content {
   padding: 10px;
-  border: 1px solid $neutral-color-100;
+  border: 1px solid $neutral-color-200;
   border-top: 0;
 }
 </style>
