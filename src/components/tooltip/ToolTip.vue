@@ -1,31 +1,73 @@
 <template>
-  <div class="gts-tooltip-container" @mouseover="show = true" @mouseleave="show = false">
-    <div v-if="show" :class="['gts-tooltip', position]">
-      {{ text }}
-    </div>
+  <div
+    class="gts-tooltip-container"
+    ref="triggerEl"
+    @mouseover="showTooltip"
+    @mouseleave="hideTooltip"
+  >
     <slot></slot>
-    
+
+    <teleport to="body">
+      <div
+        v-if="show"
+        class="gts-tooltip"
+        :class="position"
+        :style="{ top: coords.top + 'px', left: coords.left + 'px' }"
+      >
+        {{ text }}
+      </div>
+    </teleport>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'ToolTip',
+  name: "ToolTip",
   props: {
-    text: {
-      type: String,
-      required: true,
-    },
+    text: { type: String, required: true },
     position: {
       type: String,
-      default: 'center', // Default to 'center'
-      validator: value => ['left', 'center', 'right'].includes(value),
+      default: "center",
+      validator: v => ["left", "center", "right"].includes(v),
     },
   },
   data() {
     return {
       show: false,
+      coords: { top: 0, left: 0 },
     };
+  },
+  methods: {
+    showTooltip() {
+      this.updatePosition();
+      this.show = true;
+      window.addEventListener("scroll", this.updatePosition, true);  
+      window.addEventListener("resize", this.updatePosition);
+    },
+    hideTooltip() {
+      this.show = false;
+      window.removeEventListener("scroll", this.updatePosition, true);
+      window.removeEventListener("resize", this.updatePosition);
+    },
+    updatePosition() {
+      const trigger = this.$refs.triggerEl;
+      if (!trigger) return;
+      const rect = trigger.getBoundingClientRect();
+
+      let top = rect.top + window.scrollY;
+      let left = rect.left + window.scrollX;
+
+      if (this.position === "center") {
+        left += rect.width / 2;
+      } else if (this.position === "right") {
+        left += rect.width;
+      }
+
+      // Placer le tooltip juste au-dessus
+      top -= 10; 
+
+      this.coords = { top, left };
+    },
   },
 };
 </script>
@@ -38,33 +80,25 @@ export default {
 
 .gts-tooltip {
   position: absolute;
-  bottom: 100%;
   background-color: #333;
   color: #fff;
   padding: 8px 12px;
   border-radius: 4px;
   font-size: 14px;
   white-space: nowrap;
-  opacity: 1;
-  transform: translateY(10px);
-  transition: opacity 0.2s, transform 0.2s;
-  z-index: 10;
-}
-
-.gts-tooltip-container:hover .gts-tooltip {
-  opacity: 1;
+  transform: translate(-50%, -100%);
+  z-index: 99999;
 }
 
 .gts-tooltip.left {
-  left: 0;
+  transform: translate(0, -100%);
 }
 
 .gts-tooltip.center {
-  left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, -100%);
 }
 
 .gts-tooltip.right {
-  right: 0;
+  transform: translate(-100%, -100%);
 }
 </style>

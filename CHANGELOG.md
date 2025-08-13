@@ -13,6 +13,26 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 ### Changed
 
+* Add scroll to `BarSide`
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+* Fix size of date calendar selector.
+* Fix `ToolTip` is hided if parent has scroll.
+
+### Security
+
+
+## [1.0.17] 
+
+### Added
+
+### Changed
+
 * `ButtonComponent` style changed :
   - the className props it's now affected to `gts-button-container`.
   - `ButtonComponent` in flex it's occupate available space.

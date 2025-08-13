@@ -169,6 +169,10 @@ export default {
         position: relative;
         display: flex;
         align-items: center;
+
+        .gts-input {
+          min-width: auto;
+        }
         .gts-input-calendar{
           width: 0;
           height: 0;
