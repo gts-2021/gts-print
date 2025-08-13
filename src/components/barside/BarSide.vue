@@ -69,7 +69,7 @@ export default {
     height: 100vh;
     padding-top: 40px;
     border-right: 1px solid #D3D6DB;
-
+    overflow-y: auto;
     .barside-logo {
         text-align: center;
         font-size: 55px;
