@@ -9,7 +9,7 @@
         <thead>
           <tr class="gts-print-table-header">
             <th class="gts-print-table-header-container" v-for="header in headers" :key="header">
-              <div :class="cssClass.tableHeadersClass"> 
+              <div :class="[cssClass.tableHeadersClass, header.className]"> 
                 <div v-if="isMenuVisible(header.name)" class="gts-print-table-header-menu">
                   <span class="gts-print-table-header-menu-item" @click="unsort(header.name)"> Unsort </span>
                   <span class="gts-print-table-header-menu-item" @click="sortAsc(header.name)"> Sort ASC </span>

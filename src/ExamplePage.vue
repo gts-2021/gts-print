@@ -120,6 +120,7 @@ export default {
 					title: "Code",
 					name: "companyCode",
 					sortable: true,
+					className: 'col-test'
 
 				},
 				{
@@ -336,8 +337,13 @@ export default {
 <style lang="scss">
 body {
 	font-family: 'Poppins', sans-serif;
-	background-color: white;
+	background-color: $color-white;
 	color: $primary-color-700;
-	;
+	
+	.col-test{
+		background-color: $accent-error-red-color !important;
+		color: $color-white;
+  	width: 200px;
+	}
 }
 </style>
