@@ -111,6 +111,7 @@ export default {
 <style lang="scss">
 .gts-button-container {
 	display: inline-flex;
+	width: fit-content;
 
 	
 
@@ -130,6 +131,8 @@ export default {
 
 		.gts-button-content {
 		display: flex;
+		align-items: center;
+		justify-content: center;
 	
 		.gts-button-icon {
 			display: flex;
