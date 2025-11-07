@@ -6,7 +6,7 @@
 
 			<div>
 
-				<span class="gts-print-pagination-page-length-title"> {{paginationConfig.pageLengthTitle}}</span> 
+				<span class="gts-print-pagination-page-length-title"> {{pageLengthTitle}}</span> 
 
 				<span class="gts-print-pagination-page-selected"> {{selectedPageLength}}</span>
 				
@@ -16,7 +16,7 @@
 			
 			<div v-if="pageLengthDisplayed" class="gts-print-pagination-page-length-menu">
 
-				<span v-for="page in paginationConfig.pageLength" :key="page" class="gts-print-pagination-page-length-menu-item" @click="handlePageChange(page)"> {{page}} </span>
+				<span v-for="page in pageLengths" :key="page" class="gts-print-pagination-page-length-menu-item" @click="handlePageLengthChange(page)"> {{page}} </span>
         
 			</div>
 			
@@ -25,7 +25,7 @@
 		<!-- Total records -->
 		<div class="gts-print-pagination-total-records">
 
-			<span> {{ pageStart }} - {{ pageEnd }} {{paginationConfig.totalRecordsTitle}} {{ paginationConfig.totalRecords }} </span>
+			<span> {{ pageStart }} - {{ pageEnd }} {{'of'}} {{ totalRecords }} </span>
 
 		</div>
 
@@ -60,12 +60,20 @@ export default {
   
 	name: "DataTablePagiation",
   
-	emits : ['changePage'],
+	emits : ['changePage', 'lengthPageChanged'],
 
 	props: {
   
-		paginationConfig: {
-			type: Object,
+		pageLengths: {
+			type: Array,
+			required: true
+		},
+		pageLengthTitle: {
+			type: Array,
+			required: true
+		},
+		totalRecords: {
+			type: Number,
 			required: true
 		},
 
@@ -73,16 +81,16 @@ export default {
   
 	data () {
 		return {
-			selectedPageLength: this.paginationConfig.pageLength[0],
+			selectedPageLength: this.pageLengths[0],
       currentPage: 1,
       pageLengthDisplayed: false
 		}
 	},
-
+ 
 	computed: {
 
 		totalPages() {
-      return Math.ceil(this.paginationConfig.totalRecords / this.selectedPageLength);
+      return Math.ceil(this.totalRecords / this.selectedPageLength);
     },
 
 		pageStart() {
@@ -91,7 +99,7 @@ export default {
 
     pageEnd() {
       let end = this.currentPage * this.selectedPageLength;
-      return end > this.paginationConfig.totalRecords ? this.paginationConfig.totalRecords : end;
+      return end > this.totalRecords ? this.totalRecords : end;
     },
 
     isFirstPage() {
@@ -105,9 +113,12 @@ export default {
   
 	methods : {
 
-		handlePageChange(page){
+		handlePageLengthChange(page){
 			this.selectedPageLength = page;
 			this.pageLengthDisplayed = !this.pageLengthDisplayed;
+			this.currentPage = 1;
+			this.$emit("lengthPageChanged", this.selectedPageLength);
+			this.$emit("changePage", this.currentPage);
 		},
 
 		togglePagination(){
@@ -115,7 +126,6 @@ export default {
 		},
 
 		nextPage() {
-      
 			this.currentPage++;
 			this.$emit("changePage", this.currentPage);
      

@@ -12,6 +12,8 @@ The `DataTable` component is designed for displaying tabular data in a responsiv
 | `items`          | `Array`  | Yes      | N/A                       | An array of data items to be displayed in the table rows.                                         |
 | `displayActions` | `Boolean`| No       | `true`                    | If `true`, displays action buttons in the table (if any actions are defined).                     |
 | `cssClass`       | `Object` | No       | See below                 | An object for custom CSS classes. Defaults to a set of classes for table styling.                  |
+| `isPaginable`       | `Boolean` | Yes       | false                | It s used to show/hide pagination component
+| `isScrollable`       | `Boolean` | Yes       | false               | It s used to show/hide table horizontal scrollbar
 
 ### Default CSS Classes
 - `tableWrapperClass`: `"gts-print-table-wrapper"`
@@ -26,10 +28,30 @@ The `DataTable` component is designed for displaying tabular data in a responsiv
 
 ## Lifecycle Hooks
 
-### `mounted()`
+```vue
+computed: {
+    pagination() {
+      return {
+        pageLengthTitle: 'Row per page',
+        totalRecords: this.items.length,
+        pageLengths: this.paginationConfig?.pageLengths || defaultLengths
+      }
+    },
 
-- Initializes the horizontal scroll synchronization between the table and scrollbar.
-- Adjusts the scrollbar width based on the table's content width.
+    splitedItems() {
+      if (this.isPaginable) {
+
+        const start = (this.currentPaginationPage - 1) * this.rowPerPage;
+
+        const end = start + this.rowPerPage;
+
+        return this.items.slice(start, end);
+      }
+      return this.items
+    }
+```
+- `Pagination` is used to configure a specific pagination configuration for table component (default pagination config)
+- `SplitedItems` is the filtred data based on pagination to diplay to users.
 
 ## Methods
 
@@ -51,7 +73,7 @@ The `DataTable` includes various SCSS styles to ensure a polished look:
 - `.gts-print-table-header`: Styles for the header section.
 - `.gts-print-table-header-menu`: Menu for column actions (sort, unsort, hide).
 - `.gts-print-table-content`: Styles for the rows of data.
-- `.gts-print-table-scrollbar-container`: Container for the custom scrollbar.
+ 
 
 ## Usage Examples
 
