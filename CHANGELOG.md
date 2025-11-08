@@ -8,7 +8,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 
-## [Unreleased] 
+## [1.0.20] 
+
+### Added
+
+### Changed
+
+* Enhance pagination configuration: [GTS-PRINT#52] (https://quire.io/w/GTS-PRINT31/52)
+  - Adding a defualt pagination if no one is specified and isPagination=true.
+  - Add prop to `DataTable` hide/show pagination component.
+  - Replace programmed scrollbar by default html scrollbar.
+ 
+
+
+### Deprecated
+
+### Removed
+
+* Remove default margin=50px from `DataTable` component. [GTS-PRINT#52] (https://quire.io/w/GTS-PRINT31/52)
+
+### Fixed
+
+* The `DataTable` display 2 scrollbar. [GTS-PRINT#52] (https://quire.io/w/GTS-PRINT31/52)
+
+### Security
+
+
+
+## [1.0.20] 
 
 ### Added
 
