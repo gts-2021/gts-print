@@ -1,34 +1,27 @@
 <template>
 
-  <div :class="cssClass.tableWrapperClass">
+  <div :class="['gts-print-table-wrapper', className]">
+    <ContextMenu :ref="`contextMenu`" className="gts-table-actions-menu" :actions="contextMenuActions" />
 
     <div :class="['gts-print-table-container', isScrollable ? 'gts-print-table-container-scrollable' : '']"
       ref="gtsPrintTableContainer">
 
       <table class="gts-print-table">
-
         <thead>
           <tr class="gts-print-table-header">
-            <th class="gts-print-table-header-container" v-for="header in headers" :key="header">
-              <div :class="[cssClass.tableHeadersClass, header.className]">
-                <div v-if="isMenuVisible(header.name)" class="gts-print-table-header-menu">
-                  <span class="gts-print-table-header-menu-item" @click="unsort(header.name)"> Unsort </span>
-                  <span class="gts-print-table-header-menu-item" @click="sortAsc(header.name)"> Sort ASC </span>
-                  <span class="gts-print-table-header-menu-item" @click="sortDesc(header.name)"> Sort DESC </span>
-                  <span class="gts-print-table-header-menu-item" @click="hideColumn(header.name)"> Hide </span>
-                </div>
+            <th class="gts-print-table-header-container" v-for="(header, index) in headers" :key="header">
+              <div :class="['gts-print-table-header-data', header.className]">
+
                 <span class="gts-print-table-header-title"> {{ header.title }} </span>
                 <span v-if="header.sortable" class="gts-print-table-header-icon"
-                  @click="toggleMenu(header.name)"><v-icon>{{ "mdi-dots-vertical" }}</v-icon></span>
+                  @click="toggleMenu(header.name, $event)"><v-icon>{{ "mdi-dots-vertical" }}</v-icon></span>
               </div>
             </th>
-
           </tr>
         </thead>
 
         <tbody>
-
-          <tr class="gts-print-table-content" v-for="(item, index) in splitedItems" :key="item">
+          <tr class="gts-print-table-content" v-for="(item, index) in dataToDisplay" :key="item">
             <td :class="['gts-print-table-content-data', header.className]" v-for="(header) in headers"
               :key="header.name">
 
@@ -45,12 +38,11 @@
             </td>
           </tr>
         </tbody>
-
       </table>
 
     </div>
 
-     
+
 
     <DataTablePagination v-if="isPaginable" :totalRecords="pagination.totalRecords"
       :pageLengths="pagination.pageLengths" :pageLengthTitle="pagination.pageLengthTitle"
@@ -60,6 +52,7 @@
 </template>
 
 <script>
+import ContextMenu from '../contextmenu/ContextMenu.vue';
 import DataTablePagination from './DataTablePagination.vue';
 
 const defaultLengths = [10, 20, 60, 100];
@@ -67,11 +60,9 @@ const defaultLengths = [10, 20, 60, 100];
 export default {
 
   name: "DataTable",
-
-  emits: ['unsort', 'sort-asc', 'sort-desc', 'hide-column'],
-
   components: {
-    DataTablePagination
+    DataTablePagination,
+    ContextMenu
   },
 
   props: {
@@ -93,15 +84,10 @@ export default {
       }
     },
 
-    cssClass: {
-      type: Object,
+    className: {
+      type: String,
       required: false,
-      default() {
-        return {
-          tableWrapperClass: "gts-print-table-wrapper",
-          tableHeadersClass: "gts-print-table-header-data",
-        }
-      }
+
     },
     isPaginable: {
       type: Boolean,
@@ -138,56 +124,58 @@ export default {
         return this.items.slice(start, end);
       }
       return this.items
-    }
+    },
+    dataToDisplay() {
+      if (this.sortBy) {
+        return this.sortItems()
+      }
+      return this.splitedItems;
+    },
   },
 
 
-  
+
   data() {
     return {
 
-      visibleMenus: {},
+      contextMenuActions: undefined,
       currentPaginationPage: 1,
       rowPerPage: this.paginationConfig?.pageLengths[0] || defaultLengths[0],
+      sortBy: undefined,
+      sortType: "asc",
 
     }
   },
 
   methods: {
 
-    toggleMenu(fieldName) {
-      if (this.visibleMenus[fieldName]) {
-        this.visibleMenus = {};
-      } else {
-        this.visibleMenus = {};
-        this.visibleMenus[fieldName] = true;
-      }
 
+    toggleMenu(headerTitle, event) {
+
+      event.stopPropagation();
+
+      const contextMenuComponent = this.$refs.contextMenu;
+      contextMenuComponent.toggleMenu();
+
+      this.$nextTick(() => {
+        const contextMenuDOM = contextMenuComponent.$el;
+
+        //👉 nodeType === 1 → c’est un vrai élément HTML.
+        //👉 nodeType === 8 → c’est un commentaire (<!--v-if-->).
+
+        if (contextMenuDOM.nodeType == 1) {
+          this.setUpSortingMenu(headerTitle);
+          const { clientX, clientY } = event;
+
+          contextMenuDOM.style.left = `${clientX - 200}px`;
+          contextMenuDOM.style.display = 'block';
+        }
+
+      });
     },
 
-    isMenuVisible(fieldName) {
-      return this.visibleMenus[fieldName] || false;
-    },
 
-    unsort(fieldName) {
-      this.visibleMenus = {};
-      this.$emit('unsort', fieldName);
-    },
 
-    sortAsc(fieldName) {
-      this.visibleMenus = {};
-      this.$emit('sort-asc', fieldName);
-    },
-
-    sortDesc(fieldName) {
-      this.visibleMenus = {};
-      this.$emit('sort-desc', fieldName);
-    },
-
-    hideColumn(fieldName) {
-      this.visibleMenus = {};
-      this.$emit('hide-column', fieldName);
-    },
     onPaginationChange(currentPage) {
       this.currentPaginationPage = currentPage;
 
@@ -195,8 +183,58 @@ export default {
     onNumberRowsPerPageChaned(nbrRows) {
       this.rowPerPage = nbrRows;
 
-    }
+    },
+    sortItems() {
+      const header = this.headers?.[this.sortBy];
+      const sortFn =
+        typeof header?.compare === 'function'
+          ? header.compare
+          : (a, b) => {
+            const valA = a?.[this.sortBy];
+            const valB = b?.[this.sortBy];
+            if (valA < valB) return -1;
+            if (valA > valB) return 1;
+            return 0;
+          };
 
+
+      const sorted = [...this.splitedItems].sort(sortFn);
+
+
+      return this.sortType === 'desc' ? sorted.reverse() : sorted;
+    },
+
+    setUpSortingMenu(headerTitle) {
+
+      this.contextMenuActions = [
+        {
+          title: 'Sort Asc',
+          onClick: () => {
+            this.sortBy = headerTitle;
+            this.sortType = 'asc';
+          }
+        }, {
+          title: 'Sort Desc',
+          onClick: () => {
+            this.sortType = 'desc';
+          }
+        },
+        {
+          title: 'Unsort',
+          onClick: () => {
+            this.sortType = 'asc';
+            this.sortBy = undefined;
+          }
+        },
+        {
+          title: 'Hide',
+          onClick: () => {
+
+          }
+        },
+
+      ]
+    },
   }
 
 }
@@ -207,10 +245,14 @@ export default {
   position: relative;
   width: 100%;
 
+  .gts-table-actions-menu {
+    position: absolute;
+  }
+
   .gts-print-table-container-scrollable {
     overflow-x: auto;
     overflow-y: hidden;
-     
+
 
 
     &::-webkit-scrollbar {
@@ -236,7 +278,7 @@ export default {
       display: none; // Masquer les boutons de défilement
     }
 
-   
+
 
 
   }
@@ -352,9 +394,9 @@ export default {
 
   }
 
-  
-    
-    
+
+
+
 
 }
 

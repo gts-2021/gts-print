@@ -7,6 +7,8 @@ A VueJS component for creating customizable context menus. This component is ide
 
 The `ContextMenu` component is a lightweight and flexible solution for building contextual menus in your VueJS applications. It allows you to define actions and their behavior dynamically.
 
+PS: if you use another component wihch open context menu ex this.$refs.contextMenu.toggleMenu() , you should use before event.stopPropagation() or pass to ContextMenu the prop isAutoClose=false to prevent contextMenu auto closing.
+
 ## Features
 
 - **Customizable Menu**: Add custom class names for styling.

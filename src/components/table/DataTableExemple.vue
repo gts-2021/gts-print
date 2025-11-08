@@ -200,13 +200,13 @@ export default {
       items: [
 
         {
-          companyCode: "123456",
+          companyCode: "65892",
           companyName: "company 1",
           companyEmail: "company1@mail.com",
           companyDomain: "domaine 1 ",
           companyAddress: "address 1",
           companyPhone: "0758221610",
-          activationDate: "23/10/2024",
+          activationDate: "23/05/2024",
           website: "company.com",
           facebook: "www.facebook.com",
           instagram: "instagram.com",
@@ -220,7 +220,7 @@ export default {
           companyDomain: "domaine 2 ",
           companyAddress: "address 2",
           companyPhone: "777",
-          activationDate: "23/10/2024",
+          activationDate: "10/10/2024",
           website: "company.com",
           facebook: "www.facebook.com",
           instagram: "instagram.com",
@@ -228,13 +228,13 @@ export default {
         },
 
         {
-          companyCode: "123456",
+          companyCode: "4489",
           companyName: "company 3",
           companyEmail: "company3@mail.com",
           companyDomain: "domaine 3 ",
           companyAddress: "address 3",
           companyPhone: "0758221610",
-          activationDate: "23/10/2024",
+          activationDate: "23/10/2026",
           website: "company.com",
           facebook: "www.facebook.com",
           instagram: "instagram.com",
@@ -243,12 +243,12 @@ export default {
         },
 
         {
-          companyCode: "123456",
+          companyCode: "100256",
           companyName: "company 4",
           companyEmail: "company4@mail.com",
           companyDomain: "domaine 4 ",
           companyAddress: "address 4",
-          companyPhone: "777", activationDate: "23/10/2024",
+          companyPhone: "777", activationDate: "03/05/2024",
           website: "company.com",
           facebook: "www.facebook.com",
           instagram: "instagram.com",
