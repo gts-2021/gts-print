@@ -111,7 +111,7 @@ export default {
 <style lang="scss">
 .gts-button-container {
 	display: inline-flex;
-	width: fit-content;
+	min-width: max-content;
 
 	
 
@@ -125,7 +125,6 @@ export default {
 		font-weight: 600;
 		background: $primary-color-400;
 		color: $color-white;
-		width: 100%;
 		align-items: center;
 		justify-content: center;
 

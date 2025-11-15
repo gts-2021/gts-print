@@ -8,7 +8,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 
-## [Unreleased] 
+## [Unreleassed] 
+
+### Added
+ 
+### Changed
+
+* Changes in `ButtonComponent`widths :
+  - Change `gts-button-container`to take  `min-width: max-content;`.
+  - Remove from `gts-button` the css `width: 100%`.
+ 
+### Deprecated
+
+### Removed
+ 
+### Fixed
+
+### Security
+
+
+## [1.1.0] 
 
 ### Added
 
@@ -22,8 +41,6 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
   - Add prop to `DataTable` hide/show pagination component.
   - Replace programmed scrollbar by default html scrollbar.
 * Replace pure table sorting menu to `ContextMenu`. [GTS-PRINT#52] (https://quire.io/w/GTS-PRINT31/52)
- 
-
 
 ### Deprecated
 
