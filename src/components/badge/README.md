@@ -1,88 +1,73 @@
-# `BadgeComponent` Documentation
+# BadgeComponent Documentation
 
 ## Introduction
 
 The `BadgeComponent` is a customizable badge that supports various themes. It’s designed to integrate seamlessly with different styles and themes for primary, secondary, and danger badges.
 
 ## Props
-| Prop            | Type       | Required | Default         | Description
-| `text`          | `String`   | Yes      | `''`             | Text displayed as the bagde text.  
-| `theme`         | `String`   | No       | `''`       | badge theme, supporting styles like ``, ``, ``, etc. from constants. |
-| `className`     | `String`   | No       | `gts-badge`            | Custom class applied to the badge for additional styling.
 
-
-## Data Properties
-
-None.
-
-## Events
-
--
-
-## Methods
-
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `text` | `String` | Yes | - | The text content to display inside the badge. |
+| `theme` | `String` | No | `''` | The theme class to apply (e.g., `gts-badge-primary`, `gts-badge-success`). |
+| `className` | `String` | No | `gts-badge` | Custom CSS class for additional styling. |
 
 ## CSS Classes
 
-The badge component includes multiple CSS classes for styling, with SCSS used for dynamic theming. Below are the main classes:
+The badge component includes multiple CSS classes for styling. Below are the main classes available:
 
+- `.gts-badge`: Default style.
 - `.gts-badge-primary`: Primary badge with default primary color styling.
-- `.gts-badge-sucess`: Sucess badge style with a green theme.
-- `.gts-badge-warning`: Warning badge style with an orang theme.
+- `.gts-badge-success`: Success badge style with a green theme.
+- `.gts-badge-warning`: Warning badge style with an orange theme.
 - `.gts-badge-danger`: Danger badge style with a red theme.
 
 ## Usage Examples
 
-### Basic badge with title only
+### Basic Badge
 
 ```vue
 <template>
-  <Badge />
+  <BadgeComponent text="New" />
 </template>
 
 <script>
-import Badge from './Badge.vue';
+import BadgeComponent from '@/components/badge/BadgeComponent.vue';
 
 export default {
-  components: { Badge },
-};
-</script>
-
-```
-### badge with specific theme
-
-```vue
-<template>
-  <Badge :text="'Completed'" :theme="PRIMARY"/>
-</template>
-
-<script>
-import Badge from './Badge.vue';
-import { PRIMARY } from '@/constants/badges.js';
-
-export default {
-  components: { Badge },
-  data() {
-		return {
-      PRIMARY,
-    }
-  },
+  components: { BadgeComponent },
 };
 </script>
 ```
 
-### badge with specific style
+### Badge with Theme
 
 ```vue
 <template>
-  <Badge :text="'Completed'" className="custom-badge-style"/>
+  <BadgeComponent text="Completed" theme="gts-badge-success" />
 </template>
 
 <script>
-import Badge from './Badge.vue';
+import BadgeComponent from '@/components/badge/BadgeComponent.vue';
 
 export default {
-  components: { Badge },
+  components: { BadgeComponent },
+};
+</script>
+```
+
+### Badge with Custom Class
+
+```vue
+<template>
+  <BadgeComponent text="Custom" className="my-custom-badge" />
+</template>
+
+<script>
+import BadgeComponent from '@/components/badge/BadgeComponent.vue';
+
+export default {
+  components: { BadgeComponent },
 };
 </script>
 ```

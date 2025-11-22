@@ -1,47 +1,92 @@
-# Documentation du composant `<TextInput />`
+# Input Components Documentation
 
-Le composant `<TextInput />` est un champ de saisie personnalisable permettant à l'utilisateur de saisir des données, notamment des textes et des dates. Ce composant prend en charge des fonctionnalités telles que les étiquettes, les messages d'erreur, et les icônes.
+This package includes several input components: `TextInput`, `ListBox`, and `TextInputArea`. They share common props and styling.
 
-## Exemple d'utilisation
+## `<TextInput />`
+
+A versatile input component supporting text, password, and date types, with built-in masking support via `maska`.
+
+### Props
+
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `label` | `String` | Yes | - | Label text for the input. |
+| `value` | `String` | No | `''` | Initial value (deprecated, use `v-model`). |
+| `required` | `Boolean` | No | `false` | Displays a "(required)" indicator. |
+| `type` | `String` | No | `'text'` | Input type (`text`, `password`, `date`, etc.). |
+| `disabled` | `Boolean` | No | `false` | Disables the input. |
+| `error` | `String` | No | `''` | Error message to display below the input. |
+| `placeholder` | `String` | No | `''` | Placeholder text. |
+| `maskPattern` | `String` | No | `''` | Mask pattern string (e.g., `'##/##/####'`). |
+| `maskToken` | `Object` | No | `{}` | Custom mask tokens configuration. |
+
+### Events
+
+| Event | Payload | Description |
+|-------|---------|-------------|
+| `onValueChanged` | `String` | Emitted when the input value changes. |
+| `update:modelValue` | `String` | Standard v-model update event. |
+
+### Usage Example
 
 ```vue
-<TextInput 
-    label="Nom" 
-    v-model="userName" 
-    placeholder="Entrez votre nom" 
-    required 
-    error="Le nom est requis" 
-    type="text" 
-/>
+<template>
+  <TextInput 
+    label="Username" 
+    v-model="username" 
+    placeholder="Enter username"
+    required
+  />
+  <TextInput 
+    label="Password" 
+    type="password"
+    v-model="password" 
+  />
+</template>
 ```
 
-## Props
+## `<ListBox />`
 
-| Prop        | Type     | Requis | Valeur par défaut | Description                                                  |
-|-------------|----------|--------|-------------------|--------------------------------------------------------------|
-| `label`     | `String` | Oui    | N/A               | L'étiquette pour le champ de saisie.                         |
-| `placeholder` | `String` | Non  | `""`              | Texte d'espace réservé pour le champ.                        |
-| `value`     | `String` | Non    | `""`              | Valeur actuelle du champ.(deprecated)                        |
- v-model="variable"    | `String` | Oui    | `""`     | 2-way binding                                                |
-| `required`  | `Boolean`| Non    | `false`           | Indique si le champ est obligatoire.                         |
-| `type`      | `String` | Non    | `"text"`          | Spécifie le type de champ d'entrée (`text`, `date`, etc .).  |
-| `disabled`  | `Boolean`| Non    | `false`           | Si `true`, désactive le champ de saisie.                     |
-| `error`     | `String` | Non    | `""`              | Message d'erreur à afficher sous le champ de saisie.         |
-| `maskPattern`| `String`| Non    | `""`              | elle prend un patten pour le mask souhaité.                  |
-| `maskToken`  | `String`| Non    | `""`              | elle prend un object object pour appliquer le mask souhaité. |
+A custom dropdown/select component.
 
-## Événements
+### Props
 
-| Événement          | Description                                              |
-|-------------------|----------------------------------------------------------|
-| `onValueChanged`  | Émis lorsque la valeur du champ change.                  |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `options` | `Array` | No | `[]` | Array of option objects `{ label: '...', value: '...' }`. |
+| `label` | `String` | Yes | - | Label for the dropdown. |
+| `value` | `String` | No | - | Selected value. |
+| `disabled` | `Boolean` | No | `false` | Disables the dropdown. |
+| `error` | `String` | No | `''` | Error message. |
 
-## Maska library
-we are using maska library from : https://beholdr.github.io/maska/v3/#/install 
+### Usage Example
 
-** mask token
-{
-  '#': { pattern: /[0-9]/ },       // digits
-  '@': { pattern: /[a-zA-Z]/ },    // letters
-  '*': { pattern: /[a-zA-Z0-9]/ }, // letters & digits
-}
+```vue
+<template>
+  <ListBox 
+    label="Select Role"
+    :options="[{ label: 'Admin', value: 'admin' }, { label: 'User', value: 'user' }]"
+    v-model="selectedRole"
+  />
+</template>
+```
+
+## `<TextInputArea />`
+
+A textarea component for multi-line input.
+
+### Props
+
+Inherits common props (`label`, `value`, `required`, `disabled`, `error`, `placeholder`) from `CommonInput`.
+
+### Usage Example
+
+```vue
+<template>
+  <TextInputArea 
+    label="Description" 
+    v-model="description" 
+    placeholder="Enter description..."
+  />
+</template>
+```
