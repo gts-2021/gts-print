@@ -1,88 +1,74 @@
+# Radio Components Documentation
 
-# RadioButton Component
+This package includes `RadioButton` for individual radio buttons and `RadioGroup` for managing a set of options.
 
-## Description
-`RadioButton` is a Vue component representing a customizable radio button with a label.
+## `<RadioButton />`
 
-## Template Structure
+A single radio button component.
+
+### Props
+
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `id` | `String` | No | - | Unique identifier. |
+| `label` | `String` | No | `''` | Label text displayed next to the radio. |
+| `isChecked` | `Boolean` | No | `false` | Initial checked state. |
+
+### Events
+
+| Event | Payload | Description |
+|-------|---------|-------------|
+| `onChecked` | `String` | Emitted with the `id` when the radio is checked. |
+
+---
+
+## `<RadioGroup />`
+
+A container for managing multiple `RadioButton` components.
+
+### Props
+
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `radios` | `Array` | Yes | - | Array of option objects `{ label: '...' }`. |
+| `itemChecked` | `Number` | No | - | Index of the initially selected option. |
+
+### Events
+
+| Event | Payload | Description |
+|-------|---------|-------------|
+| `onRadioChecked` | `Object` | Emitted with the selected option object when changed. |
+
+### Usage Example
+
 ```vue
 <template>
-  <div @click="checkRadio" class="gts-radio-container">
-    <div class="gts-radio">
-      <span v-if="isRadioChecked" class="gts-radio-checked"></span>
-    </div>
-    <span @click="checkRadio" class="gts-radio-label">{{ label }}</span>
-  </div>
+  <RadioGroup 
+    :radios="options" 
+    :itemChecked="0"
+    @onRadioChecked="handleSelection"
+  />
 </template>
+
+<script>
+import RadioGroup from '@/components/radio/RadioGroup.vue';
+
+export default {
+  components: { RadioGroup },
+  data() {
+    return {
+      options: [
+        { label: 'Option 1' },
+        { label: 'Option 2' },
+        { label: 'Option 3' }
+      ]
+    };
+  },
+  methods: {
+    handleSelection(option) {
+      console.log('Selected:', option);
+    }
+  }
+};
+</script>
 ```
-
-## Props
-| Prop Name | Type    | Required | Default | Description                          |
-|-----------|---------|----------|---------|--------------------------------------|
-| id        | String  | No       | -       | Unique identifier for the radio button. |
-| label     | String  | No       | ''      | The label displayed next to the radio button. |
-| isChecked | Boolean | No       | false   | Indicates if the radio button is initially checked. |
-
-## Data
-| Data Property   | Type    | Description                       |
-|-----------------|---------|-----------------------------------|
-| isRadioChecked  | Boolean | Tracks whether the radio button is checked. |
-
-## Methods
-| Method Name | Description |
-|-------------|-------------|
-| checkRadio  | Sets the radio button to checked and emits the `onChecked` event with the radio button ID. |
-
-## Events
-| Event Name  | Payload   | Description                         |
-|-------------|-----------|-------------------------------------|
-| onChecked   | `String`  | Emitted when the radio button is checked, sending its ID. |
-
-## Watchers
-| Watcher    | Description |
-|------------|-------------|
-| isChecked  | Updates `isRadioChecked` when `isChecked` prop changes. |
-
- 
-
-# RadioGroup Component
-
-## Description
-`RadioGroup` is a Vue component that renders a group of `RadioButton` components, allowing a user to select one option from a provided list.
-
-## Template Structure
-```vue
-<template>
-  <div class="gts-radio-group">
-      <RadioButton v-for="(item, index) in radios" :key="index" :label="item.label" @onChecked="onRadioChecked" :id="index" :isChecked="index == itemSelected" />
-  </div>
-</template>
-```
-
-## Props
-| Prop Name   | Type    | Required | Description                                   |
-|-------------|---------|----------|-----------------------------------------------|
-| radios      | Array   | Yes      | An array of objects representing radio options. |
-| itemChecked | Number  | No       | The index of the initially checked radio button. |
-
-## Data
-| Data Property | Type   | Description                                      |
-|---------------|--------|--------------------------------------------------|
-| itemSelected  | Number | The index of the currently selected radio button. |
-
-## Methods
-| Method Name      | Description |
-|------------------|-------------|
-| onRadioChecked   | Updates `itemSelected` with the index of the checked radio and emits `onRadioChecked` with the selected radio object. |
-
-## Events
-| Event Name     | Payload        | Description                                          |
-|----------------|----------------|------------------------------------------------------|
-| onRadioChecked | `Object`       | Emitted when a radio button is checked, sending the checked radio object. |
-
-## Lifecycle Hooks
-| Hook     | Description |
-|----------|-------------|
-| created  | Sets `itemSelected` to `itemChecked` prop on component creation. |
-
- 

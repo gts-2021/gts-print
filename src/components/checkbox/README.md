@@ -1,67 +1,80 @@
+# CheckBox Component Documentation
 
-# CheckBox Component
+## Introduction
 
-Un composant VueJS réutilisable qui offre une case à cocher personnalisée avec un label associé.
+The `CheckBox` component is a customizable checkbox with a label. It supports two-way binding via `v-model` (using the `update:isChecked` event) or manual control.
 
-## Aperçu
+## Props
 
-Le `CheckBox` est un composant simple qui permet aux utilisateurs de basculer entre un état "coché" et "non coché". Il est doté d'une icône SVG pour afficher l'état "coché".
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `id` | `String` | No | - | Unique identifier for the checkbox. |
+| `label` | `String` | No | `''` | Text label displayed next to the checkbox. |
+| `isChecked` | `Boolean` | No | `false` | The current checked state. Supports `v-model`. |
+| `noBind` | `Boolean` | No | `false` | If `true`, disables internal state update on click. Parent must update `isChecked`. |
 
-## Fonctionnalités
+## Events
 
-- Personnalisation facile avec des props pour définir l'état initial et le label.
-- Émission d'événements pour capturer l'interaction de l'utilisateur.
-- Design moderne avec des styles SCSS.
+| Event | Payload | Description |
+|-------|---------|-------------|
+| `onToggle` | `Boolean` | Emitted when the checkbox is clicked. Payload is the *new* state (toggled). |
+| `update:isChecked` | `Boolean` | Emitted to update the `v-model` value. |
 
-## Installation
+## Usage Examples
 
-1. Copiez le fichier `CheckBox.vue` dans le répertoire de composants de votre projet.
-2. Importez-le et utilisez-le dans vos composants Vue.
-
-## Utilisation
+### Basic Usage with v-model
 
 ```vue
 <template>
   <CheckBox
-    id="example-checkbox"
-    label="Accepter les termes"
-    :isChecked="true"
-    @onChecked="handleCheck"
+    label="Accept Terms"
+    v-model:isChecked="accepted"
   />
 </template>
 
 <script>
-import CheckBox from '@/components/CheckBox.vue';
+import CheckBox from '@/components/checkbox/CheckBox.vue';
 
 export default {
-  components: {
-    CheckBox
-  },
-  methods: {
-    handleCheck(isChecked) {
-      console.log('État de la case :', isChecked);
-    }
+  components: { CheckBox },
+  data() {
+    return {
+      accepted: false
+    };
   }
 };
 </script>
 ```
 
-## Props
+### Manual Control (noBind)
 
-| Prop        | Type     | Description                                    | Requis | Par défaut |
-|-------------|----------|------------------------------------------------|--------|------------|
-| `id`        | String   | Identifiant unique pour la case à cocher       | Non    | `null`     |
-| `label`     | String   | Texte affiché à côté de la case                | Non    | `''`       |
-| `isChecked` | Boolean  | Définit si la case est initialement cochée     | Non    | `false`    |
-| `noBind` | Boolean  | Pour utiliser que la valeur de isChecked et en cas de toggle la valeur ne va pas etre changé et our le changer il faut utiliser le onToggle et changer la valeur passer a isChecked     | Non    | `false`    |
+```vue
+<template>
+  <CheckBox
+    label="Manual Check"
+    :isChecked="manualState"
+    :noBind="true"
+    @onToggle="handleToggle"
+  />
+</template>
 
-`isChecked` can be binded for exemple:
-<CheckBox v-model:isChecked="checkboxBindedVal" label="Checkbox with value binded"/>
+<script>
+import CheckBox from '@/components/checkbox/CheckBox.vue';
 
-## Événements
-
-| Événement     | Description                                  | Paramètre émis        |
-|---------------|----------------------------------------------|-----------------------|
-| `onChecked`   | Émis lorsque la case est cochée/décochée     | `Boolean` (état actuel) |
-
- 
+export default {
+  components: { CheckBox },
+  data() {
+    return {
+      manualState: false
+    };
+  },
+  methods: {
+    handleToggle(newState) {
+      // Perform validation or logic before updating
+      console.log('Toggled to:', newState);
+      this.manualState = newState;
+    }
+  }
+};
+</script>
+```

@@ -1,21 +1,23 @@
-
 # Accordion Components
 
-A set of VueJS components that allow you to create accordion panels with the ability to manage the opening/closing of individual items or exclusively. (it must be used into an `AccordionPanel`)
+A set of VueJS components that allow you to create accordion panels with the ability to manage the opening/closing of individual items or exclusively.
 
-## Overview
+## Components
 
-The `AccordionPanel` and `AccordionComponent` components allow you to create interactive accordion items, with the ability to customize their behavior (open one panel at a time or multiple).
+This package includes two main components:
+- `AccordionPanel`: The container that manages the state of the accordion items.
+- `AccordionComponent`: The individual accordion item that contains the header and content.
 
 ## Features
 
-- **Open/Close State Management**: You can control which panel is open using props and events.
+- **Open/Close State Management**: Control which panel is open using props and events.
 - **Exclusive Opening**: If the `onlyOneItemOpened` prop is set to `true`, only one panel can be open at a time.
 - **Customizable Title**: The title of each accordion panel can be a string or a custom component.
+- **Slots**: Use slots to insert custom content into the accordion body.
 
 ## Installation
 
-Copy the `AccordionPanel.vue` and `AccordionComponent.vue` files into your components directory.
+Ensure you have the necessary files in your project structure.
 
 ## Usage
 
@@ -23,10 +25,10 @@ Copy the `AccordionPanel.vue` and `AccordionComponent.vue` files into your compo
 
 ```vue
 <template>
-  <AccordionPanel :openedAccordions="openedAccordions" :onlyOneItemOpened="true">
+  <AccordionPanel :openedAccordions="['1']" :onlyOneItemOpened="true">
     <AccordionComponent
-      v-for="(item, index) in items"
-      :key="index"
+      v-for="item in items"
+      :key="item.id"
       :id="item.id"
       :title="item.title"
     >
@@ -36,8 +38,8 @@ Copy the `AccordionPanel.vue` and `AccordionComponent.vue` files into your compo
 </template>
 
 <script>
-import AccordionPanel from '@/components/AccordionPanel.vue';
-import AccordionComponent from '@/components/AccordionComponent.vue';
+import AccordionPanel from '@/components/accordion/AccordionPanel.vue';
+import AccordionComponent from '@/components/accordion/AccordionComponent.vue';
 
 export default {
   components: {
@@ -46,7 +48,6 @@ export default {
   },
   data() {
     return {
-      openedAccordions: ['1'],  // Default open panels
       items: [
         { id: '1', title: 'Panel 1', content: 'Content of panel 1' },
         { id: '2', title: 'Panel 2', content: 'Content of panel 2' }
@@ -57,40 +58,42 @@ export default {
 </script>
 ```
 
-## Props
+## API Documentation
 
-### `AccordionPanel`
+### AccordionPanel
 
-| Prop                | Type    | Description                                                        | Required | Default |
-|---------------------|---------|--------------------------------------------------------------------|----------|---------|
-| `openedAccordions`   | Array   | List of panels opened initially.                                   | No       | `[]`    |
-| `onlyOneItemOpened`  | Boolean | If `true`, only one panel can be opened at a time.                 | No       | `false` |
+#### Props
 
-### `AccordionComponent`
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `openedAccordions` | `Array` | No | `[]` | An array of `id`s of the accordions that should be initially opened. |
+| `onlyOneItemOpened` | `Boolean` | No | `false` | If `true`, opening one accordion will close others. |
 
-| Prop        | Type             | Description                                                  | Required | Default |
-|-------------|------------------|--------------------------------------------------------------|----------|---------|
-| `id`        | String           | Unique identifier for each accordion panel.                 | Yes      | N/A     |
-| `title`     | String, Object   | Title of the accordion panel, can be a string or a component. | Yes      | N/A     |
+#### Events
+
+| Event | Payload | Description |
+|-------|---------|-------------|
+| `onOpenAccordion` | `id` (String) | Emitted when an accordion item is opened. |
+| `onCloseAccordion` | `id` (String) | Emitted when an accordion item is closed. |
+
+### AccordionComponent
+
+#### Props
+
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `id` | `String` | Yes | - | Unique identifier for the accordion item. |
+| `title` | `String` \| `Object` | Yes | - | The title to display in the header. Can be a string or a Vue component. |
+
+#### Slots
+
+| Slot | Description |
+|------|-------------|
+| `default` | The content to display when the accordion is expanded. |
 
 ## Methods
 
-- `toggleAccordion` : Toggles the open/close state of the panel.
-- `isOpen` : Returns `true` if the panel is open.
+The `AccordionComponent` exposes the following methods (internal use mostly, but accessible via ref):
 
-## Events
-
-| Event               | Description                                                | Emitted Parameter |
-|---------------------|------------------------------------------------------------|--------------------|
-| `onOpenAccordion`   | Emitted when a user opens an accordion panel                | `id` of the panel  |
-| `onCloseAccordion`  | Emitted when a user closes an accordion panel               | `id` of the panel  |
-
-
-
-## Example Rendering
-
-![Accordion Example](./accordion-example.png) <!-- Replace this link with a valid path to your image -->
-
-## License
-
-This project is licensed under the MIT License.
+- `toggleAccordion()`: Toggles the open/close state.
+- `isOpen()`: Returns `true` if the item is currently open.
