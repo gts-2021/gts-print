@@ -127,6 +127,7 @@ export default {
 		color: $color-white;
 		align-items: center;
 		justify-content: center;
+		transition-duration: 0.2s;
 
 		.gts-button-content {
 		display: flex;
@@ -186,12 +187,13 @@ export default {
 	.gts-button-primary-50 {
 		background: $primary-color-50;
 		color: $primary-color-400;
+		border: 1px solid $primary-color-50;
 	}
 
 	.gts-button-primary-50:hover {
 		background: #bfe1e8;
 		color: $primary-color-400;
-		border: 0px;
+		border: 1px solid #bfe1e8;
 	}
 
 	/* PRIMARY_50_INVERSE */
@@ -242,9 +244,9 @@ export default {
 	}
 
 	.gts-button-danger-light:hover {
-		background: $accent-error-red-color;
-		color: $accent-light-red-color;
-		border: 1px solid $accent-error-red-color;
+		background: $accent-light-red-color-100;
+		color: $accent-error-red-color;
+		border: 1px solid $accent-light-red-color-100;
 	}
 
 	/* DANGER_LIGHT_INVERSE */
