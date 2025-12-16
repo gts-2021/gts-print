@@ -1,5 +1,6 @@
 <template>
 
+  <template v-if="!calendarDay.isEmpty">
   <!-- header -->
   <div class="gts-print-calendar-monthly-content-data-header">
 
@@ -25,6 +26,7 @@
   <div v-else class="gts-print-calendar-monthly-content-data-empty">
     <span class="time-slot-text"> {{calendarDay.label}}  </span>
   </div>
+  </template>
         
   
 </template>
