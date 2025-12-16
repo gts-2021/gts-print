@@ -20,6 +20,7 @@ import CalendarComponent from '@/components/calendar/CalendarComponent.vue';
 import NoContent from '@/components/nocontent/NoContent.vue';
 import NotificationComponent from '@/components/notification/NotificationComponent.vue';
 import NotificationPlugin from './plugins/NotificationPlugin';
+import AutoComplete from './components/input/AutoComplete.vue';
 
 const GtsPrint = {
   install(app) {
@@ -43,6 +44,7 @@ const GtsPrint = {
     app.component('CalendarComponent', CalendarComponent);
     app.component("NoContent", NoContent);
     app.component("NotificationComponent", NotificationComponent);
+    app.component("AutoComplete", AutoComplete);
     app.use(NotificationPlugin);
   }
 };
@@ -69,6 +71,7 @@ export {
   CalendarComponent,
   NoContent,
   NotificationComponent,
+  AutoComplete,
   NotificationPlugin 
 };
 
