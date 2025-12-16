@@ -4,13 +4,22 @@
 
     <span>GTS-CALENDAR : Navigate to Mars and May to show mor effect</span> <br>
     <CalendarComponent
+    :isStrictMonth="true"
     :datesContent="dummyContent"
     :startingDate="'25/05/2025'"
     @onDateChanged="($emit) => console.log($emit)"/> 
     
     <br>
 
-    <span>PURE CONGURABLE CALENDAR : </span> <br>
+    <span>GTS-CALENDAR : Calendar without Strict mounth display</span> <br>
+    <CalendarComponent
+    :datesContent="dummyContent"
+    :startingDate="'25/05/2025'"
+    @onDateChanged="($emit) => console.log($emit)"/> 
+    
+    <br>
+
+    <span>PURE CONFIGURABLE CALENDAR : </span> <br>
     <PureCalendar 
       :headerConfig="headerConfig"
       :calendarContentConfig="calendarContentConfig"

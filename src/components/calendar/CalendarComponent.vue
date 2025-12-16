@@ -51,6 +51,11 @@ export default {
       type: Array,
       required: false,
       default: Array.of()
+    },
+    isStrictMonth: {
+      type: Boolean,
+      required: false,
+      default: false
 
     }
 
@@ -128,8 +133,13 @@ export default {
         endOfCalendar = currentDate.clone().endOf('week');
       }
 
-      this.headerConfig.startDate = startOfCalendar.format('DD MMM');
-      this.headerConfig.endDate = endOfCalendar.format('DD MMM');
+      if (this.isStrictMonth && this.headerConfig.defaultType == CALENDARS_MONTH_TYPE) {
+        this.headerConfig.startDate = currentDate.clone().startOf('month').format('DD MMM');
+        this.headerConfig.endDate = currentDate.clone().endOf('month').format('DD MMM');
+      } else {
+        this.headerConfig.startDate = startOfCalendar.format('DD MMM');
+        this.headerConfig.endDate = endOfCalendar.format('DD MMM');
+      }
 
       // Générer toutes les dates dans cette plage
       let calendarRange = [];
@@ -140,6 +150,14 @@ export default {
 
         let content = dateContent ? dateContent.content : undefined;
 
+        // Check if the day is outside the current month (for monthly view)
+        let isOutsideMonth = false;
+        if (this.headerConfig.defaultType == CALENDARS_MONTH_TYPE) {
+             isOutsideMonth = !day.isSame(currentDate, 'month');
+        }
+
+        let isEmpty = this.isStrictMonth && isOutsideMonth;
+
         calendarRange.push(
           {
             date: day.format(this.dateFormat),
@@ -147,7 +165,8 @@ export default {
             day: day.format('ddd').toUpperCase(),
             label: "NO EVENT",
             disabled: true,
-            content
+            content,
+            isEmpty
           }
         );
       }

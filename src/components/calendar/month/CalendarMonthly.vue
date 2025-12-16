@@ -77,6 +77,9 @@ export default {
     getContentCssClass() {
       return this.calendarData.calendars.map(week =>
         week.map(day => {
+          if (day.isEmpty) {
+            return "empty";
+          }
           if (this.selectedDay === day) {
             return "selected";
           }
@@ -92,7 +95,7 @@ export default {
   methods : {
 
     selectDay(day){
-      if(!day.disabled){
+      if(!day.disabled && !day.isEmpty){
         this.selectedDay = day;
         this.$emit("daySelected", this.selectedDay);
       }
@@ -156,6 +159,9 @@ export default {
 
 }
 
-
+.gts-print-calendar-monthly-content-data.empty {
+  visibility: hidden;
+  pointer-events: none;
+}
     
 </style>

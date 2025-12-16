@@ -7,8 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
-
 ## [Unreleassed] 
+
+### Added
+
+* Adding `isStrictMonth` prop to `CalendarComponent` to support strict month display mode. [GTS-PRINT#43] (https://quire.io/w/GTS-PRINT31/43)
+
+### Changed
+
+* Updated `CalendarComponent` to adjust header dates when `isStrictMonth` is enabled. [GTS-PRINT#43] (https://quire.io/w/GTS-PRINT31/43)
+
+ 
+### Deprecated
+
+### Removed
+ 
+### Fixed
+
+### Security
+
+
+## [1.1.2] 
 
 ### Added
  
