@@ -11,6 +11,7 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 ### Added
 
+* Adding `AutoComplete` component. [GTS-PRINT#55] (https://quire.io/w/GTS-PRINT31/55)
 * Adding `isStrictMonth` prop to `CalendarComponent` to support strict month display mode. [GTS-PRINT#43] (https://quire.io/w/GTS-PRINT31/43)
 
 ### Changed
