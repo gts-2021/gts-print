@@ -21,6 +21,7 @@
 	<CheckBoxExemple />
 	<RadioExemple />
 	<DialogExample />
+	<AutoCompleteExample />
 	<InputExemple />
 	<BarSideExemple />
 
@@ -52,6 +53,7 @@ import ToolTipExample from './components/tooltip/ToolTipExample.vue';
 import NoContentExample from './components/nocontent/NoContentExample.vue';
 import NotificationExemple from './components/notification/NotificationExemple.vue';
 import DataTableExemple from './components/table/DataTableExemple.vue';
+import AutoCompleteExample from './components/input/AutoCompleteExample.vue';
 
 
 
@@ -59,7 +61,7 @@ export default {
 	name: "ExamplePage",
 	components: {
 
-
+AutoCompleteExample,
 		NotificationExemple,
 		BarSideExemple,
 		InputExemple,
