@@ -2,7 +2,7 @@
 
   <CommonInput v-bind="$props">
     <input @input="emitInput" :disabled="disabled" v-model="inputValue" ref="gtsInput"
-      :class="'gts-input gts-input-calendar' + (disabled ? 'gts-input-disabled' : ' ') + (error ? ' gts-input-error' : '')"
+      :class="'gts-input gts-input-calendar ' + (disabled ? 'gts-input-disabled' : ' ') + (error ? ' gts-input-error' : '')"
       :type="(type == 'password' && isShowPassword ? 'text' : type)" :placeholder="placeholder" v-maska :data-maska="maskToken?.pattern || maskPattern"
       :data-maska-tokens="maskToken.token">
 
