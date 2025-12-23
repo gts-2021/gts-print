@@ -2,7 +2,10 @@
 
   <div :class="['gts-print-table-wrapper', className]">
     <ContextMenu :ref="`contextMenu`" className="gts-table-actions-menu" :actions="contextMenuActions" />
-
+    <div :class="['gts-data-table-actions']">
+      <div class="gts-data-table-action gts-data-table-action-columns"><ColumnsIcon />  <span>COLUMNS</span></div>
+      <div class="gts-data-table-action gts-data-table-action-export" @click="exportToPDF"><ExportIcon />  <span>EXPORT</span></div>
+    </div>
     <div :class="['gts-print-table-container', isScrollable ? 'gts-print-table-container-scrollable' : '']"
       ref="gtsPrintTableContainer">
 
@@ -52,9 +55,13 @@
 </template>
 
 <script>
+import ColumnsIcon from '@/assets/icons/ColumnsIcon.vue';
 import ContextMenu from '../contextmenu/ContextMenu.vue';
 import DataTablePagination from './DataTablePagination.vue';
-
+import ExportIcon from '@/assets/icons/ExportIcon.vue';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
+import moment from 'moment';
 const defaultLengths = [10, 20, 60, 100];
 
 export default {
@@ -62,7 +69,9 @@ export default {
   name: "DataTable",
   components: {
     DataTablePagination,
-    ContextMenu
+    ContextMenu,
+    ColumnsIcon,
+    ExportIcon
   },
 
   props: {
@@ -91,17 +100,14 @@ export default {
     },
     isPaginable: {
       type: Boolean,
-      required: true,
       default: false,
     },
     isScrollable: {
       type: Boolean,
-      required: true,
       default: false,
     },
     paginationConfig: {
       type: Object,
-      required: true,
     },
   },
 
@@ -173,28 +179,50 @@ export default {
 
       });
     },
-
-
-
     onPaginationChange(currentPage) {
       this.currentPaginationPage = currentPage;
 
     },
     onNumberRowsPerPageChaned(nbrRows) {
       this.rowPerPage = nbrRows;
-
     },
     sortItems() {
-      const header = this.headers?.[this.sortBy];
+      if (!this.sortBy) return this.splitedItems;
+
+      console.log(this.sortBy);
+
+      const header = this.headers.find(h => h.name === this.sortBy);
       const sortFn =
         typeof header?.compare === 'function'
           ? header.compare
           : (a, b) => {
-            const valA = a?.[this.sortBy];
-            const valB = b?.[this.sortBy];
-            if (valA < valB) return -1;
-            if (valA > valB) return 1;
-            return 0;
+            let valA = a?.[this.sortBy];
+            let valB = b?.[this.sortBy];
+
+            // Handle null/undefined
+            if (valA === undefined || valA === null) return 1;
+            if (valB === undefined || valB === null) return -1;
+            if (valA === valB) return 0;
+
+            // Date sorting (assuming DD/MM/YYYY format based on example)
+            const datePattern = /^\d{2}\/\d{2}\/\d{4}$/;
+            if (typeof valA === 'string' && typeof valB === 'string' && datePattern.test(valA) && datePattern.test(valB)) {
+              const dateA = moment(valA, 'DD/MM/YYYY');
+              const dateB = moment(valB, 'DD/MM/YYYY');
+              if (dateA.isValid() && dateB.isValid()) {
+                return dateA.isBefore(dateB) ? -1 : 1;
+              }
+            }
+
+            // Numeric sorting
+            const numA = Number(valA);
+            const numB = Number(valB);
+            if (!isNaN(numA) && !isNaN(numB) && typeof valA !== 'boolean' && typeof valB !== 'boolean') {
+              return numA - numB;
+            }
+
+            // String sorting
+            return String(valA).localeCompare(String(valB), undefined, { numeric: true, sensitivity: 'base' });
           };
 
 
@@ -216,6 +244,7 @@ export default {
         }, {
           title: 'Sort Desc',
           onClick: () => {
+            this.sortBy = headerTitle;
             this.sortType = 'desc';
           }
         },
@@ -235,16 +264,63 @@ export default {
 
       ]
     },
+
+    exportToPDF() {
+      const doc = new jsPDF();
+
+      const tableHeaders = this.headers.map(header => header.title);
+
+      const tableData = this.items.map((item, index) => {
+        return this.headers.map(header => {
+          if (header.textFormatter) {
+            return header.textFormatter(item, index);
+          }
+          if (header.componentFormatter) {
+            // For component formatters, we can't easily get the text value.
+            // We'll try to find a field name or return empty.
+            return item[header.name] || '';
+          }
+          return item[header.name] || '';
+        });
+      });
+
+      autoTable(doc, {
+        head: [tableHeaders],
+        body: tableData,
+      });
+
+      doc.save('table-export.pdf');
+    },
   }
 
 }
 </script>
 
 <style lang="scss">
+
 .gts-print-table-wrapper {
   position: relative;
   width: 100%;
+ 
+.gts-data-table-actions {
+  display: flex;
+  gap: 10px;
+  font-weight: 500;
 
+  .gts-data-table-action {
+    display: flex;
+    gap: 5px;
+     padding: 5px;
+    align-items: center;
+    transition-duration: 0.2s;
+    cursor: pointer;
+    &:hover {
+      background-color: $primary-color-50;
+     
+    }
+  }
+
+}
   .gts-table-actions-menu {
     position: absolute;
   }
@@ -286,6 +362,7 @@ export default {
   .gts-print-table-container {
     border-radius: 12px;
     border: 1px solid $neutral-color-100;
+    margin-top: 5px;
 
 
     .gts-print-table {

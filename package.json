@@ -1,6 +1,6 @@
 {
   "name": "gts-print",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "private": false,
   "main": "dist/gts-print.cjs.js",
   "module": "dist/gts-print.es.js",
@@ -23,6 +23,8 @@
   "dependencies": {
     "@mdi/font": "5.9.55",
     "core-js": "^3.8.3",
+    "jspdf": "^3.0.4",
+    "jspdf-autotable": "^5.0.2",
     "marked": "^15.0.7",
     "maska": "^3.0.3",
     "moment": "^2.30.1",
