@@ -24,6 +24,9 @@
 	<AutoCompleteExample />
 	<InputExemple />
 	<BarSideExemple />
+	
+	<h4> ToggleComponent </h4>
+	<ToggleExemple />
 
 	<ButtonExample />
 
@@ -54,6 +57,7 @@ import NoContentExample from './components/nocontent/NoContentExample.vue';
 import NotificationExemple from './components/notification/NotificationExemple.vue';
 import DataTableExemple from './components/table/DataTableExemple.vue';
 import AutoCompleteExample from './components/input/AutoCompleteExample.vue';
+import ToggleExemple from './components/toggle/ToggleExemple.vue';
 
 
 
@@ -78,7 +82,8 @@ AutoCompleteExample,
 		StepperExample,
 		ToolTipExample,
 		NoContentExample,
-		DataTableExemple
+		DataTableExemple,
+		ToggleExemple
 
 	},
 
