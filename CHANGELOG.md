@@ -16,10 +16,13 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 * Adding `AutoComplete` component. [GTS-PRINT#55] (https://quire.io/w/GTS-PRINT31/55)
 * Adding `isStrictMonth` prop to `CalendarComponent` to support strict month display mode. [GTS-PRINT#43] (https://quire.io/w/GTS-PRINT31/43)
 * Adding `ToggleComponent` (Switch) with `noBind` prop for manual control option. [GTS-PRINT#17] (https://quire.io/w/GTS-PRINT31/17)
+* Adding column visibility toggling to `DataTable` via "COLUMNS" context menu. [GTS-PRINT#56] (https://quire.io/w/GTS-PRINT31/56)
+* Adding "Hide" column option to `DataTable` sorting menu. [GTS-PRINT#56] (https://quire.io/w/GTS-PRINT31/56)
 
 ### Changed
 
 * Improved `DataTable` sorting to use header `name` for property lookup. [GTS-PRINT#56] (https://quire.io/w/GTS-PRINT31/56)
+* Updated `DataTable` PDF export to include only visible columns. [GTS-PRINT#56] (https://quire.io/w/GTS-PRINT31/56)
 * Made `isPaginable`, `isScrollable`, and `paginationConfig` props in `DataTable` optional. [GTS-PRINT#52] (https://quire.io/w/GTS-PRINT31/52)
 * Updated `DataTablePagination` `pageLengthTitle` prop type to `String`.
 * Updated `CalendarComponent` to adjust header dates when `isStrictMonth` is enabled. [GTS-PRINT#43] (https://quire.io/w/GTS-PRINT31/43)
@@ -31,6 +34,7 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
  
 ### Fixed
 
+* Fixed `ContextMenu` positioning to align correctly with mouse click coordinates. [GTS-PRINT#56] (https://quire.io/w/GTS-PRINT31/56)
 * Fixed `sortBy` not being updated when selecting "Sort Desc" in `DataTable` context menu. [GTS-PRINT#54] (https://quire.io/w/GTS-PRINT31/54)
 
 ### Security

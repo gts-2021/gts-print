@@ -3,7 +3,7 @@
   <div :class="['gts-print-table-wrapper', className]">
     <ContextMenu :ref="`contextMenu`" className="gts-table-actions-menu" :actions="contextMenuActions" />
     <div :class="['gts-data-table-actions']">
-      <div class="gts-data-table-action gts-data-table-action-columns"><ColumnsIcon />  <span>COLUMNS</span></div>
+      <div class="gts-data-table-action gts-data-table-action-columns" @click="toggleColumnsMenu($event)"><ColumnsIcon />  <span>COLUMNS</span></div>
       <div class="gts-data-table-action gts-data-table-action-export" @click="exportToPDF"><ExportIcon />  <span>EXPORT</span></div>
     </div>
     <div :class="['gts-print-table-container', isScrollable ? 'gts-print-table-container-scrollable' : '']"
@@ -12,7 +12,7 @@
       <table class="gts-print-table">
         <thead>
           <tr class="gts-print-table-header">
-            <th class="gts-print-table-header-container" v-for="(header, index) in headers" :key="header">
+            <th class="gts-print-table-header-container" v-for="(header, index) in visibleHeaders" :key="header">
               <div :class="['gts-print-table-header-data', header.className]">
 
                 <span class="gts-print-table-header-title"> {{ header.title }} </span>
@@ -25,7 +25,7 @@
 
         <tbody>
           <tr class="gts-print-table-content" v-for="(item, index) in dataToDisplay" :key="item">
-            <td :class="['gts-print-table-content-data', header.className]" v-for="(header) in headers"
+            <td :class="['gts-print-table-content-data', header.className]" v-for="(header) in visibleHeaders"
               :key="header.name">
 
               <span v-if="header.componentFormatter">
@@ -62,6 +62,7 @@ import ExportIcon from '@/assets/icons/ExportIcon.vue';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import moment from 'moment';
+import ToggleComponent from '../toggle/ToggleComponent.vue';
 const defaultLengths = [10, 20, 60, 100];
 
 export default {
@@ -137,6 +138,9 @@ export default {
       }
       return this.splitedItems;
     },
+    visibleHeaders() {
+      return this.headers.filter(h => !this.hiddenColumns.includes(h.name));
+    },
   },
 
 
@@ -149,6 +153,7 @@ export default {
       rowPerPage: this.paginationConfig?.pageLengths[0] || defaultLengths[0],
       sortBy: undefined,
       sortType: "asc",
+      hiddenColumns: [],
 
     }
   },
@@ -171,9 +176,11 @@ export default {
 
         if (contextMenuDOM.nodeType == 1) {
           this.setUpSortingMenu(headerTitle);
+          const wrapperRect = this.$el.getBoundingClientRect();
           const { clientX, clientY } = event;
 
-          contextMenuDOM.style.left = `${clientX - 200}px`;
+          contextMenuDOM.style.left = `${clientX - wrapperRect.left}px`;
+          contextMenuDOM.style.top = `${clientY - wrapperRect.top}px`;
           contextMenuDOM.style.display = 'block';
         }
 
@@ -232,6 +239,51 @@ export default {
       return this.sortType === 'desc' ? sorted.reverse() : sorted;
     },
 
+    toggleColumnsMenu(event) {
+      event.stopPropagation();
+
+      this.contextMenuActions = this.headers.map(header => {
+        return {
+          component: ToggleComponent,
+          props: {
+            label: header.title,
+            isChecked: !this.hiddenColumns.includes(header.name),
+            noBind: true,
+            id: header.name,
+            class: 'gts-column-toggle'
+          },
+          events: {
+            onToggle: (isChecked) => {
+              // isChecked passed from toggle event is the NEW state.
+              // If new state is checked (true) -> want it to be visible -> remove from hiddenColumns
+              // If new state is unchecked (false) -> want it to be hidden -> add to hiddenColumns
+             
+              if (isChecked) {
+                 this.hiddenColumns = this.hiddenColumns.filter(c => c !== header.name);
+              } else {
+                 this.hiddenColumns.push(header.name);
+              }
+            }
+          }
+        }
+      });
+
+      const contextMenuComponent = this.$refs.contextMenu;
+      contextMenuComponent.toggleMenu();
+
+      this.$nextTick(() => {
+        const contextMenuDOM = contextMenuComponent.$el;
+        if (contextMenuDOM.nodeType == 1) {
+          const wrapperRect = this.$el.getBoundingClientRect();
+          const { clientX, clientY } = event;
+          
+          contextMenuDOM.style.left = `${clientX - wrapperRect.left}px`;
+          contextMenuDOM.style.top = `${clientY - wrapperRect.top}px`; 
+          contextMenuDOM.style.display = 'block';
+        }
+      });
+    },
+
     setUpSortingMenu(headerTitle) {
 
       this.contextMenuActions = [
@@ -258,7 +310,7 @@ export default {
         {
           title: 'Hide',
           onClick: () => {
-
+            this.hiddenColumns.push(headerTitle);
           }
         },
 
@@ -268,10 +320,10 @@ export default {
     exportToPDF() {
       const doc = new jsPDF();
 
-      const tableHeaders = this.headers.map(header => header.title);
+      const tableHeaders = this.visibleHeaders.map(header => header.title);
 
       const tableData = this.items.map((item, index) => {
-        return this.headers.map(header => {
+        return this.visibleHeaders.map(header => {
           if (header.textFormatter) {
             return header.textFormatter(item, index);
           }
