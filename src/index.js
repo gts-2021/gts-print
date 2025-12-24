@@ -21,6 +21,7 @@ import NoContent from '@/components/nocontent/NoContent.vue';
 import NotificationComponent from '@/components/notification/NotificationComponent.vue';
 import NotificationPlugin from './plugins/NotificationPlugin';
 import AutoComplete from './components/input/AutoComplete.vue';
+import ToggleComponent from '@/components/toggle/ToggleComponent.vue';
 
 const GtsPrint = {
   install(app) {
@@ -45,6 +46,7 @@ const GtsPrint = {
     app.component("NoContent", NoContent);
     app.component("NotificationComponent", NotificationComponent);
     app.component("AutoComplete", AutoComplete);
+    app.component("ToggleComponent", ToggleComponent);
     app.use(NotificationPlugin);
   }
 };
@@ -72,8 +74,9 @@ export {
   NoContent,
   NotificationComponent,
   AutoComplete,
-  NotificationPlugin 
+  ToggleComponent,
+  NotificationPlugin
 };
 
- 
+
 export default GtsPrint;

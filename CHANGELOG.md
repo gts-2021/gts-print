@@ -15,6 +15,7 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 * Adding intelligent sorting support for Dates (DD/MM/YYYY), Numbers, and Alphanumeric strings in `DataTable`.[GTS-PRINT#56] (https://quire.io/w/GTS-PRINT31/56)
 * Adding `AutoComplete` component. [GTS-PRINT#55] (https://quire.io/w/GTS-PRINT31/55)
 * Adding `isStrictMonth` prop to `CalendarComponent` to support strict month display mode. [GTS-PRINT#43] (https://quire.io/w/GTS-PRINT31/43)
+* Adding `ToggleComponent` (Switch) with `noBind` prop for manual control option. [GTS-PRINT#17] (https://quire.io/w/GTS-PRINT31/17)
 
 ### Changed
 
