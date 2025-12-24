@@ -11,6 +11,20 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 ### Added
 
+### Changed
+
+### Deprecated
+
+### Removed
+ 
+### Fixed
+
+### Security
+
+## [1.3.0] 
+
+### Added
+
 * Adding PDF export functionality to `DataTable` component using `jspdf` and `jspdf-autotable`. [GTS-PRINT#56] (https://quire.io/w/GTS-PRINT31/56)
 * Adding intelligent sorting support for Dates (DD/MM/YYYY), Numbers, and Alphanumeric strings in `DataTable`.[GTS-PRINT#56] (https://quire.io/w/GTS-PRINT31/56)
 * Adding `AutoComplete` component. [GTS-PRINT#55] (https://quire.io/w/GTS-PRINT31/55)
