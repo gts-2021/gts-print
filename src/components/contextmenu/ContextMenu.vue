@@ -6,7 +6,10 @@
 			<span class="gts-context-menu-item-icon">
 				<component v-if="!action.noIcon" :is="action.icon" />
 			</span>
-			<span class="gts-context-menu-item-title">{{ action.title }}</span>
+			<span class="gts-context-menu-item-title">
+				<component v-if="action.component" :is="action.component" v-bind="action.props" v-on="action.events" />
+				<span v-else>{{ action.title }}</span>
+			</span>
 		</div>
 	</div>
 
