@@ -11,11 +11,16 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 ### Added
 
+* Adding PDF export functionality to `DataTable` component using `jspdf` and `jspdf-autotable`. [GTS-PRINT#56] (https://quire.io/w/GTS-PRINT31/56)
+* Adding intelligent sorting support for Dates (DD/MM/YYYY), Numbers, and Alphanumeric strings in `DataTable`.[GTS-PRINT#56] (https://quire.io/w/GTS-PRINT31/56)
 * Adding `AutoComplete` component. [GTS-PRINT#55] (https://quire.io/w/GTS-PRINT31/55)
 * Adding `isStrictMonth` prop to `CalendarComponent` to support strict month display mode. [GTS-PRINT#43] (https://quire.io/w/GTS-PRINT31/43)
 
 ### Changed
 
+* Improved `DataTable` sorting to use header `name` for property lookup. [GTS-PRINT#56] (https://quire.io/w/GTS-PRINT31/56)
+* Made `isPaginable`, `isScrollable`, and `paginationConfig` props in `DataTable` optional. [GTS-PRINT#52] (https://quire.io/w/GTS-PRINT31/52)
+* Updated `DataTablePagination` `pageLengthTitle` prop type to `String`.
 * Updated `CalendarComponent` to adjust header dates when `isStrictMonth` is enabled. [GTS-PRINT#43] (https://quire.io/w/GTS-PRINT31/43)
 
  
@@ -24,6 +29,8 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 ### Removed
  
 ### Fixed
+
+* Fixed `sortBy` not being updated when selecting "Sort Desc" in `DataTable` context menu. [GTS-PRINT#54] (https://quire.io/w/GTS-PRINT31/54)
 
 ### Security
 

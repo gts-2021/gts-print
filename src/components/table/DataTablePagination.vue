@@ -69,7 +69,7 @@ export default {
 			required: true
 		},
 		pageLengthTitle: {
-			type: Array,
+			type: String,
 			required: true
 		},
 		totalRecords: {
