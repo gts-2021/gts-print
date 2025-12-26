@@ -248,7 +248,7 @@ export default {
           props: {
             label: header.title,
             isChecked: !this.hiddenColumns.includes(header.name),
-            noBind: true,
+            noBind: false,
             id: header.name,
             class: 'gts-column-toggle'
           },

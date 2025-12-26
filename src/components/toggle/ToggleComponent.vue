@@ -43,7 +43,9 @@ export default {
   },
 
   methods: {
-    onToggle() {
+    onToggle(event) {
+      event.stopPropagation();
+      
       // Always emit onToggle with the new state (inverted current state)
       const newState = !this.isToggleChecked;
       this.$emit('onToggle', newState);

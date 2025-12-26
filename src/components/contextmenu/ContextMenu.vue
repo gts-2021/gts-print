@@ -67,7 +67,7 @@ export default {
 .gts-context-menu {
 
 	background-color: $color-white;
-	width: 170px;
+	min-width: 170px;
 	border: 1px solid #D4D4D4;
 	border-radius: 10px;
 	overflow: hidden;

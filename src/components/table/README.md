@@ -31,6 +31,8 @@ Each object in `headers` should look like:
 }
 ```
 
+PS: You should specify header.name , to ensure sorting and hiding columns work properly.
+
 ## Events
 
 | Event | Payload | Description |
