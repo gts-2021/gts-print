@@ -13,11 +13,15 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 ### Changed
 
+* Set min-width for context menu item and remove hard width. [GTS-PRINT#57] (https://quire.io/w/GTS-PRINT31/57)
+
 ### Deprecated
 
 ### Removed
  
 ### Fixed
+
+* Stopping click propagation when toggle changed in `ToggleComponent` [GTS-PRINT#57] (https://quire.io/w/GTS-PRINT31/57)
 
 ### Security
 
