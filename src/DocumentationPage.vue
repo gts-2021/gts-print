@@ -1,8 +1,8 @@
 <template>
 	<div class="container">
-		<!-- Barre latérale -->
+		<!-- Sidebar -->
 		<aside class="sidebar">
-			<h2>Composants</h2><br><br>
+			<h2>Components</h2><br><br>
 			<ul>
 				<li v-for="comp in components" :key="comp" @click="loadReadme(comp)">
 					{{ comp }}
@@ -10,54 +10,73 @@
 			</ul>
 		</aside>
 
-		<!-- Zone d'affichage du README -->
+		<!-- Content Area -->
 		<main class="content">
-			<span @click="goToExamplePage" class="example-link"> => Go to example pages.</span>
 			<div class="flex-row doc-header">
-				<span class="header-component-name">{{ selectedComponent || "Sélectionnez un composant" }}</span>
-				<div  v-if="isEditing" class="div-btn-edit flex-row" style="margin-top: 10px;">
-					<ButtonComponent @click="saveReadme" class="btn-edit" :title="'Sauvegarder'" :className="'gts-button'" />
-					<ButtonComponent :theme="PRIMARY_INVERSE" @click="isEditing = false" class="btn-edit" :title="'Annuler'"
+				<span class="header-component-name">{{ selectedComponent || "Select a component" }}</span>
+				<div v-if="isEditing" class="div-btn-edit flex-row" style="margin-top: 10px;">
+					<ButtonComponent @click="saveReadme" class="btn-edit" :title="'Save'" :className="'gts-button'" />
+					<ButtonComponent :theme="PRIMARY_INVERSE" @click="isEditing = false" class="btn-edit" :title="'Cancel'"
 						:className="'gts-button'" />
 				</div>
 				<div v-else>
 					<ButtonComponent @click="startEditing" class="mb-20"
-					:title="selectedComponent ? 'Modifier' : 'Créer un README'" :className="'gts-button'" />
+						:title="selectedComponent ? 'Edit' : 'Create README'" :className="'gts-button'" />
 				</div>
-				
-				
 			</div>
 
-			<!-- Mode édition -->
+			<!-- Editing Mode -->
 			<div v-if="isEditing">
-				<!-- Boutons -->
-			
 				<div style="display: flex; gap: 20px;">
-					<!-- Éditeur Markdown -->
+					<!-- Markdown Editor -->
 					<textarea v-model="readmeContent" rows="20" style="width: 50%; font-family: monospace;"></textarea>
 
-					<!-- Aperçu en temps réel -->
-					<div style="width: 50%; border: 1px solid #ccc; padding: 10px; overflow-y: auto;" v-html="readmeHtml"></div>
+					<!-- Live Preview -->
+					<div style="width: 50%; border: 1px solid #ccc; padding: 10px; overflow-y: auto;" v-html="readmeHtml">
+					</div>
 				</div>
-
-
 			</div>
 
-			<!-- Mode aperçu -->
+			<!-- Preview Mode -->
 			<div v-else>
+				<div v-html="readmeHtml"></div> <!-- HTML Preview -->
 				
-
-				<div v-html="readmeHtml"></div> <!-- Aperçu HTML -->
+				<!-- Example Section -->
+				<div v-if="selectedComponent && currentExampleComponent" class="example-section">
+					<h3>Example</h3>
+					<div class="example-container">
+						<component :is="currentExampleComponent" />
+					</div>
+				</div>
 			</div>
 		</main>
 	</div>
 </template>
 
-
 <script>
-import { marked } from 'marked'; // Pour convertir Markdown en HTML
+import { marked } from 'marked';
 import ButtonComponent from './components/button/ButtonComponent.vue';
-import { PRIMARY, PRIMARY_INVERSE, PRIMARY_50, PRIMARY_50_INVERSE, DANGER, DANGER_INVERSE, DANGER_LIGHT, DANGER_LIGHT_INVERSE  } from '@/constants/buttons.js';
+import { PRIMARY_INVERSE } from '@/constants/buttons.js';
+import { shallowRef, defineAsyncComponent } from 'vue';
+
+// Import all example components
+import AutoCompleteExample from './components/input/AutoCompleteExample.vue';
+import NotificationExemple from './components/notification/NotificationExemple.vue';
+import BarSideExemple from './components/barside/BarSideExemple.vue';
+import InputExemple from './components/input/InputExemple.vue';
+import DataTableExemple from './components/table/DataTableExemple.vue';
+import ButtonExample from './components/button/ButtonExample.vue';
+import DialogExample from './components/dialog/DialogExample.vue';
+import RadioExemple from './components/radio/RadioExemple.vue';
+import CheckBoxExemple from './components/checkbox/CheckBoxExemple.vue';
+import AccordionExemple from './components/accordion/AccordionExemple.vue';
+import BadgeExample from './components/badge/BadgeExample.vue';
+import CardExample from './components/card/CardExample.vue';
+import CalendarExample from './components/calendar/CalendarExample.vue';
+import StepperExample from './components/stepper/StepperExample.vue';
+import ToolTipExample from './components/tooltip/ToolTipExample.vue';
+import NoContentExample from './components/nocontent/NoContentExample.vue';
+import ToggleExemple from './components/toggle/ToggleExemple.vue';
 
 export default {
 	name: "DocumentationPage",
@@ -67,18 +86,39 @@ export default {
 	data() {
 		return {
 			PRIMARY_INVERSE,
-			components: [], // Liste des composants
-			selectedComponent: null, // Composant sélectionné
-			readmeContent: "", // Contenu du README (en Markdown)
-			readmeHtml: "", // Contenu du README (en HTML)
-			isEditing: false, // Mode édition
-			readmeFiles: import.meta.glob("/src/components/*/README.md", { query: '?raw', import: 'default' }) // Importer les fichiers README
+			components: [],
+			selectedComponent: null,
+			readmeContent: "",
+			readmeHtml: "",
+			isEditing: false,
+			readmeFiles: import.meta.glob("/src/components/*/README.md", { query: '?raw', import: 'default' }),
+			currentExampleComponent: null,
+			// Map directory names to example components
+			exampleMap: {
+				"autocomplete": AutoCompleteExample, // Assuming directory is 'autocomplete' - NO, it was in 'input'
+				// Let's rely on checking the directory structure we saw earlier.
+				"notification": NotificationExemple,
+				"barside": BarSideExemple,
+				"input": InputExemple, 
+			    "table": DataTableExemple,
+				"button": ButtonExample,
+    			"dialog": DialogExample,
+    			"radio": RadioExemple,
+    			"checkbox": CheckBoxExemple,
+    			"accordion": AccordionExemple,
+    			"badge": BadgeExample,
+    			"card": CardExample,
+    			"calendar": CalendarExample,
+    			"stepper": StepperExample,
+    			"tooltip": ToolTipExample,
+    			"nocontent": NoContentExample,
+    			"toggle": ToggleExemple,
+			}
 		};
 	},
 	mounted() {
-		// Extraire les noms des composants depuis les chemins des fichiers
 		this.components = Object.keys(this.readmeFiles).map((path) => {
-			const componentName = path.split("/")[3]; // Extraire le nom du composant
+			const componentName = path.split("/")[3];
 			return componentName;
 		});
 	},
@@ -88,66 +128,62 @@ export default {
 			const filePath = `/src/components/${componentName}/README.md`;
 
 			if (this.readmeFiles[filePath]) {
-				this.readmeContent = await this.readmeFiles[filePath](); // Charger le contenu Markdown
-				this.readmeHtml = marked.parse(this.readmeContent); // Convertir en HTML
-				this.isEditing = false; // Désactiver le mode édition au chargement
+				this.readmeContent = await this.readmeFiles[filePath]();
+				this.readmeHtml = marked.parse(this.readmeContent);
+				this.isEditing = false;
+				
+				// Load example component
+				// We need to resolve which example component to show.
+				// Since some directories have multiple examples (e.g. input), or we might need a better mapping strategy.
+				// For now, let's use the simple map and see what breaks.
+				// If a directory has multiple examples, we might only show the main one.
+				
+				// Special handling for 'input' directory which seemed to have AutoComplete and Input examples.
+				if (componentName === 'input') {
+					// We might want to show both? Or just InputExemple.
+					// The user asked to remove ExamplePage which showed both.
+					// Let's default to InputExemple for now.
+					this.currentExampleComponent = InputExemple;
+				} else {
+					this.currentExampleComponent = this.exampleMap[componentName] || null;
+				}
+				
 			} else {
-				this.readmeContent = "README non trouvé.";
-				this.readmeHtml = "README non trouvé.";
+				this.readmeContent = "README not found.";
+				this.readmeHtml = "README not found.";
+				this.currentExampleComponent = null;
 			}
 		},
 		startEditing() {
-			this.isEditing = true; // Activer le mode édition
+			this.isEditing = true;
 		},
 		async saveReadme() {
 			if (!this.selectedComponent) return;
 
-			// Sauvegarder le Markdown
+			// Saving logic... (simulated as before)
 			const filePath = `/src/components/${this.selectedComponent}/README.md`;
 			try {
 				await this.saveFile(filePath, this.readmeContent);
-				this.readmeHtml = marked.parse(this.readmeContent); // Mettre à jour l'aperçu
-				this.isEditing = false; // Désactiver le mode édition
-				console.log("README sauvegardé avec succès !");
+				this.readmeHtml = marked.parse(this.readmeContent);
+				this.isEditing = false;
+				console.log("README saved successfully!");
 			} catch (error) {
-				console.error("Erreur lors de la sauvegarde du README :", error);
+				console.error("Error saving README:", error);
 			}
 		},
 		async saveFile(filePath, content) {
-			// Simuler une sauvegarde (à adapter selon votre environnement)
-			console.log("Simulation de sauvegarde :", filePath, content);
-		},
-		goToExamplePage() {
-      this.$router.push('/examples'); // Redirige vers /home
-    }
+			console.log("Simulation save:", filePath, content);
+		}
 	},
 	watch: {
 		readmeContent(newContent) {
-			// Mettre à jour l'aperçu en temps réel lorsque le Markdown change
 			this.readmeHtml = marked.parse(newContent);
 		}
 	}
 };
 </script>
 
-
-
 <style scoped>
-.example-link {
-	display: inline-block;
-	margin-bottom: 20px;
-	color: rgb(23, 177, 248);
-	cursor: pointer;
-
-}
-
-.example-link:hover {
- 
-		text-decoration: underline;
-		color: rgb(32, 128, 255);
- 
-}
-
 .flex-row {
 	display: flex;
 	flex-direction: row;
@@ -155,32 +191,29 @@ export default {
 
 .doc-header {
 	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 20px;
 
 	.header-component-name {
-		font-size: 20px;
+		font-size: 24px;
 		font-weight: bold;
+		color: #333;
 	}
-     
 }
-
-
 
 .div-btn-edit {
 	justify-content: end;
-	margin-top: 30px;
-	margin-bottom: 30px;
 }
 
 .btn-edit {
 	margin-right: 5px;
-	 
 }
- 
 
 .container {
 	display: flex;
 	height: 100vh;
 	font-size: 14px;
+	font-family: 'Poppins', sans-serif;
 }
 
 .sidebar {
@@ -188,6 +221,13 @@ export default {
 	background: #005467;
 	color: white;
 	padding: 20px;
+	overflow-y: auto;
+}
+
+.sidebar h2 {
+	margin-top: 0;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+	padding-bottom: 10px;
 }
 
 .sidebar ul {
@@ -197,55 +237,82 @@ export default {
 
 .sidebar li {
 	cursor: pointer;
-	padding: 10px;
+	padding: 12px 10px;
+	border-radius: 4px;
+	transition: background 0.3s;
 }
 
 .sidebar li:hover {
-	background: #ffffff;
-	color: #005467;
+	background: rgba(255, 255, 255, 0.1);
 }
 
 .content {
 	flex: 1;
-	padding: 20px;
+	padding: 40px;
 	overflow-y: auto;
+	background-color: #f9f9f9;
 }
 
-/* Styles pour le contenu Markdown */
+.example-section {
+	margin-top: 40px;
+	border-top: 1px solid #e0e0e0;
+	padding-top: 20px;
+}
+
+.example-section h3 {
+	margin-bottom: 20px;
+	color: #005467;
+}
+
+.example-container {
+	background: white;
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Styles for Markdown content */
 .content :deep(h1),
 .content :deep(h2),
 .content :deep(h3) {
 	margin-top: 1.5em;
 	margin-bottom: 0.5em;
+	color: #2c3e50;
 }
 
 .content :deep(p) {
 	margin-bottom: 1em;
 	line-height: 1.6;
+	color: #555;
 }
 
 .content :deep(code) {
-	background: #f4f4f4;
+	background: #eee;
 	padding: 0.2em 0.4em;
 	border-radius: 3px;
 	font-family: monospace;
+	color: #e83e8c;
 }
 
 .content :deep(pre) {
-	background: #f4f4f4;
-	padding: 1em;
-	border-radius: 5px;
+	background: #2d2d2d;
+	color: #f8f8f2;
+	padding: 1.5em;
+	border-radius: 6px;
 	overflow-x: auto;
+	margin: 1em 0;
 }
 
 .content :deep(pre code) {
 	background: none;
 	padding: 0;
+	color: inherit;
 }
 
 .content :deep(a) {
-	color: #42b983;
+	color: #005467;
 	text-decoration: none;
+	font-weight: 500;
 }
 
 .content :deep(a:hover) {
