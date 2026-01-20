@@ -111,12 +111,11 @@ export default {
 <style lang="scss">
 .gts-button-container {
 	display: inline-flex;
-	min-width: max-content;
-
-	
+	min-width: fit-content;
 
 	.gts-button {
 		display: flex;
+		width: 100%;
 		border-radius: 12px;
 		padding: 12px 20px;
 		font-size: 14px;

@@ -35,6 +35,8 @@ The button component includes multiple CSS classes for styling. Below are the ma
 
 ## Usage Examples
 
+PS: if you have a problem with button size which occupating the max parent space try to make a value for align-items to parent.
+
 ### Basic Button
 
 ```vue
