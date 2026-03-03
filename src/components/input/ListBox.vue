@@ -40,6 +40,10 @@ export default {
       type: Array,
       required: false
     },
+    defaultValue: {
+      type: String,
+      required: false
+    }
 
   },
 
@@ -50,26 +54,17 @@ export default {
   },
 
   created() {
+    console.log("default =", this.defaultValue);
+    
+
+    if(this.defaultValue)
+      this.setInputValue(this.defaultValue)
+    else
+      this.inputValue = this.options[0];
 
     if(this.value)
       this.setInputValue(this.value)
-    else
-      this.inputValue = this.options[0];
-  },
-
-  watch: {
-
-    options: {
-      deep: true,
-      immediate: true,
-      handler(newOptions) {
-        if (this.value) {
-          this.setInputValue(this.value);
-        } else if (newOptions.length > 0) {
-          this.inputValue = newOptions[0];
-        }
-      },
-    },
+     
   },
 
   methods: {
@@ -85,7 +80,9 @@ export default {
     onOptionSelected(option, event) {
       event.stopPropagation();
       this.closeList();
-      this.inputValue = option;
+      if(!this.value){
+        this.inputValue = option;
+      }
       this.$emit('onValueChanged', option)
     },
 
@@ -96,7 +93,27 @@ export default {
     closeList() {
       this.isOpen = false;
     }
-  }
+  },
+
+  watch: {
+
+    options: {
+      deep: true,
+      immediate: true,
+      handler(newOptions) {
+        if (this.value) {
+          this.setInputValue(this.value);
+        } else if (newOptions.length > 0) {
+          this.inputValue = newOptions[0];
+        }
+      },
+    },
+    value(newVal, old){
+      
+      this.setInputValue(newVal)
+      
+    }
+  },
 }
 
 </script>
