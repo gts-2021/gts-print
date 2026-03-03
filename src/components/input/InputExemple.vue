@@ -26,10 +26,19 @@
     <ListBox  :options="[]" label="Empty ListBox"  />
     
 
-    <ListBox @OnValueChanged="(v)=> console.log(v)" :options="listBoxOptions" label="ListBox" type="password" placeholder="Hide yout password" />
+    <ListBox @OnValueChanged="(v)=> console.log('onValueChanged : ', v)" :options="listBoxOptions" label="ListBox"   />
     
-    <ListBox @OnValueChanged="(v)=> console.log(v)" :options="listBoxOptions" :value="'2'" label="ListBox with selected value" type="password" placeholder="Hide yout password" />
+    <ListBox @OnValueChanged="(v)=> console.log('onValueChanged : ', v)" :options="listBoxOptions" :defaultValue="'2'" label="ListBox with defeult value"   />
 
+    <ListBox @OnValueChanged="(v)=> console.log('onValueChanged : ', v)" :options="listBoxOptions" :value="valueToChange" label="ListBox with code controled value"   />
+     <ButtonComponent
+        class="mb-20"
+        :title="'Changed value to 3'" 
+        @click="() => valueToChange = '3'"
+          />
+
+   
+        
     <br>
       <span>TextInput with mask : </span> 
     <br>
@@ -53,6 +62,7 @@
 import TextInput from '@/components/input/TextInput.vue';
 import TextInputArea from '@/components/input/TextInputArea.vue';
 import ListBox from './ListBox.vue';
+import ButtonComponent from '../button/ButtonComponent.vue';
 
 export default {
 
@@ -61,7 +71,8 @@ export default {
   components: {
     TextInput,
     TextInputArea,
-    ListBox
+    ListBox,
+    ButtonComponent
 
   },
 
@@ -103,9 +114,10 @@ export default {
           V: { pattern: '[0-9]', repeated: true },         // Code postal : uniquement des chiffres, répétition autorisée (jusqu'à 5 chiffres)
           C: { pattern: '[a-zA-Z ]', repeated: true }      // Pays : lettres et espaces, répétition autorisée
         }
-      }
+      },
 
-  
+      valueToChange: '1',
+      twoWayBindValue: '1'
 
     };
   }
