@@ -2,6 +2,8 @@
 
 
   <div id="exemple-container">
+
+    <h3>Inputs Exemple :</h3>
     <TextInput v-model="inp1Val" @OnValueChanged="(v)=> console.log(v)" label="First Name" :required="true" placeholder="Your name please" />
     <span>Input is binding : {{ inp1Val }}</span> <br>
 
@@ -22,21 +24,7 @@
     <TextInputArea v-model="textAreaVal"  label="Binding text area" placeholder="This is an error input" />
     <span>TextArea is binding : {{ textAreaVal }}</span> <br>
 
-
-    <ListBox  :options="[]" label="Empty ListBox"  />
-    
-
-    <ListBox @OnValueChanged="(v)=> console.log('onValueChanged : ', v)" :options="listBoxOptions" label="ListBox"   />
-    
-    <ListBox @OnValueChanged="(v)=> console.log('onValueChanged : ', v)" :options="listBoxOptions" :defaultValue="'2'" label="ListBox with defeult value"   />
-
-    <ListBox @OnValueChanged="(v)=> console.log('onValueChanged : ', v)" :options="listBoxOptions" :value="valueToChange" label="ListBox with code controled value"   />
-     <ButtonComponent
-        class="mb-20"
-        :title="'Changed value to 3'" 
-        @click="() => valueToChange = '3'"
-          />
-
+     <h3>Inputs With Maska Exemples :</h3>
    
         
     <br>
@@ -52,6 +40,28 @@
     <TextInput label="Input Text with token" placeholder="with token" :maskToken="maskWithToken" />
 
     <TextInput label="Input address" placeholder="with token" :maskToken="addressMask" />
+
+
+    <h3>ListBox Exemples :</h3>
+    <ListBox  :options="[]" label="Empty ListBox"  />
+    
+
+    <ListBox @OnValueChanged="(v)=> console.log('onValueChanged : ', v)" :options="listBoxOptions" label="ListBox"    />
+    
+    <ListBox @OnValueChanged="(v)=> console.log('onValueChanged : ', v)" :options="listBoxOptions" :defaultValue="'2'" label="ListBox with defeult value"    />
+
+    <ListBox @OnValueChanged="(v)=> console.log('onValueChanged : ', v)" :options="listBoxOptions" :value="valueToChange" label="ListBox with code controled value"   />
+    <ButtonComponent class="mb-20":title="'Changed value to 3'"  @click="() => valueToChange = '3'" />
+          
+    <ListBox @OnValueChanged="(v)=> console.log('onValueChanged : ', v)" :options="listBoxOptions" label="ListBox with select item label" selectItemLabel="Select an item"  />
+    
+    <ListBox @OnValueChanged="(v)=> console.log('onValueChanged : ', v)" :options="listBoxOptions" label="ListBox with select disabled item label" selectItemLabel="Select an item"  :isSelectItemLabelSelectable="true" />
+     
+
+    <ListBox @OnValueChanged="(v)=> console.log('onValueChanged : ', v)" :options="listBoxOptionsWithDisable" label="ListBox with   disabled items " selectItemLabel="Select an item"   />
+     
+
+   
 
   </div>
 
@@ -80,7 +90,7 @@ export default {
     return {
 
       listBoxOptions: [
-        {'label':'Select domain','value':'0'},
+        
         {'label':'Software Ingenering 1','value':'1'},
         {'label':'Software Ingenering 2','value':'2'},
         {'label':'Software Ingenering 3','value':'3'},
@@ -94,6 +104,13 @@ export default {
         {'label':'Software Ingenering 11','value':'11'},
         {'label':'Software Ingenering 12','value':'12'},
         {'label':'Software Ingenering 13','value':'13'}
+      ],
+      listBoxOptionsWithDisable: [
+        
+        {'label':'Software Ingenering 1','value':'1'},
+        {'label':'Software Ingenering 2','value':'2', disabled: true},
+        {'label':'Software Ingenering 3','value':'3'},
+        {'label':'Software Ingenering 4','value':'4', disabled: true},
       ],
       inp1Val:"",
       textAreaVal:"",

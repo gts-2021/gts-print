@@ -11,8 +11,8 @@
       </div>
 
       <div v-if="isOpen" class="gts-listbox-option-container">
-        <span @click="onOptionSelected(option, $event)" v-for="(option, index) in options" :key="index"
-          class="gts-listbox-option">{{ option.label }}</span>
+        <span @click="onOptionSelected(option, $event)" v-for="(option, index) in rendredOptions" :key="index"
+          :class="['gts-listbox-option', option.disabled ? 'gts-listbox-option-disabled' : '']">{{ option.label }}</span>
 
       </div>
     </div>
@@ -36,6 +36,16 @@ export default {
   mixins: [InputCommonProps],
 
   props: {
+    selectItemLabel: {
+      type: String,
+      required: false,
+      default: undefined
+    },
+    isSelectItemLabelSelectable: {
+      type: Boolean,
+      required: false,
+      default: true,
+    },
     options: {
       type: Array,
       required: false
@@ -47,6 +57,24 @@ export default {
 
   },
 
+  computed: {
+    rendredOptions() {
+      if (this.selectItemLabel) {
+        return [
+          {
+            label: this.selectItemLabel,
+            value: undefined,
+            disabled: this.isSelectItemLabelSelectable,
+          },
+          ...this.options,
+        ]
+
+      }
+
+      return this.options;
+    }
+  },
+
   data() {
     return {
       isOpen: false,
@@ -54,12 +82,11 @@ export default {
   },
 
   created() {
-    
 
     if(this.defaultValue)
       this.setInputValue(this.defaultValue)
     else
-      this.inputValue = this.options[0];
+      this.inputValue = this.rendredOptions[0];
 
     if(this.value)
       this.setInputValue(this.value)
@@ -78,6 +105,11 @@ export default {
     },
     onOptionSelected(option, event) {
       event.stopPropagation();
+      if(option.disabled){
+        return;
+      }
+
+
       this.closeList();
       if(!this.value){
         this.inputValue = option;
@@ -155,6 +187,13 @@ export default {
       padding: 12px;
       cursor: pointer;
       color: $primary-color-700;
+    }
+
+    .gts-listbox-option-disabled {
+      padding: 12px;
+      cursor: pointer;
+      color: $neutral-color-600;
+      cursor: not-allowed;
     }
 
     .gts-listbox-option:hover {

@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
+## [1.3.5] 
+
+### Added
+
+* Add more props to `ListBox` : [GTS-PRINT#59] (https://quire.io/w/GTS-PRINT31/59)
+  - Add prop to display default itme label.
+  - Add prop to indicate if default item is selectable or no.
+  - Add disabled prop for option to prevent selection of some items.
+
+### Changed
+
+### Deprecated
+
+### Removed
+ 
+### Fixed
+
+ 
+### Security
+
+
 
 ## [1.3.4] 
 

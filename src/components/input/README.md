@@ -53,6 +53,8 @@ A custom dropdown/select component.
 | `label`        | `String`  | Yes      | -       | Label for the dropdown.                                   |
 | `defaultValue` | `String`  | No       | -       | Default selected value                                    |
 | `value`        | `String`  | No       | -       | Code controlled value (hard bind)                         |
+| `selectItemLabel`| `String`  | No       | `undefined`| The label for selection                              |
+| `isSelectItemLabelSelectable`| `Boolean`  | No       | `true`| Indicating that default item is selectable or no                              |
 | `disabled`     | `Boolean` | No       | `false` | Disables the dropdown.                                    |
 | `error`        | `String`  | No       | `''`    | Error message.                                            |
 
@@ -92,6 +94,12 @@ A custom dropdown/select component.
     :title="'Changed value to 3'"
     @click="() => (valueToChange = '3')"
   />
+
+  <ListBox @OnValueChanged="(v)=> console.log('onValueChanged : ', v)" :options="listBoxOptions" label="ListBox with select disabled item label" selectItemLabel="Select an item"  :isSelectItemLabelSelectable="true" />
+     
+
+    <ListBox @OnValueChanged="(v)=> console.log('onValueChanged : ', v)" :options="[{lable:'item', value:'1', disabled: true}]" label="ListBox with   disabled items " selectItemLabel="Select an item"   />
+     
 </template>
 ```
 
