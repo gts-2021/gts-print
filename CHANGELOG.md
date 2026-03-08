@@ -11,6 +11,29 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 ### Added
 
+* Adding map picker : [GTS-PRINT#60] (https://quire.io/w/GTS-PRINT31/60)
+  - Adding `MapAutoComplete` which give the ability to tap addresses and pick up from map.
+  - Adding only map picker component.
+* Handling translations labels and adding locales for the project.
+
+### Changed
+
+### Deprecated
+
+### Removed
+ 
+### Fixed
+
+ 
+### Security
+
+
+
+
+## [1.3.5] 
+
+### Added
+
 * Add more props to `ListBox` : [GTS-PRINT#59] (https://quire.io/w/GTS-PRINT31/59)
   - Add prop to display default itme label.
   - Add prop to indicate if default item is selectable or no.

@@ -1,0 +1,14 @@
+{
+  "input": {
+    "required": "(required)"
+  },
+  "mapAutoComplete": {
+    "mapPicker": {
+      "title": "Pick Address on Map",
+      "confirmBtn": "Confirm",
+      "cancelBtn": "Cancel",
+      "selectedAddressLabel": "Selected Address",
+      "calculatingAddressLabel": "Calculating Address .."
+    }
+  }
+}
