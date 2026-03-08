@@ -57,10 +57,10 @@
 import { marked } from 'marked';
 import ButtonComponent from './components/button/ButtonComponent.vue';
 import { PRIMARY_INVERSE } from '@/constants/buttons.js';
-import { shallowRef, defineAsyncComponent } from 'vue';
+ 
 
 // Import all example components
-import AutoCompleteExample from './components/input/AutoCompleteExample.vue';
+ 
 import NotificationExemple from './components/notification/NotificationExemple.vue';
 import BarSideExemple from './components/barside/BarSideExemple.vue';
 import InputExemple from './components/input/InputExemple.vue';
@@ -77,6 +77,7 @@ import StepperExample from './components/stepper/StepperExample.vue';
 import ToolTipExample from './components/tooltip/ToolTipExample.vue';
 import NoContentExample from './components/nocontent/NoContentExample.vue';
 import ToggleExemple from './components/toggle/ToggleExemple.vue';
+import MapExemple from './components/map-picker/MapExemple.vue';
 
 export default {
 	name: "DocumentationPage",
@@ -95,24 +96,24 @@ export default {
 			currentExampleComponent: null,
 			// Map directory names to example components
 			exampleMap: {
-				"autocomplete": AutoCompleteExample, // Assuming directory is 'autocomplete' - NO, it was in 'input'
-				// Let's rely on checking the directory structure we saw earlier.
+			 // Let's rely on checking the directory structure we saw earlier.
 				"notification": NotificationExemple,
 				"barside": BarSideExemple,
-				"input": InputExemple, 
-			    "table": DataTableExemple,
+				"input": InputExemple,
+				"table": DataTableExemple,
 				"button": ButtonExample,
-    			"dialog": DialogExample,
-    			"radio": RadioExemple,
-    			"checkbox": CheckBoxExemple,
-    			"accordion": AccordionExemple,
-    			"badge": BadgeExample,
-    			"card": CardExample,
-    			"calendar": CalendarExample,
-    			"stepper": StepperExample,
-    			"tooltip": ToolTipExample,
-    			"nocontent": NoContentExample,
-    			"toggle": ToggleExemple,
+				"dialog": DialogExample,
+				"radio": RadioExemple,
+				"checkbox": CheckBoxExemple,
+				"accordion": AccordionExemple,
+				"badge": BadgeExample,
+				"card": CardExample,
+				"calendar": CalendarExample,
+				"stepper": StepperExample,
+				"tooltip": ToolTipExample,
+				"nocontent": NoContentExample,
+				"toggle": ToggleExemple,
+				"map-picker": MapExemple
 			}
 		};
 	},

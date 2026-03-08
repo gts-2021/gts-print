@@ -4,7 +4,7 @@
 
 		<div class="gts-label-container">
 			<span class="gts-input-label">{{ label }}</span> 
-			<span v-if="required" class="gts-input-required">(required)</span>
+			<span v-if="required" class="gts-input-required">{{$t('input.required')}}</span>
 		</div>
 
 		<div class="gts-input-container">

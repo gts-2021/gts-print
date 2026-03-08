@@ -122,3 +122,19 @@ Inherits common props (`label`, `value`, `required`, `disabled`, `error`, `place
   />
 </template>
 ```
+
+## `<AutoComplete />`
+
+An autocomplete input which often to user the suggestion after entring chars.
+
+| Prop           | Type      | Required | Default | Description                                               |
+| -------------- | --------- | -------- | ------- | --------------------------------------------------------- |
+| `options`      | `Array`   | No       | `[]`    | Array of option objects `{ label: '...', value: '...' }`. |
+| `controlInputValue`| `Boolean`  | No      | false| if you want to control the displayed value after selection you should set it to true and handle the the var passed to v-model with newVal, if is setted to false please do not force the displaying of the value with another value because it will display the selected value by default.             |
+
+### Events
+
+| Event               | Payload  | Description                           |
+| ------------------- | -------- | ------------------------------------- |
+| `onValueChanged`    | `String` | Emitted when input value changes. |
+| `onOptionSelected`  | `Object` | Emitted when option value selected. |
