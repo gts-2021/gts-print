@@ -8,7 +8,8 @@
       "confirmBtn": "Confirm",
       "cancelBtn": "Cancel",
       "selectedAddressLabel": "Selected Address",
-      "calculatingAddressLabel": "Calculating Address .."
+      "calculatingAddressLabel": "Calculating Address ..",
+      "rayonSliderLabel": "Search radius:"
     }
   }
 }

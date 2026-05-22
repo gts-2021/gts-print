@@ -19,6 +19,12 @@
     <MapAutoComplete label="Enter a name of street" v-model="address3" :defaultSelectedAddress="selectedAddress" />
     <h6> Selected : {{ address3 }}</h6>
 
+    <br>
+    <h4> AutoCompleteMap with Radius set to 10 klm: </h4>
+    <MapAutoComplete v-model:radius="radius" label="Enter a name of street" v-model="address3" :defaultSelectedAddress="selectedAddress" />
+    <h6> Selected : {{ address3 }} === Radius : {{ radius }}</h6>
+
+
 
 
 
@@ -46,6 +52,7 @@ export default {
       address: 'Charles Rouxel',
       address2: 'Charles Rouxel',
       address3: '',
+      radius: 15,
       selectedAddress: {
         latitude: 28.0339,
         longitude: 1.6596
