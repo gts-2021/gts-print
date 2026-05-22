@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
+## [1.4.1] 
+
+### Added
+
+* Adding `radius` to `AddressMapPicker` to make search more flexible. [GTS-PRINT#61] (https://quire.io/w/GTS-PRINT31/61)
+
+### Changed
+
+### Deprecated
+
+### Removed
+ 
+### Fixed
+
+ 
+### Security
+
+
+
+
+
 ## [1.3.5] 
 
 ### Added

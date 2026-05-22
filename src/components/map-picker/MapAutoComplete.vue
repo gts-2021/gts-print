@@ -11,8 +11,8 @@
       </v-icon>
     </div>
 
-    <AddressMapPicker v-if="showMapPicker" :pickedAddress="internalSelectedAddress" @close="showMapPicker = false"
-      @confirm="onMapAddressConfirmed" />
+    <AddressMapPicker v-if="showMapPicker" :pickedAddress="internalSelectedAddress" :radius="radius"
+      @close="showMapPicker = false" @confirm="onMapAddressConfirmed" @update:radius="$emit('update:radius', $event)" />
   </div>
 </template>
 
@@ -37,6 +37,11 @@ export default {
     formatSelectedValue: {
       type: Function,
       required: false
+    },
+    radius: {
+      type: Number,
+      required: false,
+      default: null
     }
   },
   async created(){
@@ -86,8 +91,9 @@ export default {
       customAddress.street = this.getStreetFromAddress(adr);
       customAddress.zipCode = adr.postcode;
       customAddress.city = adr.city || adr.town || adr.village || adr.municipality || ''
-      customAddress.latitude = selectedValue.lat;
-      customAddress.longitude = selectedValue.lon;
+      customAddress.latitude = selectedValue.lat || selectedValue.latitude;
+      customAddress.longitude = selectedValue.lon || selectedValue.longitude;
+      customAddress.radius = selectedValue.radius !== undefined ? selectedValue.radius : this.radius;
 
       return customAddress;
     },
@@ -112,6 +118,9 @@ export default {
     },
 
     onMapAddressConfirmed(address) {
+      if (address.radius !== undefined) {
+        this.$emit('update:radius', address.radius);
+      }
       this.onAddressSelected(address)
       this.showMapPicker = false;
     },
