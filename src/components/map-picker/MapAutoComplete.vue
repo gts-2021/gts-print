@@ -46,10 +46,7 @@ export default {
   },
   async created(){
 
-    if(this.defaultSelectedAddress && this.defaultSelectedAddress.latitude && this.defaultSelectedAddress.longitude){
-      const address = await AddressService.getAddressFromCoordinates(this.defaultSelectedAddress.latitude, this.defaultSelectedAddress.longitude);
-      this.onAddressSelected(address)
-    }
+   this.handleDefaultAddress();
 
   },
   data() {
@@ -79,6 +76,13 @@ export default {
           this.isLoadingAddress = false;
         });
     }, 500),
+
+    async handleDefaultAddress() {
+      if (this.defaultSelectedAddress && this.defaultSelectedAddress.latitude && this.defaultSelectedAddress.longitude) {
+        const address = await AddressService.getAddressFromCoordinates(this.defaultSelectedAddress.latitude, this.defaultSelectedAddress.longitude);
+        this.onAddressSelected(address)
+      }
+    },
 
     setUpSelectedValue(selection) {
 
@@ -128,7 +132,12 @@ export default {
     getStreetFromAddress(address) {
       return address?.road || address?.street || address.suburb || address.state_district || address.village || address.state || '';
     }
-  }
+  },
+  watch: {
+		defaultSelectedAddress() {
+			 this.handleDefaultAddress();
+		}
+	}
 };
 </script>
 
