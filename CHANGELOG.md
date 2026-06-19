@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
+## [1.4.3] 
+
+### Added
+
+* Adding new behavior to `DialogComponent` : [GTS-PRINT#62] (https://quire.io/w/GTS-PRINT31/62)
+  - Make dialog resizeble for height and width.
+  - Make dialog movable (drag and drop).
+
+### Changed
+
+### Deprecated
+
+### Removed
+ 
+### Fixed
+
+### Security
+
 ## [1.4.2] 
 
 ### Added

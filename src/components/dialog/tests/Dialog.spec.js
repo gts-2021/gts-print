@@ -97,6 +97,50 @@ describe('Tests for TextInput BasicDialog component', () => {
       const footer = wrapper.find('.gts-dialog-footer');
       expect(footer.exists()).toBe(false);
     });
+
+    it("Should register isMovable and isResizable props with default false", () => {
+      const wrapper = mount(BasicDialog);
+      expect(wrapper.props().isMovable).toBe(false);
+      expect(wrapper.props().isResizable).toBe(false);
+    });
+
+    it("Should show resize handle only when isResizable is true", () => {
+      const wrapperFalse = mount(BasicDialog, {
+        props: {
+          isOpen: true,
+          isResizable: false
+        }
+      });
+      expect(wrapperFalse.find('.gts-dialog-resize-handle').exists()).toBe(false);
+
+      const wrapperTrue = mount(BasicDialog, {
+        props: {
+          isOpen: true,
+          isResizable: true
+        }
+      });
+      expect(wrapperTrue.find('.gts-dialog-resize-handle').exists()).toBe(true);
+    });
+
+    it("Should apply cursor move style to header when isMovable is true", () => {
+      const wrapperFalse = mount(BasicDialog, {
+        props: {
+          isOpen: true,
+          isMovable: false
+        }
+      });
+      const headerFalse = wrapperFalse.find('.gts-dialog-header');
+      expect(headerFalse.attributes('style') || '').not.toContain('cursor: move;');
+
+      const wrapperTrue = mount(BasicDialog, {
+        props: {
+          isOpen: true,
+          isMovable: true
+        }
+      });
+      const headerTrue = wrapperTrue.find('.gts-dialog-header');
+      expect(headerTrue.attributes('style') || '').toContain('cursor: move;');
+    });
   });
 
 
