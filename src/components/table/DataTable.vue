@@ -2,9 +2,25 @@
 
   <div :class="['gts-print-table-wrapper', className]">
     <ContextMenu :ref="`contextMenu`" className="gts-table-actions-menu" :actions="contextMenuActions" />
+
+    <!-- Filter Dialog -->
+    <FilterDialog v-if="showFilter" :isOpen="isFilterDialogOpen" :headers="headers"
+      :filterConfiguration="filterConfiguration" :currentFilters="appliedFilters" @apply="onApplyFilters"
+      @reset="onResetFilters" @close="isFilterDialogOpen = false" />
+
     <div :class="['gts-data-table-actions']">
-      <div class="gts-data-table-action gts-data-table-action-columns" @click="toggleColumnsMenu($event)"><ColumnsIcon />  <span>COLUMNS</span></div>
-      <div class="gts-data-table-action gts-data-table-action-export" @click="exportToPDF"><ExportIcon />  <span>EXPORT</span></div>
+      <div class="gts-data-table-action gts-data-table-action-columns" @click="toggleColumnsMenu($event)">
+        <ColumnsIcon /> <span>COLUMNS</span>
+      </div>
+      <div class="gts-data-table-action gts-data-table-action-export" @click="exportToPDF">
+        <ExportIcon /> <span>EXPORT</span>
+      </div>
+      <div v-if="showFilter" class="gts-data-table-action gts-data-table-action-filter"
+        :class="{ 'gts-data-table-action-filter--active': activeFilterCount > 0 }" @click="openFilterDialog">
+        <FilterIcon />
+        <span>FILTER</span>
+        <span v-if="activeFilterCount > 0" class="gts-filter-badge">{{ activeFilterCount }}</span>
+      </div>
     </div>
     <div :class="['gts-print-table-container', isScrollable ? 'gts-print-table-container-scrollable' : '']"
       ref="gtsPrintTableContainer">
@@ -59,6 +75,8 @@ import ColumnsIcon from '@/assets/icons/ColumnsIcon.vue';
 import ContextMenu from '../contextmenu/ContextMenu.vue';
 import DataTablePagination from './DataTablePagination.vue';
 import ExportIcon from '@/assets/icons/ExportIcon.vue';
+import FilterIcon from '@/assets/icons/FilterIcon.vue';
+import FilterDialog from './FilterDialog.vue';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import moment from 'moment';
@@ -72,7 +90,9 @@ export default {
     DataTablePagination,
     ContextMenu,
     ColumnsIcon,
-    ExportIcon
+    ExportIcon,
+    FilterIcon,
+    FilterDialog
   },
 
   props: {
@@ -110,15 +130,38 @@ export default {
     paginationConfig: {
       type: Object,
     },
+
+    showFilter: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+
+    filterConfiguration: {
+      type: Array,
+      required: false,
+      default: () => []
+    }
   },
 
   computed: {
     pagination() {
       return {
         pageLengthTitle: 'Row per page',
-        totalRecords: this.items.length,
+        totalRecords: this.filteredItems.length,
         pageLengths: this.paginationConfig?.pageLengths || defaultLengths
       }
+    },
+
+    filteredItems() {
+      if (!this.showFilter || this.activeFilterCount === 0) {
+        return this.items;
+      }
+      return this.applyFilters(this.items, this.appliedFilters);
+    },
+
+    activeFilterCount() {
+      return Object.values(this.appliedFilters).filter(v => v !== '' && v !== null && v !== undefined).length;
     },
 
     splitedItems() {
@@ -128,9 +171,9 @@ export default {
 
         const end = start + this.rowPerPage;
 
-        return this.items.slice(start, end);
+        return this.filteredItems.slice(start, end);
       }
-      return this.items
+      return this.filteredItems
     },
     dataToDisplay() {
       if (this.sortBy) {
@@ -143,8 +186,6 @@ export default {
     },
   },
 
-
-
   data() {
     return {
 
@@ -154,6 +195,8 @@ export default {
       sortBy: undefined,
       sortType: "asc",
       hiddenColumns: [],
+      isFilterDialogOpen: false,
+      appliedFilters: {},
 
     }
   },
@@ -195,8 +238,6 @@ export default {
     },
     sortItems() {
       if (!this.sortBy) return this.splitedItems;
-
-      console.log(this.sortBy);
 
       const header = this.headers.find(h => h.name === this.sortBy);
       const sortFn =
@@ -257,11 +298,11 @@ export default {
               // isChecked passed from toggle event is the NEW state.
               // If new state is checked (true) -> want it to be visible -> remove from hiddenColumns
               // If new state is unchecked (false) -> want it to be hidden -> add to hiddenColumns
-             
+
               if (isChecked) {
-                 this.hiddenColumns = this.hiddenColumns.filter(c => c !== header.name);
+                this.hiddenColumns = this.hiddenColumns.filter(c => c !== header.name);
               } else {
-                 this.hiddenColumns.push(header.name);
+                this.hiddenColumns.push(header.name);
               }
             }
           }
@@ -276,9 +317,9 @@ export default {
         if (contextMenuDOM.nodeType == 1) {
           const wrapperRect = this.$el.getBoundingClientRect();
           const { clientX, clientY } = event;
-          
+
           contextMenuDOM.style.left = `${clientX - wrapperRect.left}px`;
-          contextMenuDOM.style.top = `${clientY - wrapperRect.top}px`; 
+          contextMenuDOM.style.top = `${clientY - wrapperRect.top}px`;
           contextMenuDOM.style.display = 'block';
         }
       });
@@ -343,36 +384,139 @@ export default {
 
       doc.save('table-export.pdf');
     },
+
+    // ─── Filter Methods ───────────────────────────────────────────────────────
+
+    openFilterDialog() {
+      this.isFilterDialogOpen = true;
+    },
+
+    onApplyFilters(filterValues) {
+      this.appliedFilters = { ...filterValues };
+      this.isFilterDialogOpen = false;
+      // Reset to first page so filtered results start from page 1
+      this.currentPaginationPage = 1;
+    },
+    onResetFilters() {
+      this.appliedFilters = {};
+      this.isFilterDialogOpen = false;
+      this.currentPaginationPage = 1;
+    },
+
+    /**
+     * Applies all active filters to the provided items array.
+     * For each field with a non-empty filter value:
+     *   - If a custom FilterConfiguration with a filter() function exists → use it as predicate.
+     *   - Otherwise → case-insensitive partial string match on the field value.
+     * Items must satisfy ALL active filters (AND logic).
+     *
+     * @param {Array} items - The source data array.
+     * @param {Object} filters - Map of { fieldName: filterValue }.
+     * @returns {Array} The filtered items.
+     */
+    applyFilters(items, filters) {
+      console.log("filters => ", filters);
+
+      const activeEntries = Object.entries(filters).filter(
+        ([, value]) => value !== '' && value !== null && value !== undefined
+      );
+
+      if (activeEntries.length === 0) return items;
+
+      return items.filter((item, index) => {
+        return activeEntries.every(([field, filterValue]) => {
+          // Check if this field has a custom configuration
+          const config = this.filterConfiguration.find(c => c.field === field);
+
+          // Disabled fields are never applied
+          if (config && config.disable === true) return true;
+
+          // Custom filter function takes precedence
+          if (config && typeof config.filter === 'function') {
+            return config.filter(item, index);
+          }
+
+          const fieldValue = item[field];
+          if (fieldValue === null || fieldValue === undefined) return false;
+
+          // If the field is a date field, parse both values using moment and compare
+          if (config && config.isDate === true) {
+            const dateFilter = moment(filterValue, ['YYYY-MM-DD', 'DD/MM/YYYY', 'DD-MM-YYYY']);
+            const dateField = moment(fieldValue, ['DD/MM/YYYY', 'YYYY-MM-DD', 'DD-MM-YYYY']);
+            if (dateFilter.isValid() && dateField.isValid()) {
+              return dateFilter.isSame(dateField, 'day');
+            }
+          }
+
+          // Default: case-insensitive partial match
+          return String(fieldValue).toLowerCase().includes(String(filterValue).toLowerCase());
+        });
+      });
+    },
   }
 
 }
 </script>
 
 <style lang="scss">
-
 .gts-print-table-wrapper {
   position: relative;
   width: 100%;
- 
-.gts-data-table-actions {
-  display: flex;
-  gap: 10px;
-  font-weight: 500;
 
-  .gts-data-table-action {
+  .gts-data-table-actions {
     display: flex;
-    gap: 5px;
-     padding: 5px;
-    align-items: center;
-    transition-duration: 0.2s;
-    cursor: pointer;
-    &:hover {
-      background-color: $primary-color-50;
-     
+    gap: 10px;
+    font-weight: 500;
+
+    .gts-data-table-action {
+      display: flex;
+      gap: 5px;
+      padding: 5px;
+      align-items: center;
+      transition-duration: 0.2s;
+      cursor: pointer;
+      border-radius: 4px;
+
+      &:hover {
+        background-color: $primary-color-50;
+      }
+    }
+
+    // Push the Filter button to the far right of the toolbar
+    .gts-data-table-action-filter {
+      margin-left: auto;
+      position: relative;
+
+      // Active state: highlight button when filters are applied
+      &.gts-data-table-action-filter--active {
+        background-color: $primary-color-50;
+        color: $primary-color-500;
+
+        svg path {
+          fill: $primary-color-500;
+        }
+      }
+    }
+
+    // Badge showing number of active filters
+    .gts-filter-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background-color: $primary-color-500;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1;
+      min-width: 18px;
+      height: 18px;
+      border-radius: 9px;
+      padding: 0 5px;
+      margin-left: 2px;
     }
   }
 
-}
+
   .gts-table-actions-menu {
     position: absolute;
   }

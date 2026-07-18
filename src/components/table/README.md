@@ -15,6 +15,8 @@ The `DataTable` component is a feature-rich table for displaying data with suppo
 | `isPaginable` | `Boolean` | Yes | `false` | Enables pagination. |
 | `isScrollable` | `Boolean` | Yes | `false` | Enables horizontal scrolling. |
 | `paginationConfig` | `Object` | Yes | - | Configuration for pagination (page lengths, etc.). |
+| `showFilter` | `Boolean` | No | `false` | Enables a "Filter" button in the toolbar to open the filter dialog. |
+| `filterConfiguration` | `Array` | No | `[]` | Optional array of configuration objects for filtering columns. |
 
 ### Header Object Structure
 
@@ -111,3 +113,72 @@ export default {
 };
 </script>
 ```
+
+## Filter System
+
+When `showFilter` is true, a **Filter** button appears on the right side of the toolbar. Clicking it opens a dialog generated dynamically based on the headers.
+
+### Filter Configuration Structure
+
+You can configure filtering behaviors by passing the `filterConfiguration` prop:
+
+```javascript
+[
+  {
+    field: 'fieldName',                     // Field name mapping to header
+    filter: (tableItem, index) => { ... }, // Optional custom predicate function
+    disable: false,                         // Optional. If true, disables filtering for this field
+    isDate: false                           // Optional. If true, uses a HTML5 date input type
+  }
+]
+```
+
+### Filtering Behaviors
+
+1. **Default String Match**: If no custom config or custom filter function is defined, a case-insensitive partial match is performed against the column values.
+2. **Disabled Fields**: Setting `disable: true` prevents the field's input from rendering in the filter dialog and excludes it from the filter results completely.
+3. **Date Filters**: Setting `isDate: true` displays a calendar date picker input. It automatically handles comparison mismatch across formats (e.g. comparing user date input `YYYY-MM-DD` against item date values of format `DD/MM/YYYY` or `DD-MM-YYYY` at the day level).
+4. **Custom Filters**: If a `filter(item, index)` function is provided, it is invoked as a predicate for the item.
+
+### Example with Filter Configuration
+
+```vue
+<template>
+  <DataTable 
+    :headers="headers" 
+    :items="items"
+    :showFilter="true"
+    :filterConfiguration="filterConfig"
+  />
+</template>
+
+<script>
+import DataTable from '@/components/table/DataTable.vue';
+
+export default {
+  components: { DataTable },
+  data() {
+    return {
+      headers: [
+        { name: 'id', title: 'ID' },
+        { name: 'companyName', title: 'Name' },
+        { name: 'activationDate', title: 'Activation Date' },
+        { name: 'status', title: 'Status' }
+      ],
+      items: [
+        { id: 1, companyName: 'Google', activationDate: '23/05/2024', status: 'ACTIVE' },
+        { id: 2, companyName: 'OpenAI', activationDate: '10/10/2024', status: 'INACTIVE' }
+      ],
+      filterConfig: [
+        { field: 'id', disable: true }, // Hide from filter dialog
+        { field: 'activationDate', isDate: true }, // Enable date picker format support
+        { 
+          field: 'status', 
+          filter: (item) => item.status === 'ACTIVE' // Custom filter predicate
+        }
+      ]
+    };
+  }
+};
+</script>
+```

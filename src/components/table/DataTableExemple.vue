@@ -4,7 +4,7 @@
 
     <h4>Table without pagination</h4>
     <DataTable :headers="tabelHeaders2" :items="items" @unsort="unsort" @sort-asc="sortAsc" @sort-desc="sortDesc"
-      @hide-column="hideColumn" />
+      @hide-column="hideColumn" showFilter />
 
     <h4>Table with default pagination</h4>
     <DataTable :isPaginable="true" :headers="tabelHeaders2" :items="items" @unsort="unsort" @sort-asc="sortAsc"
@@ -18,8 +18,14 @@
 
 
     <h4>Table with scroll</h4>
-    <DataTable :isPaginable="true"  :isScrollable="true" :paginationConfig="{ pageLengths: [3, 5, 10] }" :headers="tabelHeaders"
-      :items="items" @unsort="unsort" @sort-asc="sortAsc" @sort-desc="sortDesc" @hide-column="hideColumn" />
+    <DataTable :isPaginable="true" :isScrollable="true" :paginationConfig="{ pageLengths: [3, 5, 10] }"
+      :headers="tabelHeaders" :items="items" @unsort="unsort" @sort-asc="sortAsc" @sort-desc="sortDesc"
+      @hide-column="hideColumn" />
+
+    <h4>Table with filters</h4>
+    <DataTable :headers="tabelHeaders2" :items="items" showFilter :filterConfiguration="[
+      { field: 'activationDate', title: 'Activation Date', isDate: true }]">
+    </DataTable>
 
 
   </div>
@@ -165,17 +171,17 @@ export default {
         },
       ],
 
-       tabelHeaders2: [
+      tabelHeaders2: [
 
         {
           title: "Code",
           name: "companyCode",
           sortable: true,
-         
+
 
         },
-        
-         
+
+
         {
           title: "Phone number",
           name: "companyPhone",
@@ -193,8 +199,8 @@ export default {
           sortable: true,
 
         },
-        
-        
+
+
       ],
 
       items: [
