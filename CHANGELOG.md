@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
+## [1.5.0] 
+
+### Added
+
+* Adding feature to automatically filter DataTable fields : [GTS-PRINT#63] (https://quire.io/w/GTS-PRINT31/63)
+
+### Changed
+
+### Deprecated
+
+### Removed
+ 
+### Fixed
+
+### Security
+
 ## [1.4.3] 
 
 ### Added

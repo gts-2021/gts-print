@@ -2,10 +2,38 @@
 
   <div :class="['gts-print-table-wrapper', className]">
     <ContextMenu :ref="`contextMenu`" className="gts-table-actions-menu" :actions="contextMenuActions" />
+
+    <!-- ===== TOOLBAR ===== -->
     <div :class="['gts-data-table-actions']">
-      <div class="gts-data-table-action gts-data-table-action-columns" @click="toggleColumnsMenu($event)"><ColumnsIcon />  <span>COLUMNS</span></div>
-      <div class="gts-data-table-action gts-data-table-action-export" @click="exportToPDF"><ExportIcon />  <span>EXPORT</span></div>
+
+      <!-- Columns toggle -->
+      <div class="gts-data-table-action gts-data-table-action-columns" @click="toggleColumnsMenu($event)">
+        <ColumnsIcon />  <span>COLUMNS</span>
+      </div>
+
+      <!-- Export to PDF -->
+      <div class="gts-data-table-action gts-data-table-action-export" @click="exportToPDF">
+        <ExportIcon />  <span>EXPORT</span>
+      </div>
+
+      <!--
+        Filter button — only rendered when showFilter prop is true.
+        margin-left: auto pushes it to the far right of the flex toolbar.
+        When filters are active, gts-filter-active class applies a subtle highlighted background.
+        The label shows "FILTER(n)" where n is the count of active filters.
+      -->
+      <div
+        v-if="showFilter"
+        :class="['gts-data-table-action', 'gts-data-table-action-filter', { 'gts-filter-active': hasActiveFilters }]"
+        @click="openFilterDialog"
+      >
+        <FilterIcon />
+        <span>FILTER<template v-if="activeFilterCount > 0">({{ activeFilterCount }})</template></span>
+      </div>
+
     </div>
+
+    <!-- ===== TABLE ===== -->
     <div :class="['gts-print-table-container', isScrollable ? 'gts-print-table-container-scrollable' : '']"
       ref="gtsPrintTableContainer">
 
@@ -29,9 +57,7 @@
               :key="header.name">
 
               <span v-if="header.componentFormatter">
-
                 <component :item="item" :is="header.componentFormatter"></component>
-
               </span>
 
               <span v-else-if="header.textFormatter"> {{ header.textFormatter(item, index) }} </span>
@@ -45,11 +71,42 @@
 
     </div>
 
-
-
     <DataTablePagination v-if="isPaginable" :totalRecords="pagination.totalRecords"
       :pageLengths="pagination.pageLengths" :pageLengthTitle="pagination.pageLengthTitle"
       @changePage="onPaginationChange($event)" @lengthPageChanged="onNumberRowsPerPageChaned($event)" />
+
+    <!--
+      ===== FILTER DIALOG =====
+      Uses the existing ConfirmationDialog component.
+      - titleFirstBtn: "Reset Filters" → calls resetFilters()
+      - titleLastBtn:  "Apply"         → calls applyFilters()
+      - Dialog body: one TextInput per filterable header (excluding filterDisabled ones).
+    -->
+    <ConfirmationDialog
+      v-if="showFilter"
+      :isOpen="isFilterDialogOpen"
+      title="Filter"
+      titleFirstBtn="Reset Filters"
+      titleLastBtn="Apply"
+      themeFirstBtn="gts-button-primary-inverse"
+      themeLastBtn="gts-button-primary"
+      @onFirstBtnClicked="resetFilters"
+      @onLastBtnClicked="applyFilters"
+      @onClosedDialog="closeFilterDialog"
+    >
+      <!-- Auto-generated filter inputs, one per filterable column -->
+      <div class="gts-filter-dialog-content">
+        <TextInput
+          v-for="header in filterableHeaders"
+          :key="header.name"
+          :label="header.filterLabel || header.title"
+          :placeholder="header.filterPlaceholder || ''"
+          :type="header.isDate ? 'date' : 'text'"
+          v-model="filterValues[header.name]"
+        />
+      </div>
+    </ConfirmationDialog>
+
   </div>
 
 </template>
@@ -59,10 +116,14 @@ import ColumnsIcon from '@/assets/icons/ColumnsIcon.vue';
 import ContextMenu from '../contextmenu/ContextMenu.vue';
 import DataTablePagination from './DataTablePagination.vue';
 import ExportIcon from '@/assets/icons/ExportIcon.vue';
+import FilterIcon from '@/assets/icons/FilterIcon.vue';
+import ConfirmationDialog from '../dialog/ConfirmationDialog.vue';
+import TextInput from '../input/TextInput.vue';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import moment from 'moment';
 import ToggleComponent from '../toggle/ToggleComponent.vue';
+
 const defaultLengths = [10, 20, 60, 100];
 
 export default {
@@ -72,7 +133,10 @@ export default {
     DataTablePagination,
     ContextMenu,
     ColumnsIcon,
-    ExportIcon
+    ExportIcon,
+    FilterIcon,
+    ConfirmationDialog,
+    TextInput,
   },
 
   props: {
@@ -97,18 +161,30 @@ export default {
     className: {
       type: String,
       required: false,
-
     },
+
     isPaginable: {
       type: Boolean,
       default: false,
     },
+
     isScrollable: {
       type: Boolean,
       default: false,
     },
+
     paginationConfig: {
       type: Object,
+    },
+
+    /**
+     * When true, a Filter button is displayed in the toolbar (far right).
+     * Clicking it opens a dialog with auto-generated filter inputs derived
+     * from the headers configuration. Defaults to false for backward compat.
+     */
+    showFilter: {
+      type: Boolean,
+      default: false,
     },
   },
 
@@ -116,28 +192,99 @@ export default {
     pagination() {
       return {
         pageLengthTitle: 'Row per page',
-        totalRecords: this.items.length,
+        // Use filteredItems.length so pagination reflects the filtered count
+        totalRecords: this.filteredItems.length,
         pageLengths: this.paginationConfig?.pageLengths || defaultLengths
       }
     },
 
+    /**
+     * Returns the subset of headers that should produce filter inputs.
+     * Any header with filterDisabled: true is excluded entirely.
+     */
+    filterableHeaders() {
+      return this.headers.filter(h => !h.filterDisabled);
+    },
+
+    /**
+     * True when at least one applied filter value is non-empty.
+    /**
+     * True when at least one applied filter value is non-empty.
+     * Drives the gts-filter-active class on the Filter button.
+     */
+    hasActiveFilters() {
+      return Object.values(this.appliedFilters).some(v => v && v.trim() !== '');
+    },
+
+    /**
+     * The count of currently active (non-empty) applied filters.
+     * Displayed in the button label as FILTER(n).
+     */
+    activeFilterCount() {
+      return Object.values(this.appliedFilters).filter(v => v && v.trim() !== '').length;
+    },
+
+    /**
+     * Applies the current appliedFilters to the full items array.
+     * For each filterable header:
+     *   - If a custom `filter(item, index, value)` function is defined → use it exclusively.
+     *   - If isDate is true → normalise both the stored value and the filter value to
+     *     YYYY-MM-DD before comparing, so 10/10/2024, 10-10-2024 and 2024/10/10 all match.
+     *   - Otherwise → default case-insensitive partial-match on the field value.
+     * Returns the full items array untouched when no filter is active.
+     */
+    filteredItems() {
+      if (!this.hasActiveFilters) return this.items;
+
+      return this.items.filter((item, index) => {
+        return this.filterableHeaders.every(header => {
+          const value = this.appliedFilters[header.name];
+
+          // Skip this column if no filter value has been set
+          if (!value || value.trim() === '') return true;
+
+          // Custom filter function takes full priority
+          if (typeof header.filter === 'function') {
+            return header.filter(item, index, value);
+          }
+
+          // Date filter: normalise both sides to YYYY-MM-DD then compare
+          if (header.isDate) {
+            const normalizedItem = this.normalizeDateToYMD(String(item[header.name] ?? ''));
+            const normalizedFilter = this.normalizeDateToYMD(value.trim());
+            // If either side couldn't be parsed, fall back to string comparison
+            if (normalizedItem && normalizedFilter) {
+              return normalizedItem === normalizedFilter;
+            }
+          }
+
+          // Default: case-insensitive partial match on the raw field value
+          const fieldValue = String(item[header.name] ?? '').toLowerCase();
+          return fieldValue.includes(value.trim().toLowerCase());
+        });
+      });
+    },
+
+    /**
+     * Slices filteredItems for the current pagination page.
+     * When not paginated, returns the full filteredItems array.
+     */
     splitedItems() {
       if (this.isPaginable) {
-
         const start = (this.currentPaginationPage - 1) * this.rowPerPage;
-
         const end = start + this.rowPerPage;
-
-        return this.items.slice(start, end);
+        return this.filteredItems.slice(start, end);
       }
-      return this.items
+      return this.filteredItems;
     },
+
     dataToDisplay() {
       if (this.sortBy) {
         return this.sortItems()
       }
       return this.splitedItems;
     },
+
     visibleHeaders() {
       return this.headers.filter(h => !this.hiddenColumns.includes(h.name));
     },
@@ -147,7 +294,6 @@ export default {
 
   data() {
     return {
-
       contextMenuActions: undefined,
       currentPaginationPage: 1,
       rowPerPage: this.paginationConfig?.pageLengths[0] || defaultLengths[0],
@@ -155,11 +301,102 @@ export default {
       sortType: "asc",
       hiddenColumns: [],
 
+      // --- Filter state ---
+      /** Whether the filter dialog is currently open */
+      isFilterDialogOpen: false,
+
+      /**
+       * Draft filter values currently being edited inside the dialog.
+       * Only committed to appliedFilters on "Apply".
+       * Shape: { [header.name]: string }
+       */
+      filterValues: {},
+
+      /**
+       * The last applied filter values — used to actually filter the dataset.
+       * Reset to {} by resetFilters().
+       * Shape: { [header.name]: string }
+       */
+      appliedFilters: {},
     }
   },
 
   methods: {
 
+    // ─── Filter dialog methods ─────────────────────────────────────────────────
+
+    /**
+     * Normalises a date string from any of the supported formats:
+     *   DD/MM/YYYY  DD-MM-YYYY  YYYY/MM/DD  YYYY-MM-DD
+     * and always returns a canonical YYYY-MM-DD string for comparison.
+     * Returns null if the input cannot be parsed.
+     */
+    normalizeDateToYMD(dateStr) {
+      if (!dateStr) return null;
+
+      // Replace all separators (/ or -) with a common delimiter for splitting
+      const parts = dateStr.replace(/[-/]/g, '/').split('/');
+      if (parts.length !== 3) return null;
+
+      let day, month, year;
+
+      if (parts[0].length === 4) {
+        // Format: YYYY/MM/DD
+        [year, month, day] = parts;
+      } else {
+        // Format: DD/MM/YYYY
+        [day, month, year] = parts;
+      }
+
+      // Zero-pad and validate the pieces are numeric
+      day   = String(day).padStart(2, '0');
+      month = String(month).padStart(2, '0');
+      year  = String(year);
+
+      if (!/^\d{4}$/.test(year) || !/^\d{2}$/.test(month) || !/^\d{2}$/.test(day)) return null;
+
+      return `${year}-${month}-${day}`;
+    },
+
+    /**
+     * Opens the filter dialog.
+     * Pre-populates the draft filterValues with the current appliedFilters
+     * so the user sees their last applied state when re-opening.
+     */
+    openFilterDialog() {
+      // Clone appliedFilters into the draft so the dialog reflects current state
+      this.filterValues = { ...this.appliedFilters };
+      this.isFilterDialogOpen = true;
+    },
+
+    /** Closes the filter dialog without committing any draft changes. */
+    closeFilterDialog() {
+      this.isFilterDialogOpen = false;
+    },
+
+    /**
+     * Commits the draft filterValues to appliedFilters, triggering reactive
+     * re-filtering of the dataset. Resets to page 1 so results are visible.
+     */
+    applyFilters() {
+      this.appliedFilters = { ...this.filterValues };
+      this.currentPaginationPage = 1;
+      this.isFilterDialogOpen = false;
+    },
+
+    /**
+     * Clears all filter values (both draft and applied), restoring the
+     * original dataset. The gts-filter-active class disappears automatically
+     * via the hasActiveFilters computed.
+     */
+    resetFilters() {
+      this.filterValues = {};
+      this.appliedFilters = {};
+      this.currentPaginationPage = 1;
+      this.isFilterDialogOpen = false;
+    },
+
+    // ─── Existing methods (unchanged) ─────────────────────────────────────────
 
     toggleMenu(headerTitle, event) {
 
@@ -171,8 +408,8 @@ export default {
       this.$nextTick(() => {
         const contextMenuDOM = contextMenuComponent.$el;
 
-        //👉 nodeType === 1 → c’est un vrai élément HTML.
-        //👉 nodeType === 8 → c’est un commentaire (<!--v-if-->).
+        //👉 nodeType === 1 → c'est un vrai élément HTML.
+        //👉 nodeType === 8 → c'est un commentaire (<!--v-if-->).
 
         if (contextMenuDOM.nodeType == 1) {
           this.setUpSortingMenu(headerTitle);
@@ -186,13 +423,15 @@ export default {
 
       });
     },
+
     onPaginationChange(currentPage) {
       this.currentPaginationPage = currentPage;
-
     },
+
     onNumberRowsPerPageChaned(nbrRows) {
       this.rowPerPage = nbrRows;
     },
+
     sortItems() {
       if (!this.sortBy) return this.splitedItems;
 
@@ -234,7 +473,6 @@ export default {
 
 
       const sorted = [...this.splitedItems].sort(sortFn);
-
 
       return this.sortType === 'desc' ? sorted.reverse() : sorted;
     },
@@ -354,25 +592,43 @@ export default {
   position: relative;
   width: 100%;
  
-.gts-data-table-actions {
-  display: flex;
-  gap: 10px;
-  font-weight: 500;
-
-  .gts-data-table-action {
+  .gts-data-table-actions {
     display: flex;
-    gap: 5px;
-     padding: 5px;
+    gap: 10px;
+    font-weight: 500;
     align-items: center;
-    transition-duration: 0.2s;
-    cursor: pointer;
-    &:hover {
-      background-color: $primary-color-50;
-     
+
+    .gts-data-table-action {
+      display: flex;
+      gap: 5px;
+      padding: 5px;
+      align-items: center;
+      transition-duration: 0.2s;
+      cursor: pointer;
+      &:hover {
+        background-color: $primary-color-50;
+      }
     }
+
+    /*
+     * Filter button is pushed to the far right using margin-left: auto.
+     * When filters are active (.gts-filter-active), the button uses the same
+     * $primary-color-50 background as the hover state — subtle but visible,
+     * keeping text and icon colors unchanged.
+     */
+    .gts-data-table-action-filter {
+      margin-left: auto;
+      border-radius: 6px;
+      transition: background-color 0.2s;
+
+      &.gts-filter-active {
+        background-color: $primary-color-50;
+        font-weight: 700;
+      }
+    }
+
   }
 
-}
   .gts-table-actions-menu {
     position: absolute;
   }
@@ -380,8 +636,6 @@ export default {
   .gts-print-table-container-scrollable {
     overflow-x: auto;
     overflow-y: hidden;
-
-
 
     &::-webkit-scrollbar {
       height: 10px; // Hauteur de la scrollbar
@@ -523,10 +777,15 @@ export default {
 
   }
 
+}
 
-
-
-
+/*
+ * Filter dialog content: stacks TextInputs vertically with consistent spacing.
+ */
+.gts-filter-dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 
