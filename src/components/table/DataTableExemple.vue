@@ -14,12 +14,20 @@
 
     <h4>Table with customize pagination</h4>
     <DataTable :isPaginable="true" :paginationConfig="{ pageLengths: [3, 5, 10] }" :headers="tabelHeaders2"
-      :items="items" @unsort="unsort" @sort-asc="sortAsc" @sort-desc="sortDesc" @hide-column="hideColumn" />
+      :items="items" />
 
 
     <h4>Table with scroll</h4>
-    <DataTable :isPaginable="true"  :isScrollable="true" :paginationConfig="{ pageLengths: [3, 5, 10] }" :headers="tabelHeaders"
-      :items="items" @unsort="unsort" @sort-asc="sortAsc" @sort-desc="sortDesc" @hide-column="hideColumn" />
+    <DataTable :isPaginable="true" :isScrollable="true" :paginationConfig="{ pageLengths: [3, 5, 10] }"
+      :headers="tabelHeaders" :items="items" />
+
+
+    <h4>Table with filtering </h4>
+    <DataTable :showFilter="true" :isPaginable="true" :paginationConfig="{ pageLengths: [3, 5, 10] }"
+      :headers="filterHeaders" :items="items" />
+
+
+
 
 
   </div>
@@ -165,17 +173,17 @@ export default {
         },
       ],
 
-       tabelHeaders2: [
+      tabelHeaders2: [
 
         {
           title: "Code",
           name: "companyCode",
           sortable: true,
-         
+
 
         },
-        
-         
+
+
         {
           title: "Phone number",
           name: "companyPhone",
@@ -193,8 +201,110 @@ export default {
           sortable: true,
 
         },
-        
-        
+
+
+      ],
+
+      /**
+       * Headers for the filtering demo table.
+       * Showcases all new filter-related header properties:
+       *   - filter:          custom filter function
+       *   - filterDisabled:  exclude column from filter dialog
+       *   - isDate:          render a date picker input
+       *   - filterLabel:     override input label in filter dialog
+       *   - filterPlaceholder: input placeholder text
+       */
+      filterHeaders: [
+        {
+          title: "Code",
+          name: "companyCode",
+          sortable: true,
+          // No filter config → default case-insensitive partial match
+          filterPlaceholder: "Search by code…",
+        },
+        {
+          title: "Name",
+          name: "companyName",
+          sortable: true,
+          filterLabel: "Company Name",
+          filterPlaceholder: "e.g. company 1",
+        },
+        {
+          title: "Phone number",
+          name: "companyPhone",
+          // filterDisabled: true → no input generated for this column
+          filterDisabled: true,
+        },
+        {
+          title: "Activation Date",
+          name: "activationDate",
+          sortable: true,
+          // isDate: true → renders a <input type="date"> in the filter dialog
+          isDate: true,
+          filterLabel: "Activated on",
+        },
+        {
+          title: "Website",
+          name: "website",
+          sortable: true,
+          // Custom filter function: exact match (case-insensitive)
+          filter: (item, index, value) => {
+            return String(item.website ?? '').toLowerCase().includes(value.toLowerCase());
+          },
+          filterPlaceholder: "e.g. company.com",
+        },
+        {
+          title: "Disabled Field",
+          name: "activationDate",
+          sortable: true,
+          filterDisabled: true
+        },
+      ],
+
+      /**
+       * Headers for the second filtering demo table.
+       * Showcases: default text match on Name/Email/Domain,
+       * a custom filter function on Email (exact domain match),
+       * and filterDisabled on Phone.
+       */
+      filterHeaders2: [
+        {
+          title: "Name",
+          name: "companyName",
+          sortable: true,
+          filterPlaceholder: "Search name…",
+        },
+        {
+          title: "Email",
+          name: "companyEmail",
+          sortable: true,
+          filterLabel: "Email address",
+          filterPlaceholder: "e.g. company2@mail.com",
+          // Custom filter: match by email prefix (before @)
+          filter: (item, index, value) => {
+            const email = String(item.companyEmail ?? '').toLowerCase();
+            return email.includes(value.trim().toLowerCase());
+          },
+        },
+        {
+          title: "Domain",
+          name: "companyDomain",
+          sortable: true,
+          filterPlaceholder: "Search domain…",
+        },
+        {
+          title: "Phone",
+          name: "companyPhone",
+          // No filter for phone in this demo
+          filterDisabled: true,
+        },
+        {
+          title: "Activation Date",
+          name: "activationDate",
+          sortable: true,
+          isDate: true,
+          filterLabel: "Date d'activation",
+        },
       ],
 
       items: [
