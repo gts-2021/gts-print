@@ -1,6 +1,6 @@
 {
   "input": {
-    "required": "(required)"
+    "required": "*"
   },
   "mapAutoComplete": {
     "mapPicker": {

@@ -18,7 +18,8 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 ### Changed
 
 * Update `DataTable` to display full date in range selection mode. [GTS-PRINT#35] (https://quire.io/w/GTS-PRINT31/35)
- 
+
+* Relpace required text to `(*)` in `Input` component. 
 
 ### Deprecated
 
