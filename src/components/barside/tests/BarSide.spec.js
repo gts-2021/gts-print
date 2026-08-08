@@ -91,4 +91,40 @@ describe('BarSide.vue', () => {
     expect(profileItem.classes()).toContain('active');
    
   });
+
+  it('Should toggle collapse state when toggle button is clicked', async () => {
+    const wrapper = mount(BarSide, {
+      propsData: {
+        menus,
+      },
+    });
+
+    expect(wrapper.classes()).not.toContain('barside-collapsed');
+    const toggleBtn = wrapper.find('.barside-toggle-btn');
+    expect(toggleBtn.exists()).toBe(true);
+
+    await toggleBtn.trigger('click');
+
+    expect(wrapper.classes()).toContain('barside-collapsed');
+    expect(wrapper.emitted().toggleCollapse).toBeTruthy();
+
+    await toggleBtn.trigger('click');
+    expect(wrapper.classes()).not.toContain('barside-collapsed');
+  });
+
+  it('Should hide item titles but keep item icons rendered when collapsed', async () => {
+    const wrapper = mount(BarSide, {
+      propsData: {
+        menus,
+      },
+    });
+
+    expect(wrapper.findAll('.barside-item-title').length).toBe(4);
+    expect(wrapper.findAll('.barside-item-icon').length).toBe(4);
+
+    await wrapper.find('.barside-toggle-btn').trigger('click');
+
+    expect(wrapper.findAll('.barside-item-title').length).toBe(0);
+    expect(wrapper.findAll('.barside-item-icon').length).toBe(4);
+  });
 });

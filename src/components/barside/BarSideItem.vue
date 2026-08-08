@@ -1,13 +1,13 @@
 <template>
 
-    <div :class="'barside-item '+ (active ? 'active' : '') " @click="onSelectedItem">
+    <div :class="'barside-item ' + (active ? 'active ' : '') + (isCollapsed ? 'collapsed' : '')" @click="onSelectedItem" :title="isCollapsed ? title : ''">
         <span class="barside-item-selected-border"></span>
         <div class="barside-item-content">
             <span class="barside-item-icon">
                 <component v-if="isExternal" :is="icon" />
                 <v-icon v-else>{{ icon }}</v-icon>
             </span>
-            <span class="barside-item-title">{{title}}</span>
+            <span v-if="!isCollapsed" class="barside-item-title">{{title}}</span>
         </div>
     </div>
 
@@ -31,6 +31,11 @@ export default {
             default: false
         },
         isExternal: {
+            type: Boolean,
+            required: false,
+            default: false
+        },
+        isCollapsed: {
             type: Boolean,
             required: false,
             default: false
@@ -86,6 +91,15 @@ export default {
 
         .barside-item-icon {
             display: flex;
+        }
+    }
+
+    .barside-item.collapsed {
+        .barside-item-content {
+            margin-left: 5px;
+            margin-right: 5px;
+            padding-left: 0;
+            justify-content: center;
         }
     }
 

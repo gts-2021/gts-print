@@ -9,7 +9,10 @@
       "cancelBtn": "Cancel",
       "selectedAddressLabel": "Selected Address",
       "calculatingAddressLabel": "Calculating Address ..",
-      "rayonSliderLabel": "Search radius:"
+      "rayonSliderLabel": "Search radius:",
+      "searchPlaceholder": "Search city, place, region...",
+      "searchBtn": "Search",
+      "noResultsFound": "No location found"
     }
   }
 }
