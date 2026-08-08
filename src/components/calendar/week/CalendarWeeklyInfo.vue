@@ -3,9 +3,11 @@
   <div class="gts-print-calendar-weekly-left" @click="selectDay(calendarDay)">
     
     <!-- day -->
-    <div class="gts-print-calendar-weekly-content-calendarDay" >
+    <div :class="['gts-print-calendar-weekly-content-calendarDay', { today: calendarDay.isToday, 'gts-today-cell': calendarDay.isToday }]" :title="calendarDay.date">
       <span class="calendarDay-name"> {{calendarDay.name}} </span>
       <span class="calendarDay-number"> {{ calendarDay.number }}</span>
+      <BadgeComponent v-if="calendarDay.isToday" text="Today" theme="gts-badge-danger" className="gts-badge gts-today-badge" />
+      <BadgeComponent v-if="calendarDay.dayType" :text="calendarDay.dayType" :theme="getDayTypeTheme(calendarDay.dayType)" className="gts-badge gts-daytype-badge" />
     </div>
 
     <!-- separator -->
@@ -33,12 +35,17 @@
 </template>
 
 <script>
+import BadgeComponent from '../../badge/BadgeComponent.vue';
 
 export default {
 
   name: "CalendarWeeklyInfo",
 
   emits : ['daySelected'],
+
+  components: {
+    BadgeComponent
+  },
 
   props: { 
     
@@ -68,6 +75,15 @@ export default {
     selectDay(calendarDay){
       this.$emit("daySelected", calendarDay);
     },
+
+    getDayTypeTheme(dayType) {
+      if (!dayType) return '';
+      const typeLower = String(dayType).toLowerCase();
+      if (typeLower === 'weekend') return 'gts-badge-warning';
+      if (typeLower === 'weekday') return 'gts-badge-primary';
+      if (typeLower === 'holiday' || typeLower === 'ferie') return 'gts-badge-danger';
+      return 'gts-badge-success';
+    }
   }
 
 }

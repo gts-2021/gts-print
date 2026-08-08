@@ -1,79 +1,78 @@
 <template>
 
   <div class="gts-print-calendar-header-container">
-    
+
     <!-- days display -->
     <div class="gts-print-calendar-header-right">
 
       <div class="gts-print-calendar-header-steps">
-       
-       <div>
-         <span class="gts-print-calendar-header-steps-icon" @click="decrementDate">
-           <v-icon>{{ "mdi-chevron-left" }}</v-icon>
-         </span>
-       </div>
-       
-       <div class="gts-calendar-wrapper">
-         <TextInput type="date" label="" class="gts-hidden-date-input" v-model="selectedDate" @OnValueChanged="selectDate"/>
-       </div>
- 
-       <div>
-         <span > {{startDate}} - {{ endDate }}</span>
-       </div>
- 
-       <div>
-         <span class="gts-print-calendar-header-steps-icon" @click="incrementDate">
-           <v-icon>{{ "mdi-chevron-right" }}</v-icon>
-         </span>
-       </div>
-      
-     </div>
- 
-     <ButtonComponent 
-        class="gts-today-button"
-       :title="'Today'" 
-        @buttonClicked="getTodayDate()"
-     />
+
+        <div>
+          <span class="gts-print-calendar-header-steps-icon" @click="decrementDate">
+            <v-icon>{{ "mdi-chevron-left" }}</v-icon>
+          </span>
+        </div>
+
+        <div class="gts-calendar-wrapper">
+          <TextInput type="date" label="" class="gts-hidden-date-input" v-model="selectedDate"
+            @OnValueChanged="selectDate" />
+        </div>
+
+        <div>
+          <span class="gts-calendar-header-date-text"> {{ startDate }} - {{ endDate }}</span>
+        </div>
+
+        <div>
+          <span class="gts-print-calendar-header-steps-icon" @click="incrementDate">
+            <v-icon>{{ "mdi-chevron-right" }}</v-icon>
+          </span>
+        </div>
+
+      </div>
+
+      <ButtonComponent class="gts-today-button" :title="'Today'" @buttonClicked="getTodayDate()" />
 
     </div>
 
     <!-- display types -->
-    <div v-if="calendarTypes.length >0" class="gts-print-calendar-header-types">
-      <span v-for="type in calendarTypes" :key="type" :class="{ selected: type === selectedType }" 
+    <div v-if="calendarTypes.length > 0" class="gts-print-calendar-header-types">
+      <span v-for="type in calendarTypes" :key="type" :class="{ selected: type === selectedType }"
         @click="selectDisplayType(type)"> {{ type }}
       </span>
     </div>
-    
+
   </div>
-    
+
 </template>
 
 <script>
 import TextInput from '@/components/input/TextInput.vue';
 import ButtonComponent from '@/components/button/ButtonComponent.vue';
+import BadgeComponent from '@/components/badge/BadgeComponent.vue';
 import moment from 'moment';
 
 export default {
 
-  
+
   name: "CalendarHeader",
 
-  emits : ['dispalyTypeSelected', 'dateIncremented', 'dateDecremented', 'dateSelected', 'todayClicked'],
+  emits: ['dispalyTypeSelected', 'dateIncremented', 'dateDecremented', 'dateSelected', 'todayClicked'],
 
-  
+
   components: {
     TextInput,
-    ButtonComponent
+    ButtonComponent,
+    BadgeComponent
   },
 
-  props: { 
+  props: {
 
     defaultType: {
       type: String,
       required: false,
       default: null,
     },
-    
+
     startDate: {
       type: String,
       required: true,
@@ -86,43 +85,57 @@ export default {
       default: "",
     },
 
-    calendarTypes:{
+    calendarTypes: {
       type: Array,
       required: false,
-      default(){ 
-        return[]
+      default() {
+        return []
       },
     }
 
   },
 
-  data () {
+  data() {
     return {
-      selectedType: this.defaultType || null,     
+      selectedType: this.defaultType || null,
       selectedDate: null,
       todayDate: null
     }
   },
 
-  methods : {
-    selectDisplayType(displayType){
-      this.selectedType = displayType; 
+  computed: {
+    selectedYearDisplay() {
+      if (this.selectedDate) {
+        const parsed = moment(this.selectedDate);
+        if (parsed.isValid()) return parsed.format('YYYY');
+      }
+      if (this.startDate) {
+        const parsed = moment(this.startDate, ['DD MMM YYYY', 'YYYY-MM-DD', 'DD/MM/YYYY']);
+        if (parsed.isValid()) return parsed.format('YYYY');
+      }
+      return null;
+    }
+  },
+
+  methods: {
+    selectDisplayType(displayType) {
+      this.selectedType = displayType;
       this.$emit("dispalyTypeSelected", displayType);
     },
 
-    incrementDate(){
+    incrementDate() {
       this.$emit("dateIncremented");
     },
 
-    decrementDate(){
+    decrementDate() {
       this.$emit("dateDecremented");
     },
 
-    selectDate(){
+    selectDate() {
       this.$emit('dateSelected', this.selectedDate);
     },
 
-    getTodayDate(){
+    getTodayDate() {
       this.$emit('todayClicked', moment());
     }
 
@@ -132,18 +145,17 @@ export default {
 </script>
 
 <style lang="scss">
-
-.gts-print-calendar-header-container{
+.gts-print-calendar-header-container {
   display: flex;
   justify-content: space-between;
   padding: 10px 0px;
-  
+
   .gts-print-calendar-header-right {
     display: flex;
     align-items: center;
     gap: 8px;
 
-    .gts-print-calendar-header-steps{
+    .gts-print-calendar-header-steps {
 
       position: relative;
       display: flex;
@@ -157,7 +169,7 @@ export default {
       font-weight: 500;
       line-height: 20px;
 
-      .gts-print-calendar-header-steps-icon{
+      .gts-print-calendar-header-steps-icon {
         display: flex;
         align-items: center;
         border: 1px solid $neutral-color-200;
@@ -173,32 +185,40 @@ export default {
         .gts-input {
           min-width: auto;
         }
-        .gts-input-calendar{
+
+        .gts-input-calendar {
           width: 0;
           height: 0;
           border: none;
           background-color: $color-white;
         }
+
         input[type="date"] {
           padding-left: 5px !important;
         }
+
         input[type="date"]:focus {
-          outline: none !important; /* Supprime la bordure bleue par défaut */
-          box-shadow: none !important; /* Supprime l'effet de glow */
-          border-color: transparent !important; /* Supprime la couleur de la bordure */
+          outline: none !important;
+          /* Supprime la bordure bleue par défaut */
+          box-shadow: none !important;
+          /* Supprime l'effet de glow */
+          border-color: transparent !important;
+          /* Supprime la couleur de la bordure */
         }
 
-        .gts-calendar-icon{
+        .gts-calendar-icon {
           left: 0px !important;
           top: 1px !important;
         }
-        
+
       }
 
     }
+
     .gts-today-button {
       margin-left: 10px;
-      .gts-button{
+
+      .gts-button {
         line-height: 10px;
       }
     }
@@ -212,7 +232,7 @@ export default {
     gap: 10px;
     border-radius: 8px;
     background: $primary-color-50;
-    padding: 4px 8px; 
+    padding: 4px 8px;
 
   }
 
@@ -220,7 +240,7 @@ export default {
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    padding: 2px 8px; 
+    padding: 2px 8px;
     border-radius: 4px;
     background: transparent;
     transition: all 0.3s ease;
@@ -235,10 +255,9 @@ export default {
     background: $color-white;
     color: $primary-color-400;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-    padding: 2px 8px; 
+    padding: 2px 8px;
   }
 
 
 }
- 
 </style>

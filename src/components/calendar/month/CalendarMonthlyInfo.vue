@@ -5,8 +5,12 @@
   <div class="gts-print-calendar-monthly-content-data-header">
 
     <!-- day -->
-    <div class="gts-print-calendar-header-day">
-      <span>{{ calendarDay.number}} </span>
+    <div class="gts-calendar-day-header-left">
+      <div :class="['gts-print-calendar-header-day', { today: calendarDay.isToday }]" :title="calendarDay.date">
+        <span>{{ calendarDay.number}} </span>
+      </div>
+      <BadgeComponent v-if="calendarDay.isToday" text="Today" theme="gts-badge-danger" className="gts-badge gts-today-badge" />
+      <BadgeComponent v-if="calendarDay.dayType" :text="calendarDay.dayType" :theme="getDayTypeTheme(calendarDay.dayType)" className="gts-badge gts-daytype-badge" />
     </div>
 
     <!-- actions -->
@@ -35,6 +39,7 @@
 
 import MenuIcon from '@/assets/icons/MenuIcon.vue';
 import ContextMenu from '../../contextmenu/ContextMenu.vue';
+import BadgeComponent from '../../badge/BadgeComponent.vue';
 
 export default {
 
@@ -42,7 +47,8 @@ export default {
 
   components: {
     MenuIcon,
-    ContextMenu
+    ContextMenu,
+    BadgeComponent
   },
 
   props: { 
@@ -80,6 +86,15 @@ export default {
     toggleMenu(event){
       event.stopPropagation();
 			this.$refs.contextMenu.toggleMenu();
+    },
+
+    getDayTypeTheme(dayType) {
+      if (!dayType) return '';
+      const typeLower = String(dayType).toLowerCase();
+      if (typeLower === 'weekend') return 'gts-badge-warning';
+      if (typeLower === 'weekday') return 'gts-badge-primary';
+      if (typeLower === 'holiday' || typeLower === 'ferie') return 'gts-badge-danger';
+      return 'gts-badge-success';
     }
   
   }
@@ -105,6 +120,13 @@ export default {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 5px;
+
+    .gts-calendar-day-header-left {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
 
     .gts-print-calendar-header-day{
       display: flex;

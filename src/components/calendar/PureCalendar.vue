@@ -32,6 +32,7 @@
 import CalendarHeader from './CalendarHeader.vue';
 import CalendarMonthly from './month/CalendarMonthly.vue';
 import CalendarWeekly from './week/CalendarWeekly.vue';
+import CalendarDaily from './day/CalendarDaily.vue';
 
 export default {
 
@@ -43,6 +44,7 @@ export default {
     CalendarHeader,
     CalendarMonthly,
     CalendarWeekly,
+    CalendarDaily,
   },
 
   props: {
