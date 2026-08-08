@@ -77,16 +77,20 @@ export default {
     getContentCssClass() {
       return this.calendarData.calendars.map(week =>
         week.map(day => {
+          let classes = [];
           if (day.isEmpty) {
-            return "empty";
+            classes.push("empty");
+          }
+          if (day.isToday) {
+            classes.push("today", "gts-today-cell");
           }
           if (this.selectedDay === day) {
-            return "selected";
+            classes.push("selected");
           }
-          if (day.disabled) {
-            return "light-gray";
+          if (day.disabled && !day.isToday) {
+            classes.push("light-gray");
           }
-          return "";
+          return classes.join(" ");
         })
       );
     },

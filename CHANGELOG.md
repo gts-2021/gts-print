@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
+
+## [1.6.0] 
+
+### Added
+
+* Adding new feature to `CalendarComponent` : [GTS-PRINT#35] (https://quire.io/w/GTS-PRINT31/35)
+  - Add day display mode.
+
+### Changed
+
+* Update `DataTable` to display full date in range selection mode. [GTS-PRINT#35] (https://quire.io/w/GTS-PRINT31/35)
+ 
+
+### Deprecated
+
+### Removed
+ 
+### Fixed
+
+### Security
+
 ## [1.5.0] 
 
 ### Added

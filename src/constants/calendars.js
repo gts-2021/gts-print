@@ -5,3 +5,4 @@ export const CALENDARS_DAY_TYPE = "Day";
 
 export const CALENDAR_MONTHLY = "CalendarMonthly";
 export const CALENDAR_WEEKLY = "CalendarWeekly";
+export const CALENDAR_DAILY = "CalendarDaily";

@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { CALENDAR_MONTHLY, CALENDAR_WEEKLY, CALENDARS_MONTH_TYPE, CALENDARS_TYPES, CALENDARS_WEEK_TYPE } from '@/constants/calendars';
+import { CALENDAR_DAILY, CALENDAR_MONTHLY, CALENDAR_WEEKLY, CALENDARS_DAY_TYPE, CALENDARS_MONTH_TYPE, CALENDARS_TYPES, CALENDARS_WEEK_TYPE } from '@/constants/calendars';
 import PureCalendar from './PureCalendar.vue';
 import moment from 'moment';
 
@@ -128,22 +128,30 @@ export default {
       if (this.headerConfig.defaultType == CALENDARS_MONTH_TYPE) {
         startOfCalendar = currentDate.clone().startOf('month').startOf('week');
         endOfCalendar = currentDate.clone().endOf('month').endOf('week');
-      } else {
+      } else if (this.headerConfig.defaultType == CALENDARS_WEEK_TYPE) {
         startOfCalendar = currentDate.clone().startOf('week');
         endOfCalendar = currentDate.clone().endOf('week');
+      } else {
+        startOfCalendar = currentDate.clone().startOf('day');
+        endOfCalendar = currentDate.clone().startOf('day');
       }
 
-      if (this.isStrictMonth && this.headerConfig.defaultType == CALENDARS_MONTH_TYPE) {
-        this.headerConfig.startDate = currentDate.clone().startOf('month').format('DD MMM');
-        this.headerConfig.endDate = currentDate.clone().endOf('month').format('DD MMM');
+      if (this.headerConfig.defaultType == CALENDARS_DAY_TYPE) {
+        this.headerConfig.startDate = currentDate.format('DD MMM YYYY');
+        this.headerConfig.endDate = currentDate.format('DD MMM YYYY');
+      } else if (this.isStrictMonth && this.headerConfig.defaultType == CALENDARS_MONTH_TYPE) {
+        this.headerConfig.startDate = currentDate.clone().startOf('month').format('DD MMM YYYY');
+        this.headerConfig.endDate = currentDate.clone().endOf('month').format('DD MMM YYYY');
       } else {
-        this.headerConfig.startDate = startOfCalendar.format('DD MMM');
-        this.headerConfig.endDate = endOfCalendar.format('DD MMM');
+        this.headerConfig.startDate = startOfCalendar.format('DD MMM YYYY');
+        this.headerConfig.endDate = endOfCalendar.format('DD MMM YYYY');
       }
+      this.headerConfig.selectedYear = currentDate.format('YYYY');
 
       // Générer toutes les dates dans cette plage
       let calendarRange = [];
       let day = startOfCalendar.clone();
+      const today = moment();
       for (day; day.isBefore(endOfCalendar) || day.isSame(endOfCalendar, 'day'); day.add(1, 'days')) {
 
         let dateContent = this.datesContent.find(dateContent => dateContent.date == day.format(this.dateFormat));
@@ -157,16 +165,22 @@ export default {
         }
 
         let isEmpty = this.isStrictMonth && isOutsideMonth;
+        let isToday = day.isSame(today, 'day');
+        let dayType = (dateContent && dateContent.dayType) ? dateContent.dayType : null;
 
         calendarRange.push(
           {
             date: day.format(this.dateFormat),
             number: day.format('DD'),
             day: day.format('ddd').toUpperCase(),
+            name: day.format('ddd').toUpperCase(),
             label: "NO EVENT",
             disabled: true,
             content,
-            isEmpty
+            isEmpty,
+            isToday,
+            dayType,
+            year: day.format('YYYY'),
           }
         );
       }
@@ -189,9 +203,10 @@ export default {
 
       if (type == CALENDARS_MONTH_TYPE) {
         dateToGenerate = this.selectedStartDate.startOf('month').add(1, 'months');
-      } else {
+      } else if (type == CALENDARS_WEEK_TYPE) {
         dateToGenerate = this.selectedStartDate.startOf('week').add(1, 'weeks');
-
+      } else {
+        dateToGenerate = this.selectedStartDate.startOf('day').add(1, 'days');
       }
       this.onDateSelected(dateToGenerate);
     },
@@ -202,9 +217,10 @@ export default {
 
       if (type == CALENDARS_MONTH_TYPE) {
         dateToGenerate = this.selectedStartDate.startOf('month').add(-1, 'months');
-      } else {
+      } else if (type == CALENDARS_WEEK_TYPE) {
         dateToGenerate = this.selectedStartDate.startOf('week').add(-1, 'weeks');
-
+      } else {
+        dateToGenerate = this.selectedStartDate.startOf('day').add(-1, 'days');
       }
       
       this.onDateSelected(dateToGenerate);
@@ -229,8 +245,10 @@ export default {
 
       if (type == CALENDARS_MONTH_TYPE) {
         this.calendarContentConfig.selectedCalendarComponent = CALENDAR_MONTHLY;
-      } else {
+      } else if (type == CALENDARS_WEEK_TYPE) {
         this.calendarContentConfig.selectedCalendarComponent = CALENDAR_WEEKLY;
+      } else if (type == CALENDARS_DAY_TYPE) {
+        this.calendarContentConfig.selectedCalendarComponent = CALENDAR_DAILY;
       }
 
       this.$emit("onClendarTypeChanged", this.calendarContentConfig.selectedCalendarComponent)
