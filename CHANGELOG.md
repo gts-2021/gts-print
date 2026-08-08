@@ -12,6 +12,8 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 ### Added
 
+* Adding serach input in `AdressAutoComplete` : [GTS-PRINT#66] (https://quire.io/w/GTS-PRINT31/66)
+* Adding toggle button in `BarSide` : [GTS-PRINT#66] (https://quire.io/w/GTS-PRINT31/66)
 * Adding new feature to `CalendarComponent` : [GTS-PRINT#35] (https://quire.io/w/GTS-PRINT31/35)
   - Add day display mode.
 

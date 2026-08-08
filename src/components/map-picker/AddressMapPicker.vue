@@ -4,6 +4,28 @@
     :title="$t('mapAutoComplete.mapPicker.title')" @onClosedDialog="close" @onFirstBtnClicked="close"
     @onLastBtnClicked="confirm">
     <div class="address-map-picker-content">
+      <div class="map-picker-search-container">
+        <div class="map-picker-search-input-wrapper">
+          <input
+            type="text"
+            v-model="searchQuery"
+            :placeholder="$t('mapAutoComplete.mapPicker.searchPlaceholder') || 'Rechercher une ville, région, lieu...'"
+            class="gts-input map-picker-search-input"
+            @keyup.enter="onSearchLocation"
+          />
+        </div>
+        <ButtonComponent
+          :title="$t('mapAutoComplete.mapPicker.searchBtn') || 'Rechercher'"
+          :theme="PRIMARY"
+          @buttonClicked="onSearchLocation"
+          :disabled="isSearching || !searchQuery.trim()"
+          className="map-picker-search-btn"
+        />
+      </div>
+      <div v-if="searchError" class="search-error-msg">
+        {{ searchError }}
+      </div>
+
       <div v-if="selectedAddress" class="mt-3 selected-address-text">
         <strong>{{$t('mapAutoComplete.mapPicker.selectedAddressLabel')}} : </strong> {{
           selectedAddress.display_name }}
@@ -11,7 +33,7 @@
 
       <div v-if="radius !== null && radius !== undefined" class="radius-slider-container">
         <label for="radius-range" class="radius-slider-label">
-          <strong>{{ $t('mapAutoComplete.mapPicker.rayonSliderLabel') || 'radius de recherche :' }}</strong>
+          <strong>{{ $t('mapAutoComplete.mapPicker.rayonSliderLabel') || 'rayon de recherche :' }}</strong>
           <span class="radius-value">{{ localRayon }} km</span>
         </label>
         <input
@@ -36,8 +58,9 @@
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import AddressService from '@services/AddressService';
+import ButtonComponent from '@components/button/ButtonComponent.vue';
  
-import { PRIMARY_50, PRIMARY_50_INVERSE } from '@constants/buttons';
+import { PRIMARY, PRIMARY_50, PRIMARY_50_INVERSE } from '@constants/buttons';
 
 // Fix for Leaflet marker icons
 import icon from 'leaflet/dist/images/marker-icon.png';
@@ -56,7 +79,8 @@ L.Marker.prototype.options.icon = DefaultIcon;
 export default {
   name: 'AddressMapPicker',
   components: {
-    ConfirmationDialog
+    ConfirmationDialog,
+    ButtonComponent
   },
   props: {
     show: {
@@ -91,6 +115,10 @@ export default {
       circle: null,
       localRayon: this.radius || 10,
       selectedAddress: null,
+      searchQuery: '',
+      isSearching: false,
+      searchError: '',
+      PRIMARY,
       PRIMARY_50,
       PRIMARY_50_INVERSE
     };
@@ -196,6 +224,47 @@ export default {
           };
         }
       }
+    },
+    async onSearchLocation() {
+      if (!this.searchQuery || !this.searchQuery.trim()) return;
+
+      this.isSearching = true;
+      this.searchError = '';
+
+      try {
+        const results = await AddressService.searchAddress(this.searchQuery.trim());
+        if (results && results.length > 0) {
+          const topResult = results[0];
+          const lat = parseFloat(topResult.lat);
+          const lon = parseFloat(topResult.lon);
+
+          if (!isNaN(lat) && !isNaN(lon)) {
+            if (topResult.boundingbox && Array.isArray(topResult.boundingbox) && topResult.boundingbox.length === 4) {
+              const south = parseFloat(topResult.boundingbox[0]);
+              const north = parseFloat(topResult.boundingbox[1]);
+              const west = parseFloat(topResult.boundingbox[2]);
+              const east = parseFloat(topResult.boundingbox[3]);
+
+              if (!isNaN(south) && !isNaN(north) && !isNaN(west) && !isNaN(east)) {
+                this.map.fitBounds([[south, west], [north, east]]);
+              } else {
+                this.map.setView([lat, lon], 12);
+              }
+            } else {
+              this.map.setView([lat, lon], 12);
+            }
+          } else {
+            this.searchError = this.$t('mapAutoComplete.mapPicker.noResultsFound') || 'Aucun lieu trouvé';
+          }
+        } else {
+          this.searchError = this.$t('mapAutoComplete.mapPicker.noResultsFound') || 'Aucun lieu trouvé';
+        }
+      } catch (err) {
+        console.error("Error searching location for map viewport:", err);
+        this.searchError = this.$t('mapAutoComplete.mapPicker.noResultsFound') || 'Aucun lieu trouvé';
+      } finally {
+        this.isSearching = false;
+      }
     }
   }
 };
@@ -203,8 +272,8 @@ export default {
 
 <style>
 .address-map-picker .gts-dialog-content {
-  height: 620px;
-  max-height: 620px;
+  height: 660px;
+  max-height: 660px;
 }
 
 .address-map-picker-content {
@@ -212,6 +281,35 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
+}
+
+.map-picker-search-container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+  align-items: center;
+}
+
+.map-picker-search-input-wrapper {
+  flex-grow: 1;
+}
+
+.map-picker-search-input {
+  width: 100%;
+  height: 44px;
+  font-size: 14px;
+}
+
+.map-picker-search-btn .gts-button {
+  height: 44px;
+  padding: 0 16px;
+  white-space: nowrap;
+}
+
+.search-error-msg {
+  color: #d32f2f;
+  font-size: 13px;
+  margin-bottom: 10px;
 }
 
 .selected-address-text {
@@ -295,7 +393,7 @@ export default {
   z-index: 1;
   flex-grow: 1;
   width: 100%;
-  min-height: 380px;
+  min-height: 340px;
   border-radius: 8px;
   border: 1px solid #dee2e6;
 }
