@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
+//add new section for new release 
+## [1.6.3]
+
+### Added
+
+
+### Changed
+
+### Deprecated
+
+### Removed
+ 
+### Fixed
+
+* Removing infinity loop when binding default address in `MapAutoComplete` : [GTS-PRINT#67] (https://quire.io/w/GTS-PRINT31/67)
+
+### Security
 
 ## [1.6.0] 
 

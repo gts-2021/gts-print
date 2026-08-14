@@ -28,7 +28,7 @@ export default {
     AutoComplete,
     AddressMapPicker
   },
-  
+
   props: {
     defaultSelectedAddress: {
       type: Object,
@@ -44,9 +44,9 @@ export default {
       default: null
     }
   },
-  async created(){
+  async created() {
 
-   this.handleDefaultAddress();
+    this.handleDefaultAddress();
 
   },
   data() {
@@ -102,7 +102,7 @@ export default {
       return customAddress;
     },
     onAddressSelected(selection) {
-       
+
       const selected = this.setUpSelectedValue(selection);
       this.internalSelectedAddress = selected;
 
@@ -134,10 +134,12 @@ export default {
     }
   },
   watch: {
-		defaultSelectedAddress() {
-			 this.handleDefaultAddress();
-		}
-	}
+    defaultSelectedAddress() {
+      if (this.internalSelectedAddress && this.internalSelectedAddress.latitude != this.defaultSelectedAddress.latitude || this.internalSelectedAddress.longitude != this.defaultSelectedAddress.longitude) {
+        this.handleDefaultAddress();
+      }
+    }
+  }
 };
 </script>
 
