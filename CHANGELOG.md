@@ -8,16 +8,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 //add new section for new release 
-## [1.6.3]
+
+## [1.6.4]
 
 ### Added
 
+* Adding scroll to dialog parent
 
-### Changed
-
-### Deprecated
-
-### Removed
+## [1.6.3]
  
 ### Fixed
 
