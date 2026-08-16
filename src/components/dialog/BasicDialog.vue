@@ -247,6 +247,7 @@ export default {
   height: 100%;
   background-color: rgba(0, 20, 29, 0.705);
   z-index: 100;
+  overflow-y: auto;
 
 }
 
