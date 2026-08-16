@@ -1,28 +1,30 @@
 <template>
 
-  <div v-if="this.isOpen" class="gts-dialog-container">
-    <div ref="dialogRef" :class="'gts-dialog ' + (this.className || '')" :style="dialogStyle">
-      <div class="gts-dialog-header" :style="isMovable ? 'cursor: move;' : ''" @mousedown="startDrag">
-        <span class="gts-dialog-header-title" :style="'color:' + this.titleColor + ';'">{{ title }}</span>
-        <svg @click="onCloseClicked" class="gts-dialog-header-close-icon" width="30" height="30"
-          xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-          <path
-            d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
-        </svg>
-      </div>
-      <div class="gts-dialog-content" :style="contentStyle">
-        <slot></slot>
-      </div>
-
-      <template v-if="$slots.footer">
-        <div class="gts-dialog-footer">
-          <slot name="footer"></slot>
+  <teleport to="body">
+    <div v-if="this.isOpen" class="gts-dialog-container">
+      <div ref="dialogRef" :class="'gts-dialog ' + (this.className || '')" :style="dialogStyle">
+        <div class="gts-dialog-header" :style="isMovable ? 'cursor: move;' : ''" @mousedown="startDrag">
+          <span class="gts-dialog-header-title" :style="'color:' + this.titleColor + ';'">{{ title }}</span>
+          <svg @click="onCloseClicked" class="gts-dialog-header-close-icon" width="30" height="30"
+            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path
+              d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+          </svg>
         </div>
-      </template>
+        <div class="gts-dialog-content" :style="contentStyle">
+          <slot></slot>
+        </div>
 
-      <div v-if="isResizable" class="gts-dialog-resize-handle" @mousedown="startResize"></div>
+        <template v-if="$slots.footer">
+          <div class="gts-dialog-footer">
+            <slot name="footer"></slot>
+          </div>
+        </template>
+
+        <div v-if="isResizable" class="gts-dialog-resize-handle" @mousedown="startResize"></div>
+      </div>
     </div>
-  </div>
+  </teleport>
 
 </template>
 

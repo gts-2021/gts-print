@@ -47,24 +47,41 @@
 
     <h3>AutoComplete Example</h3>
 
-    <AutoComplete label="Handling selected value by event" v-model="frutInp1" :options="fruitOptions"   @onOptionSelected="(option) => {selectedFruit1 = option;}"/>
-     
+    <AutoComplete label="Handling selected value by event" v-model="frutInp1" :options="fruitOptions"
+      @onOptionSelected="(option) => { selectedFruit1 = option; }" />
+
     <div style="margin-top: 20px;">
-      <span>Tapped Value:</span> {{ frutInp1 }} <br> 
+      <span>Tapped Value:</span> {{ frutInp1 }} <br>
       <span>Selected Option:</span> {{ selectedFruit1 }}
-    </div><br> 
+    </div><br>
 
-    <AutoComplete label="Handling selected value by two way binding" v-model="frutInp2" v-model:selectedOption="selectedFruit2" :options="fruitOptions" @onSelectionReset="() => console.log('reset selection')" />
+    <AutoComplete label="Handling selected value by two way binding using selectedOption prop" v-model="frutInp2"
+      v-model:selectedOption="selectedFruit2" :options="fruitOptions"
+      @onSelectionReset="() => console.log('reset selection')" />
     <div style="margin-top: 20px;">
-      <span>Tapped Value:</span> {{ frutInp2 }} <br> 
+      <span>Tapped Value:</span> {{ frutInp2 }} <br>
       <span>Selected Option:</span> {{ selectedFruit2 }}
-    </div><br> 
+    </div><br>
 
-    <AutoComplete label="Setting default selected value" v-model="frutInp3"  v-model:selectedOption="selectedFruit3" :options="fruitOptions"  />
+    <AutoComplete label="Setting default selected value" v-model="frutInp3" v-model:selectedOption="selectedFruit3"
+      :options="fruitOptions" />
     <div style="margin-top: 20px;">
-      <span>Tapped Value:</span> {{ frutInp3 }} <br> 
+      <span>Tapped Value:</span> {{ frutInp3 }} <br>
       <span>Selected Option:</span> {{ selectedFruit3 }}
-    </div><br> 
+    </div><br>
+    <ButtonComponent class="mb-20" :title="'Changed value to 3'"
+      @click="() => selectedFruit3 = { label: 'Cherry', value: 'cherry' }" />
+
+    <AutoComplete label="Setting default selected value after options refresh" v-model="frutInp3" v-model:selectedOption="selectedFruit3"
+      :options="emptyOptions" />
+    <div style="margin-top: 20px;">
+      <span>Tapped Value:</span> {{ frutInp3 }} <br>
+      <span>Selected Option:</span> {{ selectedFruit3 }}
+    </div><br>
+    <ButtonComponent class="mb-20" :title="'Get options'"
+      @click="() => emptyOptions = fruitOptions" />
+
+
 
 
 
@@ -81,8 +98,8 @@
       :value="valueToChange" label="ListBox with code controled value" />
     <ButtonComponent class="mb-20" :title="'Changed value to 3'" @click="() => valueToChange = '3'" />
 
-      <ListBox @OnValueChanged="(v) => valueToChange2 = v.value" :options="listBoxOptions"
-      :value="valueToChange" label="ListBox with code controled value (second exemple) " />
+    <ListBox @OnValueChanged="(v) => valueToChange2 = v.value" :options="listBoxOptions" :value="valueToChange"
+      label="ListBox with code controled value (second exemple) " />
     <ButtonComponent class="mb-20" :title="'Changed value to 3'" @click="() => valueToChange2 = '3'" />
 
     <ListBox @OnValueChanged="(v) => console.log('onValueChanged : ', v)" :options="listBoxOptions"
@@ -110,7 +127,7 @@ import TextInputArea from '@/components/input/TextInputArea.vue';
 import ListBox from './ListBox.vue';
 import ButtonComponent from '../button/ButtonComponent.vue';
 import AutoComplete from './AutoComplete.vue';
- 
+
 
 export default {
 
@@ -177,7 +194,7 @@ export default {
       frutInp1: '',
       selectedFruit1: '',
       frutInp2: '',
-      selectedFruit2: '',
+      selectedFruit2: { "label": "Banana", "value": "banana" },
       frutInp3: '',
       selectedFruit3: { "label": "Banana", "value": "banana" },
       fruitOptions: [
@@ -188,7 +205,8 @@ export default {
         { label: 'Elderberry', value: 'elderberry' },
         { label: 'Fig', value: 'fig' },
         { label: 'Grape', value: 'grape' }
-      ]
+      ],
+      emptyOptions: []
 
 
     };

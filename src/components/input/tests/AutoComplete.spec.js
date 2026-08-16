@@ -49,20 +49,64 @@ describe('Tests for AutoComplete component', () => {
         await secondOption.trigger('click');
 
         expect(wrapper.vm.inputValue).toBe('Banana');
-        expect(wrapper.emitted('update:modelValue')[0]).toEqual(['banana']);
+        expect(wrapper.emitted('update:modelValue')[0]).toEqual(['Banana']);
         expect(wrapper.vm.isOpen).toBe(false);
     });
 
-    it('Should update input value when modelValue prop changes', async () => {
+    it('Should find option by value in options and update input value when selectedOption changes', async () => {
+        const wrapper = mount(AutoComplete, {
+            propsData: {
+                label: 'Fruit',
+                options
+            }
+        });
+
+        await wrapper.setProps({
+            selectedOption: { value: 'cherry' }
+        });
+
+        expect(wrapper.vm.inputValue).toBe('Cherry');
+        expect(wrapper.emitted('update:modelValue')).toBeTruthy();
+        expect(wrapper.emitted('update:modelValue')[0]).toEqual(['Cherry']);
+    });
+
+    it('Should resolve matching option from options by value and ignore different label in selectedOption', async () => {
+        const wrapper = mount(AutoComplete, {
+            propsData: {
+                label: 'Fruit',
+                options: [
+                    { label: 'Banana', value: 1 },
+                    { label: 'Apple', value: 2 }
+                ]
+            }
+        });
+
+        // Pass selectedOption with label 'Kiwi' but value 1
+        await wrapper.setProps({
+            selectedOption: { label: 'Kiwi', value: 1 }
+        });
+
+        // Should display 'Banana' from options, not 'Kiwi'
+        expect(wrapper.vm.inputValue).toBe('Banana');
+        expect(wrapper.emitted('update:modelValue')).toBeTruthy();
+        expect(wrapper.emitted('update:modelValue')[0]).toEqual(['Banana']);
+    });
+
+    it('Should use formatSelectedValueDisplay when provided', async () => {
         const wrapper = mount(AutoComplete, {
             propsData: {
                 label: 'Fruit',
                 options,
-                modelValue: 'cherry'
+                formatSelectedValueDisplay: (opt) => `Selected: ${opt.label}`
             }
         });
 
-        expect(wrapper.vm.inputValue).toBe('Cherry');
+        await wrapper.setProps({
+            selectedOption: { value: 'banana' }
+        });
+
+        expect(wrapper.vm.inputValue).toBe('Selected: Banana');
+        expect(wrapper.emitted('update:modelValue')[0]).toEqual(['Selected: Banana']);
     });
 
 });

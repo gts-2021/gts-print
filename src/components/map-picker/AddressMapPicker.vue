@@ -132,6 +132,26 @@ export default {
           this.drawCircle(lat, lng);
         }
       }
+    },
+    pickedAddress: {
+      handler(newVal) {
+        if (newVal && newVal.latitude && newVal.longitude) {
+          if (this.map) {
+            this.setUpSelectedAddress(newVal.latitude, newVal.longitude);
+          }
+        } else {
+          this.selectedAddress = null;
+          if (this.marker && this.map) {
+            this.map.removeLayer(this.marker);
+            this.marker = null;
+          }
+          if (this.circle && this.map) {
+            this.map.removeLayer(this.circle);
+            this.circle = null;
+          }
+        }
+      },
+      deep: true
     }
   },
   methods: {
@@ -215,7 +235,7 @@ export default {
         // Fetch address details
         const address = await AddressService.getAddressFromCoordinates(lat, lng);
 
-        if (address) {
+        if (address && this.marker) {
           this.selectedAddress = {
             ...address,
             latitude: lat,

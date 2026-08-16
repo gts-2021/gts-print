@@ -14,6 +14,7 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 ### Added
 
 * Adding scroll to dialog parent
+* Refactor `Dialog` rendering behavior using Portal pattern to dynamically mount inside a single `gts-dialog-container` direct child of `<body>` with stacking, z-index management, and accessibility support.
 
 ## [1.6.3]
  

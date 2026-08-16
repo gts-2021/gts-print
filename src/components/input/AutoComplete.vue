@@ -1,28 +1,14 @@
 <template>
   <CommonInput v-bind="$props">
     <div class="gts-autocomplete-container" v-click-outside="closeList">
-      
-      <input
-        ref="gtsInput"
-        v-model="inputValue"
-        @input="onInput"
-        @focus="onFocus"
-        :disabled="disabled"
-        :class="'gts-input gts-autocomplete ' + (disabled ? 'gts-input-disabled' : '') + (error ? ' gts-input-error' : '')"
-        type="text"
-        :placeholder="placeholder"
-      />
 
-      <div
-        v-if="isOpen && filteredOptions.length"
-        class="gts-listbox-option-container"
-      >
-        <span
-          v-for="(option, index) in filteredOptions"
-          :key="index"
-          class="gts-listbox-option"
-          @click="onOptionSelected(option)"
-        >
+      <input ref="gtsInput" v-model="inputValue" @input="onInput" @focus="onFocus" :disabled="disabled"
+        :class="'gts-input gts-autocomplete ' + (disabled ? 'gts-input-disabled' : '') + (error ? ' gts-input-error' : '')"
+        type="text" :placeholder="placeholder" />
+
+      <div v-if="isOpen && filteredOptions.length" class="gts-listbox-option-container">
+        <span v-for="(option, index) in filteredOptions" :key="index" class="gts-listbox-option"
+          @click="onOptionSelected(option)">
           {{ option.label }}
         </span>
       </div>
@@ -41,23 +27,17 @@ export default {
   components: {
     CommonInput
   },
-created(){
-if(this.selectedOption && this.selectedOption.label){
-  
-  if(!this.modelValue || this.modelValue == '') {
-    this.inputValue = this.selectedOption.label;
-    this.$emit('update:modelValue', this.inputValue);
-  }
-}
-
-},
+  created() {
+    this.setUpDefaultSelectedValue();
+  },
   mixins: [InputCommonProps],
 
   emits: [
     'update:modelValue',
     'update:selectedOption',
     'onOptionSelected',
-    'onSelectionReset'
+    'onSelectionReset',
+    'onValueChanged'
   ],
 
   props: {
@@ -103,11 +83,45 @@ if(this.selectedOption && this.selectedOption.label){
       immediate: true,
       handler() {
         this.filterOptions();
+        this.setUpDefaultSelectedValue();
+      }
+    },
+
+    selectedOption: {
+      deep: true,
+      handler(newVal) {
+
+        if (newVal && newVal.value !== undefined) {
+          const foundOption = this.options.find(option => option.value === newVal.value);
+          if (foundOption) {
+            const displayValue = this.formatSelectedValueDisplay
+              ? this.formatSelectedValueDisplay(foundOption)
+              : foundOption.label;
+            this.inputValue = displayValue;
+            this.$emit('update:modelValue', displayValue);
+          } else {
+            this.inputValue = '';
+            this.$emit('update:modelValue', '');
+          }
+        }
       }
     }
   },
 
   methods: {
+
+    setUpDefaultSelectedValue() {
+      if (this.selectedOption && this.selectedOption.value !== undefined) {
+        const foundOption = this.options.find(opt => opt.value === this.selectedOption.value);
+        if (foundOption) {
+          const displayValue = this.formatSelectedValueDisplay
+            ? this.formatSelectedValueDisplay(foundOption)
+            : foundOption.label;
+          this.inputValue = displayValue;
+          this.$emit('update:modelValue', this.inputValue);
+        }
+      }
+    },
 
     onInput(event) {
 
@@ -124,6 +138,7 @@ if(this.selectedOption && this.selectedOption.label){
       // reset option sélectionnée
       this.$emit('update:selectedOption', undefined);
       this.$emit('onSelectionReset', undefined);
+      this.$emit('onValueChanged', value);
     },
 
     onFocus() {
@@ -140,21 +155,23 @@ if(this.selectedOption && this.selectedOption.label){
         return;
       }
 
-      const lowerInput = this.inputValue.toLowerCase();
+      const cleanInput = this.inputValue.toLowerCase().replace(/[,.-]/g, ' ').trim();
+      const inputWords = cleanInput.split(/\s+/).filter(Boolean);
 
-      this.filteredOptions = this.options.filter(option =>
-        option.label.toLowerCase().includes(lowerInput)
-      );
+      this.filteredOptions = this.options.filter(option => {
+        const cleanLabel = (option?.label || '').toLowerCase().replace(/[,.-]/g, ' ');
+        return inputWords.every(word => cleanLabel.includes(word));
+      });
     },
 
     onOptionSelected(option) {
-      
+
       const displayValue = this.formatSelectedValueDisplay
         ? this.formatSelectedValueDisplay(option)
         : option.label;
 
       this.inputValue = displayValue;
-      
+
 
       this.$emit('update:modelValue', displayValue);
       this.$emit('update:selectedOption', option);
