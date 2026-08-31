@@ -6,7 +6,7 @@
 
 			<div>
 
-				<span class="gts-print-pagination-page-length-title"> {{pageLengthTitle}}</span> 
+				<span class="gts-print-pagination-page-length-title"> {{effectivePageLengthTitle}}</span> 
 
 				<span class="gts-print-pagination-page-selected"> {{selectedPageLength}}</span>
 				
@@ -16,7 +16,7 @@
 			
 			<div v-if="pageLengthDisplayed" class="gts-print-pagination-page-length-menu">
 
-				<span v-for="page in pageLengths" :key="page" class="gts-print-pagination-page-length-menu-item" @click="handlePageLengthChange(page)"> {{page}} </span>
+				<span v-for="page in effectivePageLengths" :key="page" class="gts-print-pagination-page-length-menu-item" @click="handlePageLengthChange(page)"> {{page}} </span>
         
 			</div>
 			
@@ -25,7 +25,7 @@
 		<!-- Total records -->
 		<div class="gts-print-pagination-total-records">
 
-			<span> {{ pageStart }} - {{ pageEnd }} {{'of'}} {{ totalRecords }} </span>
+			<span> {{ pageStart }} - {{ pageEnd }} {{ effectiveTotalRecordsTitle }} {{ effectiveTotalRecords }} </span>
 
 		</div>
 
@@ -66,31 +66,62 @@ export default {
   
 		pageLengths: {
 			type: Array,
-			required: true
+			required: false,
+			default: undefined
 		},
 		pageLengthTitle: {
 			type: String,
-			required: true
+			required: false,
+			default: undefined
 		},
 		totalRecords: {
 			type: Number,
-			required: true
+			required: false,
+			default: undefined
 		},
+		totalRecordsTitle: {
+			type: String,
+			required: false,
+			default: undefined
+		},
+		paginationConfig: {
+			type: Object,
+			required: false
+		}
 
 	},
   
 	data () {
+		const lengths = this.pageLengths || this.paginationConfig?.pageLength || this.paginationConfig?.pageLengths || [10, 20, 50, 100];
 		return {
-			selectedPageLength: this.pageLengths[0],
-      currentPage: 1,
-      pageLengthDisplayed: false
+			selectedPageLength: lengths[0],
+			currentPage: 1,
+			pageLengthDisplayed: false
 		}
 	},
  
 	computed: {
 
+		effectivePageLengths() {
+			return this.pageLengths || this.paginationConfig?.pageLength || this.paginationConfig?.pageLengths || [10, 20, 50, 100];
+		},
+
+		effectivePageLengthTitle() {
+			return this.pageLengthTitle || this.paginationConfig?.pageLengthTitle || "Row per page";
+		},
+
+		effectiveTotalRecordsTitle() {
+			return this.totalRecordsTitle || this.paginationConfig?.totalRecordsTitle || "of";
+		},
+
+		effectiveTotalRecords() {
+			if (this.totalRecords !== undefined) return this.totalRecords;
+			if (this.paginationConfig?.totalRecords !== undefined) return this.paginationConfig.totalRecords;
+			return 0;
+		},
+
 		totalPages() {
-      return Math.ceil(this.totalRecords / this.selectedPageLength);
+      return Math.ceil(this.effectiveTotalRecords / this.selectedPageLength);
     },
 
 		pageStart() {
@@ -99,7 +130,7 @@ export default {
 
     pageEnd() {
       let end = this.currentPage * this.selectedPageLength;
-      return end > this.totalRecords ? this.totalRecords : end;
+      return end > this.effectiveTotalRecords ? this.effectiveTotalRecords : end;
     },
 
     isFirstPage() {

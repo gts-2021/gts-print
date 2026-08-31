@@ -77,35 +77,91 @@
 
     <!--
       ===== FILTER DIALOG =====
-      Uses the existing ConfirmationDialog component.
-      - titleFirstBtn: "Reset Filters" → calls resetFilters()
-      - titleLastBtn:  "Apply"         → calls applyFilters()
-      - Dialog body: one TextInput per filterable header (excluding filterDisabled ones).
+      Uses the existing ConfirmationDialog component by default,
+      or can be replaced/controlled via the 'filter-dialog' scoped slot.
     -->
-    <ConfirmationDialog
-      v-if="showFilter"
+    <slot
+      name="filter-dialog"
       :isOpen="isFilterDialogOpen"
-      title="Filter"
-      titleFirstBtn="Reset Filters"
-      titleLastBtn="Apply"
-      themeFirstBtn="gts-button-primary-inverse"
-      themeLastBtn="gts-button-primary"
-      @onFirstBtnClicked="resetFilters"
-      @onLastBtnClicked="applyFilters"
-      @onClosedDialog="closeFilterDialog"
+      :filterFields="filterFields"
+      :filterValues="filterValues"
+      :appliedFilters="appliedFilters"
+      :applyFilters="applyFilters"
+      :resetFilters="resetFilters"
+      :closeFilterDialog="closeFilterDialog"
+      :openFilterDialog="openFilterDialog"
+      :setFilter="setFilter"
+      :filterInputRefs="filterInputRefs"
+      :getFilterInputRef="getFilterInputRef"
+      :FilterField="FilterFieldComponent"
+      :FilterInput="FilterFieldComponent"
+      :hasActiveFilters="hasActiveFilters"
+      :activeFilterCount="activeFilterCount"
     >
-      <!-- Auto-generated filter inputs, one per filterable column -->
-      <div class="gts-filter-dialog-content">
-        <TextInput
-          v-for="header in filterableHeaders"
-          :key="header.name"
-          :label="header.filterLabel || header.title"
-          :placeholder="header.filterPlaceholder || ''"
-          :type="header.isDate ? 'date' : 'text'"
-          v-model="filterValues[header.name]"
-        />
-      </div>
-    </ConfirmationDialog>
+      <ConfirmationDialog
+        v-if="showFilter"
+        :isOpen="isFilterDialogOpen"
+        title="Filter"
+        titleFirstBtn="Reset Filters"
+        titleLastBtn="Apply"
+        themeFirstBtn="gts-button-primary-inverse"
+        themeLastBtn="gts-button-primary"
+        @onFirstBtnClicked="resetFilters"
+        @onLastBtnClicked="applyFilters"
+        @onClosedDialog="closeFilterDialog"
+      >
+        <!-- Auto-generated filter inputs for all filter fields (columns + additionalFilters) -->
+        <div class="gts-filter-dialog-content">
+          <slot
+            name="filter-content"
+            :filterFields="filterFields"
+            :filterValues="filterValues"
+            :setFilter="setFilter"
+            :filterInputRefs="filterInputRefs"
+            :getFilterInputRef="getFilterInputRef"
+            :FilterField="FilterFieldComponent"
+            :FilterInput="FilterFieldComponent"
+          >
+            <template v-for="field in filterFields" :key="field.name">
+              <slot
+                :name="'filter-field-' + field.name"
+                :field="field"
+                :value="filterValues[field.name]"
+                :setFilter="(val) => setFilter(field.name, val)"
+                :filterRef="(el) => setFilterInputRef(field.name, el)"
+              >
+                <TextInput
+                  :ref="el => setFilterInputRef(field.name, el)"
+                  :label="field.filterLabel || field.title || field.label || field.name"
+                  :placeholder="field.filterPlaceholder || ''"
+                  :type="field.isDate ? 'date' : (field.type || 'text')"
+                  v-model="filterValues[field.name]"
+                />
+              </slot>
+            </template>
+          </slot>
+        </div>
+      </ConfirmationDialog>
+    </slot>
+
+    <!--
+      Optional scoped slot 'filters' for parent to place filter controls anywhere outside the dialog
+    -->
+    <slot
+      name="filters"
+      :filterFields="filterFields"
+      :filterValues="filterValues"
+      :appliedFilters="appliedFilters"
+      :setFilter="setFilter"
+      :applyFilters="applyFilters"
+      :resetFilters="resetFilters"
+      :filterInputRefs="filterInputRefs"
+      :getFilterInputRef="getFilterInputRef"
+      :FilterField="FilterFieldComponent"
+      :FilterInput="FilterFieldComponent"
+      :hasActiveFilters="hasActiveFilters"
+      :activeFilterCount="activeFilterCount"
+    ></slot>
 
   </div>
 
@@ -119,6 +175,7 @@ import ExportIcon from '@/assets/icons/ExportIcon.vue';
 import FilterIcon from '@/assets/icons/FilterIcon.vue';
 import ConfirmationDialog from '../dialog/ConfirmationDialog.vue';
 import TextInput from '../input/TextInput.vue';
+import DataTableFilterField from './DataTableFilterField.vue';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import moment from 'moment';
@@ -137,7 +194,39 @@ export default {
     FilterIcon,
     ConfirmationDialog,
     TextInput,
+    DataTableFilterField,
+    FilterField: DataTableFilterField,
   },
+
+  provide() {
+    const self = this;
+    return {
+      dataTableFilterContext: {
+        get filterFields() {
+          return self.filterFields;
+        },
+        get filterValues() {
+          return self.filterValues;
+        },
+        setFilter: (name, val) => self.setFilter(name, val),
+        setFilterInputRef: (name, el) => self.setFilterInputRef(name, el),
+        getFilterInputRef: (name) => self.getFilterInputRef(name),
+        applyFilters: () => self.applyFilters(),
+        resetFilters: () => self.resetFilters(),
+      }
+    };
+  },
+
+  emits: [
+    'unsort',
+    'sort-asc',
+    'sort-desc',
+    'hide-column',
+    'changePage',
+    'lengthPageChanged',
+    'onFilter',
+    'filter'
+  ],
 
   props: {
     headers: {
@@ -186,6 +275,32 @@ export default {
       type: Boolean,
       default: false,
     },
+
+    /**
+     * Additional filter fields not part of the table column headers.
+     * Shape: [{ name: string, title?: string, label?: string, filterLabel?: string, filterPlaceholder?: string, isDate?: boolean, type?: string, filter?: Function }]
+     */
+    additionalFilters: {
+      type: Array,
+      default: () => [],
+    },
+
+    /**
+     * When true, prevents local in-memory filtering of items.
+     * Use this when filtering is handled server-side via the emitted filter event.
+     */
+    preventLocalFilter: {
+      type: Boolean,
+      default: false,
+    },
+
+    /**
+     * Alias for preventLocalFilter.
+     */
+    disableLocalFilter: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   computed: {
@@ -207,13 +322,28 @@ export default {
     },
 
     /**
-     * True when at least one applied filter value is non-empty.
+     * Returns all filter fields (filterable column headers + additionalFilters).
+     */
+    filterFields() {
+      return [
+        ...this.filterableHeaders,
+        ...(this.additionalFilters || [])
+      ];
+    },
+
+    /**
+     * Returns the DataTableFilterField component for scoped slot usage.
+     */
+    FilterFieldComponent() {
+      return DataTableFilterField;
+    },
+
     /**
      * True when at least one applied filter value is non-empty.
      * Drives the gts-filter-active class on the Filter button.
      */
     hasActiveFilters() {
-      return Object.values(this.appliedFilters).some(v => v && v.trim() !== '');
+      return Object.values(this.appliedFilters).some(v => v && String(v).trim() !== '');
     },
 
     /**
@@ -221,12 +351,14 @@ export default {
      * Displayed in the button label as FILTER(n).
      */
     activeFilterCount() {
-      return Object.values(this.appliedFilters).filter(v => v && v.trim() !== '').length;
+      return Object.values(this.appliedFilters).filter(v => v && String(v).trim() !== '').length;
     },
 
     /**
      * Applies the current appliedFilters to the full items array.
-     * For each filterable header:
+     * If disableLocalFilter or preventLocalFilter is true, returns items directly (server-side filtering).
+     * Otherwise:
+     * For each filter field (columns + additionalFilters):
      *   - If a custom `filter(item, index, value)` function is defined → use it exclusively.
      *   - If isDate is true → normalise both the stored value and the filter value to
      *     YYYY-MM-DD before comparing, so 10/10/2024, 10-10-2024 and 2024/10/10 all match.
@@ -234,24 +366,28 @@ export default {
      * Returns the full items array untouched when no filter is active.
      */
     filteredItems() {
+      if (this.preventLocalFilter || this.disableLocalFilter) {
+        return this.items;
+      }
+
       if (!this.hasActiveFilters) return this.items;
 
       return this.items.filter((item, index) => {
-        return this.filterableHeaders.every(header => {
-          const value = this.appliedFilters[header.name];
+        return this.filterFields.every(field => {
+          const value = this.appliedFilters[field.name];
 
           // Skip this column if no filter value has been set
-          if (!value || value.trim() === '') return true;
+          if (!value || String(value).trim() === '') return true;
 
           // Custom filter function takes full priority
-          if (typeof header.filter === 'function') {
-            return header.filter(item, index, value);
+          if (typeof field.filter === 'function') {
+            return field.filter(item, index, value);
           }
 
           // Date filter: normalise both sides to YYYY-MM-DD then compare
-          if (header.isDate) {
-            const normalizedItem = this.normalizeDateToYMD(String(item[header.name] ?? ''));
-            const normalizedFilter = this.normalizeDateToYMD(value.trim());
+          if (field.isDate) {
+            const normalizedItem = this.normalizeDateToYMD(String(item[field.name] ?? ''));
+            const normalizedFilter = this.normalizeDateToYMD(String(value).trim());
             // If either side couldn't be parsed, fall back to string comparison
             if (normalizedItem && normalizedFilter) {
               return normalizedItem === normalizedFilter;
@@ -259,8 +395,8 @@ export default {
           }
 
           // Default: case-insensitive partial match on the raw field value
-          const fieldValue = String(item[header.name] ?? '').toLowerCase();
-          return fieldValue.includes(value.trim().toLowerCase());
+          const fieldValue = String(item[field.name] ?? '').toLowerCase();
+          return fieldValue.includes(String(value).trim().toLowerCase());
         });
       });
     },
@@ -308,22 +444,70 @@ export default {
       /**
        * Draft filter values currently being edited inside the dialog.
        * Only committed to appliedFilters on "Apply".
-       * Shape: { [header.name]: string }
+       * Shape: { [field.name]: string }
        */
       filterValues: {},
 
       /**
        * The last applied filter values — used to actually filter the dataset.
        * Reset to {} by resetFilters().
-       * Shape: { [header.name]: string }
+       * Shape: { [field.name]: string }
        */
       appliedFilters: {},
+
+      /**
+       * Map of template references for each filter TextInput component.
+       * Shape: { [field.name]: TextInputComponentInstance }
+       */
+      filterInputRefs: {},
     }
   },
 
   methods: {
 
     // ─── Filter dialog methods ─────────────────────────────────────────────────
+
+    /**
+     * Records or removes a reference to a filter TextInput component instance.
+     */
+    setFilterInputRef(name, el) {
+      if (el) {
+        this.filterInputRefs[name] = el;
+      } else {
+        delete this.filterInputRefs[name];
+      }
+    },
+
+    /**
+     * Returns the TextInput component reference for a given filter field name.
+     */
+    getFilterInputRef(name) {
+      return this.filterInputRefs[name];
+    },
+
+    /**
+     * Programmatically sets the draft value of a filter field.
+     */
+    setFilter(name, value) {
+      this.filterValues = {
+        ...this.filterValues,
+        [name]: value
+      };
+    },
+
+    /**
+     * Builds and returns a clean JSON payload of all filter fields and their current applied values.
+     */
+    getFilterPayload() {
+      const payload = {};
+      for (const field of this.filterFields) {
+        payload[field.name] = this.appliedFilters[field.name] !== undefined ? this.appliedFilters[field.name] : '';
+      }
+      for (const [key, val] of Object.entries(this.appliedFilters)) {
+        payload[key] = val !== undefined ? val : '';
+      }
+      return payload;
+    },
 
     /**
      * Normalises a date string from any of the supported formats:
@@ -375,25 +559,30 @@ export default {
     },
 
     /**
-     * Commits the draft filterValues to appliedFilters, triggering reactive
-     * re-filtering of the dataset. Resets to page 1 so results are visible.
+     * Commits the draft filterValues to appliedFilters, resets to page 1,
+     * closes the dialog, and emits the filter event with the JSON payload.
      */
     applyFilters() {
       this.appliedFilters = { ...this.filterValues };
       this.currentPaginationPage = 1;
       this.isFilterDialogOpen = false;
+      const payload = this.getFilterPayload();
+      this.$emit('onFilter', payload);
+      this.$emit('filter', payload);
     },
 
     /**
-     * Clears all filter values (both draft and applied), restoring the
-     * original dataset. The gts-filter-active class disappears automatically
-     * via the hasActiveFilters computed.
+     * Clears all filter values (both draft and applied), resets to page 1,
+     * closes the dialog, and emits the filter event with the cleared payload.
      */
     resetFilters() {
       this.filterValues = {};
       this.appliedFilters = {};
       this.currentPaginationPage = 1;
       this.isFilterDialogOpen = false;
+      const payload = this.getFilterPayload();
+      this.$emit('onFilter', payload);
+      this.$emit('filter', payload);
     },
 
     // ─── Existing methods (unchanged) ─────────────────────────────────────────

@@ -1,6 +1,14 @@
-import { mount } from '@vue/test-utils';
+import { mount, config } from '@vue/test-utils';
 import TextInput from '../TextInput.vue';
 import ListBox from '../ListBox.vue';
+
+// Mock maska
+jest.mock('maska/vue', () => ({ vMaska: {} }), { virtual: true });
+
+config.global.mocks = {
+  $t: (key) => key,
+  ...config.global.mocks
+};
  
 describe('Tests for TextInput component', () => {
    
