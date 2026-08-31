@@ -24,11 +24,13 @@ import AutoComplete from './components/input/AutoComplete.vue';
 import ToggleComponent from '@/components/toggle/ToggleComponent.vue';
 import MapAutoComplete from '@/components/map-picker/MapAutoComplete.vue';
 import AddressMapPicker from '@/components/map-picker/AddressMapPicker.vue';
+import DataTableFilterField from '@/components/table/DataTableFilterField.vue';
 
 const GtsPrint = {
   install(app) {
     app.component('BarSide', BarSide);
     app.component('DataTable', DataTable);
+    app.component('DataTableFilterField', DataTableFilterField);
     app.component('TextInput', TextInput);
     app.component('TextInputArea', TextInputArea);
     app.component('ButtonComponent', ButtonComponent);
@@ -59,6 +61,7 @@ const GtsPrint = {
 export {
   BarSide,
   DataTable,
+  DataTableFilterField,
   TextInput,
   TextInputArea,
   ListBox,

@@ -9,6 +9,23 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 //add new section for new release 
 
+## [1.7.0]
+
+### Added
+
+* Refactor `DataTable` filtering process: [GTS-PRINT#68](https://quire.io/w/GTS-PRINT31/68)
+  - Replace client-side-only filtering with server-side filtering support via emitted `@onFilter` / `@filter` events carrying a JSON payload `{ [fieldName]: value }`.
+  - Added `preventLocalFilter` (and alias `disableLocalFilter`) prop to allow bypassing internal tableData filtering.
+  - Added `additionalFilters` prop to define filter fields that are not part of the table columns.
+  - Added `DataTableFilterField` component and `#filter-content="{ FilterField }"` slot for zero-configuration input positioning inside the default dialog without manually handling dialogs or setting up input props.
+  - Exposed `filterInputRefs`, `getFilterInputRef(name)`, `setFilter(name, val)`, and `getFilterPayload()` on `DataTable`.
+  - Added scoped slots `#filter-dialog`, `#filter-content`, `#filter-field-[name]`, and `#filters` for custom layouts.
+
+### Fixed
+
+* Fix AutoComplete to trigger change event when selection change from options
+* Fix `MapAutoComplete` to clear `AddressMapPicker` previous selected value when typing in input, avoid re-triggering address lookup loops, and ensure suggestions appear when typing after initial address selection.
+
 ## [1.6.4]
 
 ### Added
