@@ -9,6 +9,16 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 //add new section for new release 
 
+## [Unreleased]
+
+### Added
+
+* Enhance `CalendarComponent` behaviour: [GTS-PRINT#68](https://quire.io/w/GTS-PRINT31/68)
+  - Add `defaultContent` prop to render default content/components for empty calendar cells.
+  - Add `firstDayOfWeek` prop to configure the first day of the week (e.g. Monday, Sunday, Saturday).
+  - Add English, French, and Arabic (`ar.json`) translations for calendar view types, Today marker, day names, and empty state labels.
+  - Add interactive examples in `CalendarExample.vue` showcasing default empty cell content, week start day selection, and live language switching (EN / FR / AR).
+
 ## [1.7.1]
 
 ### Fixed

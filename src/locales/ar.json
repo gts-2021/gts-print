@@ -1,0 +1,42 @@
+{
+  "input": {
+    "required": "*"
+  },
+  "mapAutoComplete": {
+    "mapPicker": {
+      "title": "تحديد العنوان على الخريطة",
+      "confirmBtn": "تأكيد",
+      "cancelBtn": "إلغاء",
+      "selectedAddressLabel": "العنوان المحدد",
+      "calculatingAddressLabel": "جارٍ حساب العنوان...",
+      "rayonSliderLabel": "نطاق البحث:",
+      "searchPlaceholder": "ابحث عن مدينة، منطقة، مكان...",
+      "searchBtn": "بحث",
+      "noResultsFound": "لم يتم العثور على أي موقع"
+    }
+  },
+  "calendar": {
+    "today": "اليوم",
+    "noEvent": "لا توجد أحداث",
+    "noEventsScheduled": "لا توجد أحداث مجدولة لهذا اليوم",
+    "dailyScheduleTitle": "جدول المواعيد والأنشطة اليومية",
+    "types": {
+      "month": "شهر",
+      "week": "أسبوع",
+      "day": "يوم"
+    },
+    "actions": {
+      "edit": "تعديل",
+      "delete": "حذف"
+    },
+    "days": {
+      "sun": "الأحد",
+      "mon": "الإثنين",
+      "tue": "الثلاثاء",
+      "wed": "الأربعاء",
+      "thu": "الخميس",
+      "fri": "الجمعة",
+      "sat": "السبت"
+    }
+  }
+}

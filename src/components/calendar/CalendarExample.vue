@@ -2,23 +2,58 @@
 
   <div id="calendar-exemple-container">
 
-    <h4>GTS-CALENDAR : Single Day & Month View (Strict Month Display)</h4>
+    <div class="gts-calendar-demo-toolbar"
+      style="display: flex; justify-content: space-between; align-items: center; background: #f8fafc; padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #e2e8f0;">
+      <div>
+        <strong>Language / اللغة: </strong>
+        <button
+          :style="{ padding: '6px 12px', marginRight: '8px', borderRadius: '4px', border: '1px solid #cbd5e1', background: currentLocale === 'en' ? '#0f172a' : '#fff', color: currentLocale === 'en' ? '#fff' : '#000', cursor: 'pointer' }"
+          @click="changeLocale('en')">
+          English 🇬🇧
+        </button>
+        <button
+          :style="{ padding: '6px 12px', marginRight: '8px', borderRadius: '4px', border: '1px solid #cbd5e1', background: currentLocale === 'fr' ? '#0f172a' : '#fff', color: currentLocale === 'fr' ? '#fff' : '#000', cursor: 'pointer' }"
+          @click="changeLocale('fr')">
+          Français 🇫🇷
+        </button>
+        <button
+          :style="{ padding: '6px 12px', borderRadius: '4px', border: '1px solid #cbd5e1', background: currentLocale === 'ar' ? '#0f172a' : '#fff', color: currentLocale === 'ar' ? '#fff' : '#000', cursor: 'pointer' }"
+          @click="changeLocale('ar')">
+          العربية 🇩🇿
+        </button>
+      </div>
+
+      <div>
+        <strong>First Day of Week: </strong>
+        <select v-model="selectedFirstDay" style="padding: 6px 12px; border-radius: 4px; border: 1px solid #cbd5e1;">
+          <option value="Monday">Monday (Lundi)</option>
+          <option value="Sunday">Sunday (Dimanche)</option>
+          <option value="Saturday">Saturday (Samedi)</option>
+        </select>
+      </div>
+    </div>
+
+    <h4>1. GTS-CALENDAR : Custom First Day of Week &amp; Default Empty Cell Content</h4>
+    <span>Demonstrates <code>firstDayOfWeek="{{ selectedFirstDay }}"</code> and <code>:defaultContent</code> rendering
+      custom placeholder on empty cells</span>
+    <br><br>
+    <CalendarComponent :isStrictMonth="false" :firstDayOfWeek="selectedFirstDay"
+      :defaultContent="customDefaultCellComponent" :datesContent="dummyContent" :startingDate="todayDate"
+      @onDateChanged="($emit) => console.log('Date changed:', $emit)" />
+
+    <br>
+    <hr><br>
+
+    <h4>2. GTS-CALENDAR : Single Day &amp; Month View (Strict Month Display)</h4>
     <span>Demonstrates Today cell highlight, selected year, Day view schedule, and custom Day Type badges</span>
     <br><br>
-    <CalendarComponent :isStrictMonth="true" :datesContent="dummyContent" :startingDate="todayDate"
-      @onDateChanged="($emit) => console.log('Date changed:', $emit)" />
+    <CalendarComponent :isStrictMonth="true" :firstDayOfWeek="selectedFirstDay" :datesContent="dummyContent"
+      :startingDate="todayDate" @onDateChanged="($emit) => console.log('Date changed:', $emit)" />
 
     <br>
     <hr><br>
 
-    <h4>GTS-CALENDAR : Calendar without Strict Month Display</h4> <br>
-    <CalendarComponent :datesContent="dummyContent" :startingDate="todayDate"
-      @onDateChanged="($emit) => console.log('Date changed:', $emit)" />
-
-    <br>
-    <hr><br>
-
-    <h4>PURE CONFIGURABLE CALENDAR : </h4> <br>
+    <h4>3. PURE CONFIGURABLE CALENDAR : </h4> <br>
     <PureCalendar :headerConfig="headerConfig" :calendarContentConfig="calendarContentConfig"
       :contextMenuActions="actions" @dateIncremented="handleDateIncremented" @dateDecremented="handleDateDecremented"
       @displayTypeSelected="handleDisplayTypeSelected" @daySelected="selectDay" />
@@ -51,7 +86,23 @@ export default {
     const todayStr = moment().format('DD/MM/YYYY');
 
     return {
+      selectedFirstDay: 'Saturday',
+      currentLocale: 'en',
       todayDate: todayStr,
+      customDefaultCellComponent: markRaw(defineComponent({
+        props: ['day'],
+        template: `
+          <div class="gts-demo-default-cell" @click.stop="onAddSlot">
+            <span class="gts-demo-plus-icon">+</span>
+            <span class="gts-demo-slot-text">Add Slot</span>
+          </div>
+        `,
+        methods: {
+          onAddSlot() {
+            alert(`Add event on ${this.day ? this.day.date : 'this day'}`);
+          }
+        }
+      })),
       dummyContent: [
         {
           date: todayStr,
@@ -388,6 +439,20 @@ export default {
       this.selectedDay = selectedDay;
     },
 
+    changeLocale(lang) {
+      this.currentLocale = lang;
+      if (this.$i18n) {
+        if (typeof this.$i18n.locale === 'object' && this.$i18n.locale.value !== undefined) {
+          this.$i18n.locale.value = lang;
+        } else {
+          this.$i18n.locale = lang;
+        }
+      }
+      if (typeof moment.locale === 'function') {
+        moment.locale(lang);
+      }
+    }
+
   }
 
 }
@@ -397,6 +462,32 @@ export default {
 <style lang="scss">
 .calendar-content-test {
   background-color: green;
+}
+
+.gts-demo-default-cell {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  background: $neutral-color-100;
+  border: 1px dashed $neutral-color-300;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 12px;
+  color: $neutral-color-600;
+
+  &:hover {
+    background: $primary-color-50;
+    border-color: $primary-color-400;
+    color: $primary-color-700;
+  }
+
+  .gts-demo-plus-icon {
+    font-weight: bold;
+    font-size: 14px;
+    color: $primary-color-600;
+  }
 }
 
 .gts-demo-event-card {

@@ -30,14 +30,14 @@
 
       </div>
 
-      <ButtonComponent class="gts-today-button" :title="'Today'" @buttonClicked="getTodayDate()" />
+      <ButtonComponent class="gts-today-button" :title="todayButtonTitle" @buttonClicked="getTodayDate()" />
 
     </div>
 
     <!-- display types -->
     <div v-if="calendarTypes.length > 0" class="gts-print-calendar-header-types">
       <span v-for="type in calendarTypes" :key="type" :class="{ selected: type === selectedType }"
-        @click="selectDisplayType(type)"> {{ type }}
+        @click="selectDisplayType(type)"> {{ getTypeTitle(type) }}
       </span>
     </div>
 
@@ -104,6 +104,14 @@ export default {
   },
 
   computed: {
+    todayButtonTitle() {
+      if (this.$t) {
+        const title = this.$t('calendar.today');
+        if (title && !title.startsWith('calendar.today')) return title;
+      }
+      return 'Today';
+    },
+
     selectedYearDisplay() {
       if (this.selectedDate) {
         const parsed = moment(this.selectedDate);
@@ -118,6 +126,18 @@ export default {
   },
 
   methods: {
+    getTypeTitle(type) {
+      if (!type) return '';
+      const typeKey = String(type).toLowerCase();
+      if (this.$t) {
+        const translation = this.$t(`calendar.types.${typeKey}`);
+        if (translation && !translation.startsWith('calendar.types.')) {
+          return translation;
+        }
+      }
+      return type;
+    },
+
     selectDisplayType(displayType) {
       this.selectedType = displayType;
       this.$emit("dispalyTypeSelected", displayType);

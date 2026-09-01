@@ -58,9 +58,9 @@ describe('ButtonComponent test : ', () => {
       propsData: {className },
     });
   
-    const button = wrapper.find('button');
+    const container = wrapper.find('.gts-button-container');
 
-    expect(button.classes()).toContain(className);
+    expect(container.classes()).toContain(className);
     
   });
 
