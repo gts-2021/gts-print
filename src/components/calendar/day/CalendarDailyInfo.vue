@@ -3,11 +3,8 @@
   <div class="gts-print-calendar-daily-info-wrapper">
 
     <!-- Hero Date Header -->
-    <div 
-      :class="['gts-daily-hero-header', { 'is-today': calendarDay.isToday, 'gts-today-cell': calendarDay.isToday }]" 
-      :title="calendarDay.date"
-      @click="selectDay(calendarDay)"
-    >
+    <div :class="['gts-daily-hero-header', { 'is-today': calendarDay.isToday, 'gts-today-cell': calendarDay.isToday }]"
+      :title="calendarDay.date" @click="selectDay(calendarDay)">
       <div class="gts-daily-hero-date-block">
         <span class="gts-daily-number">{{ calendarDay.number }}</span>
         <div class="gts-daily-meta-stack">
@@ -17,25 +14,16 @@
       </div>
 
       <div class="gts-daily-hero-badges">
-        <BadgeComponent 
-          v-if="calendarDay.isToday" 
-          text="Today" 
-          theme="gts-badge-danger" 
-          className="gts-badge gts-today-badge" 
-        />
-        <BadgeComponent 
-          v-if="calendarDay.dayType" 
-          :text="calendarDay.dayType" 
-          :theme="getDayTypeTheme(calendarDay.dayType)" 
-          className="gts-badge gts-daytype-badge" 
-        />
+        <span v-if="calendarDay.isToday" class="gts-today-mark" :title="todayBadgeText"></span>
+        <BadgeComponent v-if="calendarDay.dayType" :text="calendarDay.dayType"
+          :theme="getDayTypeTheme(calendarDay.dayType)" className="gts-badge gts-daytype-badge" />
       </div>
     </div>
 
     <!-- Main Schedule Content Area -->
     <div class="gts-daily-schedule-card">
       <div class="gts-daily-schedule-header">
-        <span class="gts-daily-schedule-title">Daily Schedule & Agenda</span>
+        <span class="gts-daily-schedule-title">{{ dailyScheduleTitleText }}</span>
         <div v-if="isSelected" class="gts-daily-actions-wrapper">
           <component :item="calendarDay" :is="calendarDay.componentFormatter" />
         </div>
@@ -43,14 +31,7 @@
 
       <div class="gts-daily-schedule-body">
         <div v-if="calendarDay.content" class="gts-daily-event-content">
-          <component :is="calendarDay.content" />
-        </div>
-
-        <div v-else class="gts-daily-empty-state">
-          <div class="gts-daily-empty-icon">📅</div>
-          <span class="gts-daily-empty-label">
-            {{ calendarDay.label || "No events scheduled for this day" }}
-          </span>
+          <component :is="calendarDay.content" :day="calendarDay" />
         </div>
       </div>
     </div>
@@ -85,7 +66,25 @@ export default {
   computed: {
     isSelected() {
       return this.selectedDay === this.calendarDay;
-    }
+    },
+
+    todayBadgeText() {
+      if (this.$t) {
+        const text = this.$t('calendar.today');
+        if (text && !text.startsWith('calendar.today')) return text;
+      }
+      return 'Today';
+    },
+
+    dailyScheduleTitleText() {
+      if (this.$t) {
+        const text = this.$t('calendar.dailyScheduleTitle');
+        if (text && !text.startsWith('calendar.dailyScheduleTitle')) return text;
+      }
+      return 'Daily Schedule & Agenda';
+    },
+
+
   },
 
   methods: {
@@ -166,6 +165,15 @@ export default {
       display: flex;
       align-items: center;
       gap: 8px;
+
+      .gts-today-mark {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: #22c55e;
+        flex-shrink: 0;
+      }
     }
   }
 

@@ -10,7 +10,7 @@
           <tr class="gts-print-calendar-monthly-header">
             <th class="gts-print-calendar-monthly-header-container" v-for="day in calendarData.weekDays" :key="day">
               <div class="gts-print-calendar-monthly-header-data"> 
-                <span class="gts-print-calendar-monthly-header-title"> {{day}} </span> 
+                <span class="gts-print-calendar-monthly-header-title"> {{ day }} </span> 
               </div>
             </th>
             

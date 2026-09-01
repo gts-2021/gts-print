@@ -21,12 +21,22 @@ This package includes:
 
 ### 2. "Today" Visual Marker & Highlighting
 - Automatically compares date cells with the current date (`moment()`).
-- Applies `.gts-today-cell` styling and renders a visual **Today** badge (`BadgeComponent` with `gts-badge-danger` theme) on current date cells in both monthly and weekly views.
+- Applies `.gts-today-cell` styling and renders a discreet, small green dot indicator (`.gts-today-mark`) on current date cells across monthly, weekly, and daily views.
 
 ### 3. Day Type Badge Display
 - Automatically resolves and displays day types (**Weekday** vs. **Weekend**) for each calendar day using `BadgeComponent`.
 - Supports custom day types (e.g., `Holiday`, `Ferie`) provided via `datesContent` items.
 - Mapped to GTS design system badge themes (`gts-badge-primary` for Weekdays, `gts-badge-warning` for Weekends, `gts-badge-danger` for Holidays).
+
+### 4. Configurable Week Start (`firstDayOfWeek`)
+- Allows specifying which day begins the week via `firstDayOfWeek` (e.g. `0` or `'Sunday'`, `1` or `'Monday'`, `6` or `'Saturday'`).
+- Dynamically shifts week day columns and calendar interval calculation.
+
+### 5. Default Content for Empty Cells (`defaultContent`)
+- Supports providing a default component, function, or template to render for all days without specific `datesContent`.
+
+### 6. Built-in Translations & Localization (i18n)
+- Integrated English, French, and Arabic translations for view types (Month/Mois/شهر, Week/Semaine/أسبوع, Day/Jour/يوم), Today button/marker, day names (Sun/Dim/الأحد, Mon/Lun/الإثنين, etc.), context actions, and empty state labels.
 
 ## Props
 
@@ -37,6 +47,9 @@ This package includes:
 | `startingDate` | `String` | No | Current Date | Initial date to display (format: `DD/MM/YYYY`). |
 | `datesContent` | `Array` | No | `[]` | Array of date content/event objects. |
 | `isStrictMonth` | `Boolean` | No | `false` | When `true`, hides days outside the active month in monthly view. |
+| `defaultContent` | `Object \| Function \| String` | No | `null` | Default content/component rendered in cells that have no specific date content. |
+| `firstDayOfWeek` | `Number \| String` | No | `0` (Sunday) | Specifies the first day of the week (`0..6` or `'Sunday'`, `'Monday'`, etc.). |
+| `defaultLabel` | `String` | No | `null` | Custom label for empty cells (falls back to translated "No Event"). |
 
 ### `datesContent` Structure
 
@@ -59,7 +72,7 @@ Each item in `datesContent` should look like this:
 
 ## Usage Examples
 
-### Basic Usage with Events and Custom Day Types
+### 1. Basic Usage with Events and Custom Day Types
 
 ```vue
 <template>
@@ -87,6 +100,38 @@ export default {
     handleDateChange(range) {
       console.log('Active date range:', range);
     }
+  }
+};
+</script>
+```
+
+### 2. Custom First Day of Week (Monday) & Default Empty Cell Content
+
+```vue
+<template>
+  <CalendarComponent 
+    firstDayOfWeek="Monday"
+    :defaultContent="defaultSlotComponent"
+    :datesContent="events"
+  />
+</template>
+
+<script>
+import CalendarComponent from '@/components/calendar/CalendarComponent.vue';
+import { defineComponent, markRaw } from 'vue';
+
+export default {
+  components: { CalendarComponent },
+  data() {
+    return {
+      events: [
+        { date: '20/05/2026', content: 'Team Standup' }
+      ],
+      defaultSlotComponent: markRaw(defineComponent({
+        props: ['day'],
+        template: '<div class="empty-slot">+ Add Event</div>'
+      }))
+    };
   }
 };
 </script>

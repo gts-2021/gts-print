@@ -14,5 +14,29 @@
       "searchBtn": "Search",
       "noResultsFound": "No location found"
     }
+  },
+  "calendar": {
+    "today": "Today",
+    "noEvent": "No Event",
+    "noEventsScheduled": "No events scheduled for this day",
+    "dailyScheduleTitle": "Daily Schedule & Agenda",
+    "types": {
+      "month": "Month",
+      "week": "Week",
+      "day": "Day"
+    },
+    "actions": {
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "days": {
+      "sun": "SUN",
+      "mon": "MON",
+      "tue": "TUE",
+      "wed": "WED",
+      "thu": "THU",
+      "fri": "FRI",
+      "sat": "SAT"
+    }
   }
 }

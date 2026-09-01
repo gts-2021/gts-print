@@ -1,6 +1,7 @@
 <template>
 
     <PureCalendar 
+    :key="currentLocale"
     :headerConfig="headerConfig" 
     :calendarContentConfig="calendarContentConfig"
     :contextMenuActions="actions"
@@ -15,7 +16,7 @@
 </template>
 
 <script>
-import { CALENDAR_DAILY, CALENDAR_MONTHLY, CALENDAR_WEEKLY, CALENDARS_DAY_TYPE, CALENDARS_MONTH_TYPE, CALENDARS_TYPES, CALENDARS_WEEK_TYPE } from '@/constants/calendars';
+import { CALENDAR_DAILY, CALENDAR_MONTHLY, CALENDAR_WEEKLY, CALENDARS_DAY_TYPE, CALENDARS_MONTH_TYPE, CALENDARS_TYPES, CALENDARS_WEEK_TYPE, CALENDAR_DAY_KEYS } from '@/constants/calendars';
 import PureCalendar from './PureCalendar.vue';
 import moment from 'moment';
 
@@ -56,7 +57,34 @@ export default {
       type: Boolean,
       required: false,
       default: false
-
+    },
+    /**
+     * Default content to render for empty cells (days without specific datesContent).
+     * Can be a Vue Component, a function returning content/component, or a template/string.
+     */
+    defaultContent: {
+      type: [Object, Function, String],
+      required: false,
+      default: null
+    },
+    /**
+     * Specifies which day is the first day of the week.
+     * Accepts:
+     * - Number: 0 (Sunday) to 6 (Saturday). Default is 0.
+     * - String: 'Sunday'/'Sun', 'Monday'/'Mon', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
+     */
+    firstDayOfWeek: {
+      type: [Number, String],
+      required: false,
+      default: 0
+    },
+    /**
+     * Optional custom label for empty cells.
+     */
+    defaultLabel: {
+      type: String,
+      required: false,
+      default: null
     }
 
   },
@@ -98,39 +126,109 @@ export default {
     }
   },
 
+  computed: {
+    currentLocale() {
+      if (!this.$i18n) return null;
+      return typeof this.$i18n.locale === 'object' && this.$i18n.locale.value !== undefined 
+        ? this.$i18n.locale.value 
+        : this.$i18n.locale;
+    },
+    /**
+     * Returns the numeric index (0=Sunday ... 6=Saturday) for the first day of the week.
+     */
+    normalizedFirstDayOfWeek() {
+      if (typeof this.firstDayOfWeek === 'number') {
+        return Math.max(0, Math.min(6, Math.floor(this.firstDayOfWeek)));
+      }
+      if (typeof this.firstDayOfWeek === 'string') {
+        const input = this.firstDayOfWeek.trim().toLowerCase();
+
+        // Direct numeric string check ('0'..'6')
+        const parsedNum = parseInt(input, 10);
+        if (!isNaN(parsedNum) && String(parsedNum) === input) {
+          return Math.max(0, Math.min(6, parsedNum));
+        }
+
+        // Dynamically resolve against i18n translations in the active locale & standard day keys
+        for (let i = 0; i < CALENDAR_DAY_KEYS.length; i++) {
+          const key = CALENDAR_DAY_KEYS[i];
+          if (input === key) return i;
+
+          if (this.$t) {
+            const translated = this.$t(`calendar.days.${key}`);
+            if (translated && typeof translated === 'string') {
+              if (input === translated.trim().toLowerCase()) {
+                return i;
+              }
+            }
+          }
+        }
+
+        // Fallback: Resolve via Moment's locale day parser
+        const parsedMomentDay = moment().day(this.firstDayOfWeek);
+        if (parsedMomentDay.isValid()) {
+          return parsedMomentDay.day();
+        }
+      }
+      return 0;
+    }
+  },
+
   methods: {
 
+    getStartOfWeek(date, firstDay = this.normalizedFirstDayOfWeek) {
+      const d = date.clone().startOf('day');
+      const day = d.day(); // 0 to 6
+      const diff = (day < firstDay ? 7 : 0) + day - firstDay;
+      return d.subtract(diff, 'days');
+    },
+
+    getEndOfWeek(date, firstDay = this.normalizedFirstDayOfWeek) {
+      const start = this.getStartOfWeek(date, firstDay);
+      return start.clone().add(6, 'days').endOf('day');
+    },
+
+    getDayKey(momentDate) {
+      return CALENDAR_DAY_KEYS[momentDate.day()];
+    },
+
+    formatDayName(momentDate) {
+      const dayKey = this.getDayKey(momentDate);
+      if (this.$t) {
+        const translation = this.$t(`calendar.days.${dayKey}`);
+        if (translation && !translation.startsWith('calendar.days.')) {
+          return translation;
+        }
+      }
+      return momentDate.format('ddd').toUpperCase();
+    },
+
     setUpDaysOfTheWeek() {
-      const currentDate = moment();
-
-      const startOfWeek = currentDate.clone().startOf('week');
-
-      // Dernier jour de la semaine (samedi)
-      const endOfWeek = currentDate.clone().endOf('week');
-      // Affichage des noms des jours de la semaine
+      const startOfWeek = this.getStartOfWeek(moment(), this.normalizedFirstDayOfWeek);
       let daysOfWeek = [];
-      for (let day = startOfWeek; day.isBefore(endOfWeek) || day.isSame(endOfWeek, 'day'); day.add(1, 'days')) {
-        daysOfWeek.push(day.format('ddd').toUpperCase());  // Format du jour (ex: 'Sun', 'Mon', etc.)
+      for (let i = 0; i < 7; i++) {
+        const day = startOfWeek.clone().add(i, 'days');
+        daysOfWeek.push(this.formatDayName(day));
       }
 
-
-      this.calendarContentConfig.calendarData
-        .weekDays = daysOfWeek;
+      this.calendarContentConfig.calendarData.weekDays = daysOfWeek;
     },
 
     generateCalendarPage(from) {
 
-      const currentDate = from;
+      const currentDate = from.clone();
 
       let startOfCalendar = undefined;
       let endOfCalendar = undefined;
 
       if (this.headerConfig.defaultType == CALENDARS_MONTH_TYPE) {
-        startOfCalendar = currentDate.clone().startOf('month').startOf('week');
-        endOfCalendar = currentDate.clone().endOf('month').endOf('week');
+        const startOfMonth = currentDate.clone().startOf('month');
+        const endOfMonth = currentDate.clone().endOf('month');
+        startOfCalendar = this.getStartOfWeek(startOfMonth, this.normalizedFirstDayOfWeek);
+        endOfCalendar = this.getEndOfWeek(endOfMonth, this.normalizedFirstDayOfWeek);
       } else if (this.headerConfig.defaultType == CALENDARS_WEEK_TYPE) {
-        startOfCalendar = currentDate.clone().startOf('week');
-        endOfCalendar = currentDate.clone().endOf('week');
+        startOfCalendar = this.getStartOfWeek(currentDate, this.normalizedFirstDayOfWeek);
+        endOfCalendar = this.getEndOfWeek(currentDate, this.normalizedFirstDayOfWeek);
       } else {
         startOfCalendar = currentDate.clone().startOf('day');
         endOfCalendar = currentDate.clone().startOf('day');
@@ -156,7 +254,12 @@ export default {
 
         let dateContent = this.datesContent.find(dateContent => dateContent.date == day.format(this.dateFormat));
 
-        let content = dateContent ? dateContent.content : undefined;
+        let content = undefined;
+        if (dateContent && dateContent.content !== undefined) {
+          content = dateContent.content;
+        } else if (this.defaultContent !== null && this.defaultContent !== undefined) {
+          content = typeof this.defaultContent === 'function' ? this.defaultContent(day.clone()) : this.defaultContent;
+        }
 
         // Check if the day is outside the current month (for monthly view)
         let isOutsideMonth = false;
@@ -168,13 +271,23 @@ export default {
         let isToday = day.isSame(today, 'day');
         let dayType = (dateContent && dateContent.dayType) ? dateContent.dayType : null;
 
+        let defaultLabelText = "NO EVENT";
+        if (this.defaultLabel) {
+          defaultLabelText = this.defaultLabel;
+        } else if (this.$t) {
+          const t = this.$t('calendar.noEvent');
+          if (t && !t.startsWith('calendar.noEvent')) {
+            defaultLabelText = t;
+          }
+        }
+
         calendarRange.push(
           {
             date: day.format(this.dateFormat),
             number: day.format('DD'),
-            day: day.format('ddd').toUpperCase(),
-            name: day.format('ddd').toUpperCase(),
-            label: "NO EVENT",
+            day: this.formatDayName(day),
+            name: this.formatDayName(day),
+            label: defaultLabelText,
             disabled: true,
             content,
             isEmpty,
@@ -202,11 +315,11 @@ export default {
       let dateToGenerate = undefined;
 
       if (type == CALENDARS_MONTH_TYPE) {
-        dateToGenerate = this.selectedStartDate.startOf('month').add(1, 'months');
+        dateToGenerate = this.selectedStartDate.clone().startOf('month').add(1, 'months');
       } else if (type == CALENDARS_WEEK_TYPE) {
-        dateToGenerate = this.selectedStartDate.startOf('week').add(1, 'weeks');
+        dateToGenerate = this.getStartOfWeek(this.selectedStartDate, this.normalizedFirstDayOfWeek).add(1, 'weeks');
       } else {
-        dateToGenerate = this.selectedStartDate.startOf('day').add(1, 'days');
+        dateToGenerate = this.selectedStartDate.clone().startOf('day').add(1, 'days');
       }
       this.onDateSelected(dateToGenerate);
     },
@@ -216,11 +329,11 @@ export default {
       let dateToGenerate = undefined;
 
       if (type == CALENDARS_MONTH_TYPE) {
-        dateToGenerate = this.selectedStartDate.startOf('month').add(-1, 'months');
+        dateToGenerate = this.selectedStartDate.clone().startOf('month').add(-1, 'months');
       } else if (type == CALENDARS_WEEK_TYPE) {
-        dateToGenerate = this.selectedStartDate.startOf('week').add(-1, 'weeks');
+        dateToGenerate = this.getStartOfWeek(this.selectedStartDate, this.normalizedFirstDayOfWeek).add(-1, 'weeks');
       } else {
-        dateToGenerate = this.selectedStartDate.startOf('day').add(-1, 'days');
+        dateToGenerate = this.selectedStartDate.clone().startOf('day').add(-1, 'days');
       }
       
       this.onDateSelected(dateToGenerate);
@@ -273,8 +386,30 @@ export default {
   watch: {
     datesContent() {
       this.generateCalendarPage(this.selectedStartDate);
+    },
+    defaultContent() {
+      this.generateCalendarPage(this.selectedStartDate);
+    },
+    firstDayOfWeek() {
+      this.setUpDaysOfTheWeek();
+      this.generateCalendarPage(this.selectedStartDate);
+    },
+    isStrictMonth() {
+      this.generateCalendarPage(this.selectedStartDate);
+    },
+    startingDate(newVal) {
+      if (newVal) {
+        this.selectedStartDate = moment(newVal, this.dateFormat);
+        this.generateCalendarPage(this.selectedStartDate);
+      }
+    },
+    currentLocale(newLocale) {
+      if (newLocale && typeof moment.locale === 'function') {
+        moment.locale(newLocale);
+      }
+      this.setUpDaysOfTheWeek();
+      this.generateCalendarPage(this.selectedStartDate);
     }
-
   },
 
 }

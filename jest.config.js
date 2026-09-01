@@ -22,6 +22,6 @@ module.exports = {
   //setupFilesAfterEnv: ['<rootDir>/jest.setup.js'], // Fichier setup Jest
   testEnvironment: 'jsdom', // Simulation du DOM
   collectCoverage: true,
-  collectCoverageFrom: ['src/**/*.vue', 'src/**/*.js'],
+  collectCoverageFrom: ['src/**/*.vue', 'src/**/*.js', '!src/DocumentationPage.vue'],
   coverageReporters: ['lcov', 'text'],
 };

@@ -14,5 +14,29 @@
       "searchBtn": "Rechercher",
       "noResultsFound": "Aucun lieu trouvé"
     }
+  },
+  "calendar": {
+    "today": "Aujourd'hui",
+    "noEvent": "Aucun événement",
+    "noEventsScheduled": "Aucun événement prévu pour cette journée",
+    "dailyScheduleTitle": "Emploi du temps & Agenda du jour",
+    "types": {
+      "month": "Mois",
+      "week": "Semaine",
+      "day": "Jour"
+    },
+    "actions": {
+      "edit": "Modifier",
+      "delete": "Supprimer"
+    },
+    "days": {
+      "sun": "DIM",
+      "mon": "LUN",
+      "tue": "MAR",
+      "wed": "MER",
+      "thu": "JEU",
+      "fri": "VEN",
+      "sat": "SAM"
+    }
   }
 }

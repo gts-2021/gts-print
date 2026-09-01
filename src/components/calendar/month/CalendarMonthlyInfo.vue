@@ -1,38 +1,36 @@
 <template>
 
   <template v-if="!calendarDay.isEmpty">
-  <!-- header -->
-  <div class="gts-print-calendar-monthly-content-data-header">
+    <!-- header -->
+    <div class="gts-print-calendar-monthly-content-data-header">
 
-    <!-- day -->
-    <div class="gts-calendar-day-header-left">
-      <div :class="['gts-print-calendar-header-day', { today: calendarDay.isToday }]" :title="calendarDay.date">
-        <span>{{ calendarDay.number}} </span>
+      <!-- day -->
+      <div class="gts-calendar-day-header-left">
+        <div :class="['gts-print-calendar-header-day', { today: calendarDay.isToday }]" :title="calendarDay.date">
+          <span>{{ calendarDay.number }} </span>
+        </div>
+        <span v-if="calendarDay.isToday" class="gts-today-mark" :title="todayBadgeText"></span>
+        <BadgeComponent v-if="calendarDay.dayType" :text="calendarDay.dayType"
+          :theme="getDayTypeTheme(calendarDay.dayType)" className="gts-badge gts-daytype-badge" />
       </div>
-      <BadgeComponent v-if="calendarDay.isToday" text="Today" theme="gts-badge-danger" className="gts-badge gts-today-badge" />
-      <BadgeComponent v-if="calendarDay.dayType" :text="calendarDay.dayType" :theme="getDayTypeTheme(calendarDay.dayType)" className="gts-badge gts-daytype-badge" />
+
+      <!-- actions -->
+      <div v-if="isSelected" class="gts-print-calendar-content-actions-icon" @click="toggleMenu">
+        <MenuIcon />
+        <ContextMenu ref="contextMenu" className="gts-card-actions-menu" :actions="contextMenuActions" />
+      </div>
+
     </div>
 
-    <!-- actions -->
-    <div v-if="isSelected" class="gts-print-calendar-content-actions-icon" @click="toggleMenu">
-      <MenuIcon />      
-		  <ContextMenu ref="contextMenu" className="gts-card-actions-menu" :actions="contextMenuActions" />
+    <!-- timeslot  -->
+    <div v-if="calendarDay.content" class="gts-print-calendar-monthly-content-data-timeslots">
+      <component :is="calendarDay.content" :day="calendarDay" />
     </div>
 
-  </div>
 
-  <!-- timeslot  -->
-  <div v-if="calendarDay.content" class="gts-print-calendar-monthly-content-data-timeslots">   
-    <component :is="calendarDay.content" />
-  </div>
-
-  <!-- empty content  -->
-  <div v-else class="gts-print-calendar-monthly-content-data-empty">
-    <span class="time-slot-text"> {{calendarDay.label}}  </span>
-  </div>
   </template>
-        
-  
+
+
 </template>
 
 <script>
@@ -51,8 +49,8 @@ export default {
     BadgeComponent
   },
 
-  props: { 
-    
+  props: {
+
     calendarDay: {
       type: Object,
       required: true
@@ -64,13 +62,13 @@ export default {
     },
 
     contextMenuActions: {
-			type: Array,
-			required: false,
-			default: () => [],
-		},
+      type: Array,
+      required: false,
+      default: () => [],
+    },
   },
 
-  data () {
+  data() {
     return {
     }
   },
@@ -79,13 +77,23 @@ export default {
     isSelected() {
       return this.selectedDay === this.calendarDay;
     },
+
+    todayBadgeText() {
+      if (this.$t) {
+        const text = this.$t('calendar.today');
+        if (text && !text.startsWith('calendar.today')) return text;
+      }
+      return 'Today';
+    },
+
+
   },
 
-  methods : {
+  methods: {
 
-    toggleMenu(event){
+    toggleMenu(event) {
       event.stopPropagation();
-			this.$refs.contextMenu.toggleMenu();
+      this.$refs.contextMenu.toggleMenu();
     },
 
     getDayTypeTheme(dayType) {
@@ -96,16 +104,15 @@ export default {
       if (typeLower === 'holiday' || typeLower === 'ferie') return 'gts-badge-danger';
       return 'gts-badge-success';
     }
-  
+
   }
 
 }
 </script>
 
 <style lang="scss">
-
-.gts-print-calendar-monthly-content-data{
-  position: relative;       
+.gts-print-calendar-monthly-content-data {
+  position: relative;
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -114,10 +121,11 @@ export default {
   padding: 10px;
   cursor: pointer;
   width: 150px;
+  min-height: 100px;
   overflow: hidden;
 
 
-  .gts-print-calendar-monthly-content-data-header{
+  .gts-print-calendar-monthly-content-data-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -130,7 +138,7 @@ export default {
       flex-wrap: wrap;
     }
 
-    .gts-print-calendar-header-day{
+    .gts-print-calendar-header-day {
       display: flex;
       justify-content: center;
       align-items: center;
@@ -142,11 +150,21 @@ export default {
       border-radius: 50%;
       text-align: center;
     }
-    .gts-print-calendar-header-day.today{
+
+    .gts-print-calendar-header-day.today {
       background: $neutral-color-200;
     }
 
-    .gts-print-calendar-content-actions-icon{
+    .gts-today-mark {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background-color: #22c55e;
+      flex-shrink: 0;
+    }
+
+    .gts-print-calendar-content-actions-icon {
       cursor: pointer;
 
       .gts-card-actions-menu {
@@ -158,7 +176,7 @@ export default {
     }
   }
 
-  .gts-print-calendar-monthly-content-data-timeslots{
+  .gts-print-calendar-monthly-content-data-timeslots {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -166,7 +184,7 @@ export default {
     gap: 7px;
     white-space: normal;
 
-    .gts-print-calendar-monthly-content-data-timeslot{
+    .gts-print-calendar-monthly-content-data-timeslot {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -174,8 +192,8 @@ export default {
       color: $color-white;
       background: $primary-color-300;
       padding: 2px 8px;
-      
-      .time-slot-text{
+
+      .time-slot-text {
         font-weight: 500;
         font-size: 12px;
         line-height: 20px;
@@ -186,16 +204,16 @@ export default {
 
 }
 
-.gts-print-calendar-monthly-content-data.selected{
+.gts-print-calendar-monthly-content-data.selected {
   background: $primary-color-50;
 }
 
-.gts-print-calendar-monthly-content-data.light-gray{
+.gts-print-calendar-monthly-content-data.light-gray {
   background: $neutral-color-50;
   cursor: auto;
 }
 
-.gts-print-calendar-monthly-content-data-empty{
+.gts-print-calendar-monthly-content-data-empty {
   text-align: center;
   padding: 30px;
   line-height: 20px;
@@ -206,13 +224,11 @@ export default {
   background: $neutral-color-200;
 }
 
-.gts-print-calendar-monthly-content-data.past, 
-.gts-print-calendar-monthly-content-data.futur{
+.gts-print-calendar-monthly-content-data.past,
+.gts-print-calendar-monthly-content-data.futur {
   opacity: 0.5;
   background: $neutral-color-50;
   pointer-events: none;
   cursor: not-allowed;
 }
-
-
 </style>
