@@ -9,6 +9,13 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 //add new section for new release 
 
+## [1.7.1]
+
+### Fixed
+
+* Fix Calendar cell width not right ajusted when content is too large.
+ 
+
 ## [1.7.0]
 
 ### Added

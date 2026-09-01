@@ -113,6 +113,8 @@ export default {
   border-bottom: 1px solid $neutral-color-200;
   padding: 10px;
   cursor: pointer;
+  width: 150px;
+  overflow: hidden;
 
 
   .gts-print-calendar-monthly-content-data-header{
