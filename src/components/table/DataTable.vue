@@ -8,12 +8,12 @@
 
       <!-- Columns toggle -->
       <div class="gts-data-table-action gts-data-table-action-columns" @click="toggleColumnsMenu($event)">
-        <ColumnsIcon />  <span>COLUMNS</span>
+        <ColumnsIcon /> <span>COLUMNS</span>
       </div>
 
       <!-- Export to PDF -->
       <div class="gts-data-table-action gts-data-table-action-export" @click="exportToPDF">
-        <ExportIcon />  <span>EXPORT</span>
+        <ExportIcon /> <span>EXPORT</span>
       </div>
 
       <!--
@@ -22,11 +22,9 @@
         When filters are active, gts-filter-active class applies a subtle highlighted background.
         The label shows "FILTER(n)" where n is the count of active filters.
       -->
-      <div
-        v-if="showFilter"
+      <div v-if="showFilter"
         :class="['gts-data-table-action', 'gts-data-table-action-filter', { 'gts-filter-active': hasActiveFilters }]"
-        @click="openFilterDialog"
-      >
+        @click="openFilterDialog">
         <FilterIcon />
         <span>FILTER<template v-if="activeFilterCount > 0">({{ activeFilterCount }})</template></span>
       </div>
@@ -80,63 +78,26 @@
       Uses the existing ConfirmationDialog component by default,
       or can be replaced/controlled via the 'filter-dialog' scoped slot.
     -->
-    <slot
-      name="filter-dialog"
-      :isOpen="isFilterDialogOpen"
-      :filterFields="filterFields"
-      :filterValues="filterValues"
-      :appliedFilters="appliedFilters"
-      :applyFilters="applyFilters"
-      :resetFilters="resetFilters"
-      :closeFilterDialog="closeFilterDialog"
-      :openFilterDialog="openFilterDialog"
-      :setFilter="setFilter"
-      :filterInputRefs="filterInputRefs"
-      :getFilterInputRef="getFilterInputRef"
-      :FilterField="FilterFieldComponent"
-      :FilterInput="FilterFieldComponent"
-      :hasActiveFilters="hasActiveFilters"
-      :activeFilterCount="activeFilterCount"
-    >
-      <ConfirmationDialog
-        v-if="showFilter"
-        :isOpen="isFilterDialogOpen"
-        title="Filter"
-        titleFirstBtn="Reset Filters"
-        titleLastBtn="Apply"
-        themeFirstBtn="gts-button-primary-inverse"
-        themeLastBtn="gts-button-primary"
-        @onFirstBtnClicked="resetFilters"
-        @onLastBtnClicked="applyFilters"
-        @onClosedDialog="closeFilterDialog"
-      >
+    <slot name="filter-dialog" :isOpen="isFilterDialogOpen" :filterFields="filterFields" :filterValues="filterValues"
+      :appliedFilters="appliedFilters" :applyFilters="applyFilters" :resetFilters="resetFilters"
+      :closeFilterDialog="closeFilterDialog" :openFilterDialog="openFilterDialog" :setFilter="setFilter"
+      :filterInputRefs="filterInputRefs" :getFilterInputRef="getFilterInputRef" :FilterField="FilterFieldComponent"
+      :FilterInput="FilterFieldComponent" :hasActiveFilters="hasActiveFilters" :activeFilterCount="activeFilterCount">
+      <ConfirmationDialog v-if="showFilter" :isOpen="isFilterDialogOpen" title="Filter" titleFirstBtn="Reset Filters"
+        titleLastBtn="Apply" themeFirstBtn="gts-button-primary-inverse" themeLastBtn="gts-button-primary"
+        @onFirstBtnClicked="resetFilters" @onLastBtnClicked="applyFilters" @onClosedDialog="closeFilterDialog">
         <!-- Auto-generated filter inputs for all filter fields (columns + additionalFilters) -->
         <div class="gts-filter-dialog-content">
-          <slot
-            name="filter-content"
-            :filterFields="filterFields"
-            :filterValues="filterValues"
-            :setFilter="setFilter"
-            :filterInputRefs="filterInputRefs"
-            :getFilterInputRef="getFilterInputRef"
-            :FilterField="FilterFieldComponent"
-            :FilterInput="FilterFieldComponent"
-          >
+          <slot name="filter-content" :filterFields="filterFields" :filterValues="filterValues" :setFilter="setFilter"
+            :filterInputRefs="filterInputRefs" :getFilterInputRef="getFilterInputRef"
+            :FilterField="FilterFieldComponent" :FilterInput="FilterFieldComponent">
             <template v-for="field in filterFields" :key="field.name">
-              <slot
-                :name="'filter-field-' + field.name"
-                :field="field"
-                :value="filterValues[field.name]"
-                :setFilter="(val) => setFilter(field.name, val)"
-                :filterRef="(el) => setFilterInputRef(field.name, el)"
-              >
-                <TextInput
-                  :ref="el => setFilterInputRef(field.name, el)"
+              <slot :name="'filter-field-' + field.name" :field="field" :value="filterValues[field.name]"
+                :setFilter="(val) => setFilter(field.name, val)" :filterRef="(el) => setFilterInputRef(field.name, el)">
+                <TextInput :ref="el => setFilterInputRef(field.name, el)"
                   :label="field.filterLabel || field.title || field.label || field.name"
-                  :placeholder="field.filterPlaceholder || ''"
-                  :type="field.isDate ? 'date' : (field.type || 'text')"
-                  v-model="filterValues[field.name]"
-                />
+                  :placeholder="field.filterPlaceholder || ''" :type="field.isDate ? 'date' : (field.type || 'text')"
+                  v-model="filterValues[field.name]" />
               </slot>
             </template>
           </slot>
@@ -147,21 +108,11 @@
     <!--
       Optional scoped slot 'filters' for parent to place filter controls anywhere outside the dialog
     -->
-    <slot
-      name="filters"
-      :filterFields="filterFields"
-      :filterValues="filterValues"
-      :appliedFilters="appliedFilters"
-      :setFilter="setFilter"
-      :applyFilters="applyFilters"
-      :resetFilters="resetFilters"
-      :filterInputRefs="filterInputRefs"
-      :getFilterInputRef="getFilterInputRef"
-      :FilterField="FilterFieldComponent"
-      :FilterInput="FilterFieldComponent"
-      :hasActiveFilters="hasActiveFilters"
-      :activeFilterCount="activeFilterCount"
-    ></slot>
+    <slot name="filters" :filterFields="filterFields" :filterValues="filterValues" :appliedFilters="appliedFilters"
+      :setFilter="setFilter" :applyFilters="applyFilters" :resetFilters="resetFilters"
+      :filterInputRefs="filterInputRefs" :getFilterInputRef="getFilterInputRef" :FilterField="FilterFieldComponent"
+      :FilterInput="FilterFieldComponent" :hasActiveFilters="hasActiveFilters" :activeFilterCount="activeFilterCount">
+    </slot>
 
   </div>
 
@@ -224,6 +175,8 @@ export default {
     'hide-column',
     'changePage',
     'lengthPageChanged',
+    'previousPage',
+    'nextPage',
     'onFilter',
     'filter'
   ],
@@ -301,14 +254,22 @@ export default {
       type: Boolean,
       default: false,
     },
+
+    /**
+     * When true, prevents automatic in-memory slicing of items and always displays the data passed via items.
+     * When enabled, you must manually provide the correct slice of data corresponding to the active page.
+     */
+    preventPginationAutoSlice: {
+      type: Boolean,
+      default: false,
+    }
   },
 
   computed: {
     pagination() {
       return {
-        pageLengthTitle: 'Row per page',
-        // Use filteredItems.length so pagination reflects the filtered count
-        totalRecords: this.filteredItems.length,
+        pageLengthTitle: this.paginationConfig?.pageLengthTitle || 'Row per page',
+        totalRecords: this.paginationConfig?.totalRecords || this.filteredItems.length,
         pageLengths: this.paginationConfig?.pageLengths || defaultLengths
       }
     },
@@ -406,7 +367,7 @@ export default {
      * When not paginated, returns the full filteredItems array.
      */
     splitedItems() {
-      if (this.isPaginable) {
+      if (this.isPaginable && !this.preventPginationAutoSlice) {
         const start = (this.currentPaginationPage - 1) * this.rowPerPage;
         const end = start + this.rowPerPage;
         return this.filteredItems.slice(start, end);
@@ -533,9 +494,9 @@ export default {
       }
 
       // Zero-pad and validate the pieces are numeric
-      day   = String(day).padStart(2, '0');
+      day = String(day).padStart(2, '0');
       month = String(month).padStart(2, '0');
-      year  = String(year);
+      year = String(year);
 
       if (!/^\d{4}$/.test(year) || !/^\d{2}$/.test(month) || !/^\d{2}$/.test(day)) return null;
 
@@ -615,16 +576,16 @@ export default {
 
     onPaginationChange(currentPage) {
       this.currentPaginationPage = currentPage;
+      this.$emit('changePage', this.currentPaginationPage);
     },
 
     onNumberRowsPerPageChaned(nbrRows) {
       this.rowPerPage = nbrRows;
+      this.$emit('lengthPageChanged', nbrRows);
     },
 
     sortItems() {
       if (!this.sortBy) return this.splitedItems;
-
-      console.log(this.sortBy);
 
       const header = this.headers.find(h => h.name === this.sortBy);
       const sortFn =
@@ -684,11 +645,11 @@ export default {
               // isChecked passed from toggle event is the NEW state.
               // If new state is checked (true) -> want it to be visible -> remove from hiddenColumns
               // If new state is unchecked (false) -> want it to be hidden -> add to hiddenColumns
-             
+
               if (isChecked) {
-                 this.hiddenColumns = this.hiddenColumns.filter(c => c !== header.name);
+                this.hiddenColumns = this.hiddenColumns.filter(c => c !== header.name);
               } else {
-                 this.hiddenColumns.push(header.name);
+                this.hiddenColumns.push(header.name);
               }
             }
           }
@@ -703,9 +664,9 @@ export default {
         if (contextMenuDOM.nodeType == 1) {
           const wrapperRect = this.$el.getBoundingClientRect();
           const { clientX, clientY } = event;
-          
+
           contextMenuDOM.style.left = `${clientX - wrapperRect.left}px`;
-          contextMenuDOM.style.top = `${clientY - wrapperRect.top}px`; 
+          contextMenuDOM.style.top = `${clientY - wrapperRect.top}px`;
           contextMenuDOM.style.display = 'block';
         }
       });
@@ -776,11 +737,10 @@ export default {
 </script>
 
 <style lang="scss">
-
 .gts-print-table-wrapper {
   position: relative;
   width: 100%;
- 
+
   .gts-data-table-actions {
     display: flex;
     gap: 10px;
@@ -794,6 +754,7 @@ export default {
       align-items: center;
       transition-duration: 0.2s;
       cursor: pointer;
+
       &:hover {
         background-color: $primary-color-50;
       }
