@@ -28,7 +28,8 @@
 
     <h4>Table with Server-Side Filtering (preventLocalFilter + @onFilter event)</h4>
     <p v-if="serverFilterPayload"><strong>Emitted Filter Payload (JSON):</strong>
-      <code>{{ JSON.stringify(serverFilterPayload) }}</code></p>
+      <code>{{ JSON.stringify(serverFilterPayload) }}</code>
+    </p>
     <DataTable :showFilter="true" :preventLocalFilter="true" :headers="filterHeaders" :items="serverFilteredItems"
       @onFilter="handleServerFilter" />
 
@@ -37,14 +38,8 @@
       @onFilter="handleAdditionalFilter" />
 
     <h4>Table with Custom Filter Input Positioning (2-column layout via #filter-content)</h4>
-    <DataTable
-      ref="customFilterTable"
-      :showFilter="true"
-      :headers="filterHeaders2"
-      :items="items"
-      :additionalFilters="extraFilters"
-      @onFilter="handleCustomDialogFilter"
-    >
+    <DataTable ref="customFilterTable" :showFilter="true" :headers="filterHeaders2" :items="items"
+      :additionalFilters="extraFilters" @onFilter="handleCustomDialogFilter">
       <!-- Dialog is handled automatically by DataTable. Just position inputs with zero setup using FilterField -->
       <template #filter-content="{ FilterField }">
         <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; padding: 10px 0;">
@@ -57,6 +52,18 @@
         </div>
       </template>
     </DataTable>
+
+    <h4>Table with custom paginationConfig and handle pagination event on pageChnage
+      <p>pagination.pageLength : {{ customPagination.pageLength }}</p>
+      <p>pagination.pageNumber : {{ customPagination.pageNumber }}</p>
+      <p>pagination.totalPages : {{ customPagination.totalPages }}</p>
+      <p>pagination.totalRecords : {{ customPagination.totalRecords }}</p>
+      <p>pagination.pageLengths : {{ customPagination.pageLengths }}</p>
+      <p>pagination.pageLengthTitle : {{ customPagination.pageLengthTitle }}</p>
+    </h4>
+    <DataTable :isPaginable="true" :preventPginationAutoSlice="true" :paginationConfig="customPagination"
+      @changePage="onPaginationChange" @lengthPageChanged="onPageLengthChange" :headers="serverSideHeader"
+      :items="serverPaginatedItems" />
 
   </div>
 
@@ -472,9 +479,124 @@ export default {
 
       ],
 
+      // Mock server database for server-side pagination demo
+
+      serverPaginatedItems: [],
+      serverSideHeader: [
+        {
+          title: "id",
+          name: "id",
+        },
+        {
+          title: "name",
+          name: "name",
+        }
+      ],
+      customPagination: {
+
+        pageNumber: 1,
+        totalPages: 10,
+        totalRecords: 1200,
+        pageLengths: [3, 5, 10],
+        pageLengthTitle: "Showing per page"
+      }
+
     };
   },
+
+  created() {
+    this.fetchServerData(1);
+  },
+
   methods: {
+    fetchServerData(pageNumber) {
+
+      var serverPageable;
+
+      if (pageNumber == 1) {
+        serverPageable = {
+          "content": [
+            {
+              "id": 1,
+              "name": "John Doe"
+            },
+            {
+              "id": 2,
+              "name": "Jane Doe"
+            }
+          ],
+          "pageable": {
+            "pageNumber": 1,
+            "pageSize": 20,
+            "sort": {
+              "empty": false,
+              "sorted": true,
+              "unsorted": false
+            },
+            "offset": 0,
+            "paged": true,
+            "unpaged": false
+          },
+          "totalPages": 5,
+          "totalElements": 100,
+          "last": false,
+          "size": 20,
+          "number": 0,
+          "sort": {
+            "empty": false,
+            "sorted": true,
+            "unsorted": false
+          },
+          "numberOfElements": 2,
+          "first": true,
+          "empty": false
+        }
+      }
+
+      if (pageNumber == 2) {
+        serverPageable = {
+          "content": [
+            {
+              "id": 3,
+              "name": "Mouuh Doe"
+            },
+            {
+              "id": 24,
+              "name": "Halim doe"
+            }
+          ],
+          "pageable": {
+            "pageNumber": 2,
+            "pageSize": 20,
+            "sort": {
+              "empty": false,
+              "sorted": true,
+              "unsorted": false
+            },
+            "offset": 0,
+            "paged": true,
+            "unpaged": false
+          },
+          "totalPages": 5,
+          "totalElements": 100,
+          "last": false,
+          "size": 20,
+          "number": 0,
+          "sort": {
+            "empty": false,
+            "sorted": true,
+            "unsorted": false
+          },
+          "numberOfElements": 2,
+          "first": true,
+          "empty": false
+        }
+      }
+
+      // Slice the simulated server database to return only the requested page items
+      this.serverPaginatedItems = serverPageable.content;
+    },
+
     updateItem() {
       console.log("updateItem");
     },
@@ -524,6 +646,16 @@ export default {
     handleCustomDialogFilter(payload) {
       console.log("Custom dialog filter received:", payload);
     },
+
+    onPaginationChange(pageNumber) {
+
+      this.fetchServerData(pageNumber, pageNumber);
+    },
+
+    onPageLengthChange(newLength) {
+
+      this.fetchServerData(1, newLength);
+    }
   }
 }
 </script>

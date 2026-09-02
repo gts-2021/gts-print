@@ -14,7 +14,8 @@ The `DataTable` component is a feature-rich table for displaying data with suppo
 | `className` | `String` | No | `''` | Custom CSS class for the table wrapper. |
 | `isPaginable` | `Boolean` | No | `false` | Enables pagination. |
 | `isScrollable` | `Boolean` | No | `false` | Enables horizontal scrolling. |
-| `paginationConfig` | `Object` | No | - | Configuration for pagination (page lengths, etc.). |
+| `paginationConfig` | `Object` | No | - | Configuration for pagination (`pageLengths`, `totalRecords`, `pageLengthTitle`, `totalRecordsTitle`). |
+| `preventPginationAutoSlice` | `Boolean` | No | `false` | When `true`, disables automatic client-side array slicing and always displays the exact data passed via `:items`. You must manually handle and pass the correct data slice related to the active page. |
 | `showFilter` | `Boolean` | No | `false` | Shows the FILTER button in the table toolbar. |
 | `preventLocalFilter` | `Boolean` | No | `false` | When `true`, bypasses client-side in-memory filtering so filtering can be handled server-side. |
 | `disableLocalFilter` | `Boolean` | No | `false` | Alias for `preventLocalFilter`. |
@@ -51,6 +52,8 @@ Each object in `headers` / `additionalFilters` supports the following properties
 | `filter` | `Object` (JSON) | Alias for `onFilter`. |
 | `changePage` | `Number` | Emitted when current page changes. |
 | `lengthPageChanged` | `Number` | Emitted when rows per page length changes. |
+| `previousPage` | `Number` | Emitted when previous page button is clicked. |
+| `nextPage` | `Number` | Emitted when next page button is clicked. |
 | `unsort` | `String` | Emitted when column sort is cleared. |
 | `sort-asc` | `String` | Emitted when column is sorted ascending. |
 | `sort-desc` | `String` | Emitted when column is sorted descending. |
@@ -185,4 +188,66 @@ export default {
     @onFilter="onFilterApplied"
   />
 </template>
+```
+
+### 4. Server-Side / Custom Pagination (`preventPginationAutoSlice`)
+
+> **Important:** When `:preventPginationAutoSlice="true"` is set, `DataTable` bypasses automatic client-side array slicing and always displays the data passed directly via `:items`. You must manually handle fetching and binding the correct page data slice based on `@changePage` and `@lengthPageChanged`.
+
+```vue
+<template>
+  <div>
+    <h4>Server-Side Paginated Table</h4>
+    <DataTable
+      :isPaginable="true"
+      :preventPginationAutoSlice="true"
+      :paginationConfig="pagination"
+      :headers="headers"
+      :items="serverItems"
+      @changePage="fetchPage"
+      @lengthPageChanged="changePageSize"
+    />
+  </div>
+</template>
+
+<script>
+import DataTable from '@/components/table/DataTable.vue';
+
+export default {
+  components: { DataTable },
+  data() {
+    return {
+      headers: [
+        { name: 'id', title: 'ID' },
+        { name: 'name', title: 'Name' },
+      ],
+      serverItems: [],
+      pagination: {
+        totalRecords: 100,
+        pageLengths: [10, 20, 50],
+        pageLengthTitle: "Rows per page"
+      }
+    };
+  },
+  created() {
+    this.fetchPage(1);
+  },
+  methods: {
+    async fetchPage(pageNumber) {
+      // Fetch data from server for the specific page requested
+      const response = await api.getUsers({
+        page: pageNumber,
+        size: this.pagination.pageLengths[0]
+      });
+
+      // Pass the server content directly to items
+      this.serverItems = response.data.content;
+      this.pagination.totalRecords = response.data.totalElements;
+    },
+    changePageSize(newLength) {
+      this.fetchPage(1);
+    }
+  }
+};
+</script>
 ```

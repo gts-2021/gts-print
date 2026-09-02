@@ -13,6 +13,12 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 ### Added
 
+* Support server-side pagination in `DataTable`: [GTS-PRINT#69](https://quire.io/w/GTS-PRINT31/69)
+  - Added `preventPginationAutoSlice` prop to bypass automatic client-side slicing and always display the exact data passed via `:items`, allowing manual handling and feeding of the correct dataset slice corresponding to the active page.
+  - Added events `changePage`, `lengthPageChanged`, `previousPage`, and `nextPage`.
+  - Refactored `DataTableExemple.vue` with a realistic server-side pagination example demonstrating Next, Previous, page length changes, and reactive pagination stats against a simulated server dataset.
+  - Added unit tests for `preventPginationAutoSlice` in `DataTable.spec.js`.
+
 * Enhance `CalendarComponent` behaviour: [GTS-PRINT#68](https://quire.io/w/GTS-PRINT31/68)
   - Add `defaultContent` prop to render default content/components for empty calendar cells.
   - Add `firstDayOfWeek` prop to configure the first day of the week (e.g. Monday, Sunday, Saturday).

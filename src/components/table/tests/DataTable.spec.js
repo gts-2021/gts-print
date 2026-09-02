@@ -312,4 +312,62 @@ describe('DataTable.vue', () => {
             wrapper.unmount();
         });
     });
+
+    describe('Server-Side Pagination', () => {
+        const page1Items = [
+            { name: 'Company 1', age: 10, role: 'Tech' },
+            { name: 'Company 2', age: 20, role: 'Finance' },
+            { name: 'Company 3', age: 30, role: 'Health' },
+        ];
+
+        it('does not slice items on client when preventPginationAutoSlice is true', () => {
+            const paginationConfig = {
+                pageLengths: [3, 5, 10],
+                totalRecords: 12,
+                pageLengthTitle: 'Showing per page'
+            };
+
+            const wrapper = mount(DataTable, {
+                props: {
+                    headers,
+                    items: page1Items,
+                    isPaginable: true,
+                    preventPginationAutoSlice: true,
+                    paginationConfig
+                }
+            });
+
+            // With preventPginationAutoSlice=true, all items passed to the table are displayed directly without slicing.
+            const rows = wrapper.findAll('.gts-print-table-content');
+            expect(rows.length).toBe(3);
+            expect(wrapper.vm.pagination.totalRecords).toBe(12);
+        });
+
+        it('emits changePage and lengthPageChanged when page or length changes', async () => {
+            const paginationConfig = {
+                pageLength: 3,
+                pageNumber: 1,
+                totalPages: 4,
+                totalRecords: 12,
+                pageLengths: [3, 5, 10],
+            };
+
+            const wrapper = mount(DataTable, {
+                props: {
+                    headers,
+                    items: page1Items,
+                    isPaginable: true,
+                    paginationConfig
+                }
+            });
+
+            wrapper.vm.onPaginationChange(2);
+            expect(wrapper.emitted().changePage).toBeTruthy();
+            expect(wrapper.emitted().changePage[0]).toEqual([2]);
+
+            wrapper.vm.onNumberRowsPerPageChaned(5);
+            expect(wrapper.emitted().lengthPageChanged).toBeTruthy();
+            expect(wrapper.emitted().lengthPageChanged[0]).toEqual([5]);
+        });
+    });
 });
