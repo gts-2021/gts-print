@@ -4,7 +4,7 @@
 
     <div class="gts-print-calendar-weekly-content" v-for="(day, index) in calendarData.calendars[0]" :key="day" :class="getContentCssClass[index]">
 
-      <CalendarWeeklyInfo :calendarDay="day" :selectedDay="selectedDay" @daySelected="selectDay(day)"/>
+      <CalendarWeeklyInfo :calendarDay="day" :selectedDay="selectedDay" :contextMenuActions="contextMenuActions" @daySelected="selectDay(day)"/>
     
     </div>
 
@@ -28,6 +28,11 @@ export default {
     calendarData: {
       type: Object,
       required: true,
+    },
+    contextMenuActions: {
+      type: Array,
+      required: false,
+      default: () => [],
     },
   },
 

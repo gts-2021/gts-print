@@ -4,7 +4,7 @@
     :key="currentLocale"
     :headerConfig="headerConfig" 
     :calendarContentConfig="calendarContentConfig"
-    :contextMenuActions="actions"
+    :contextMenuActions="resolvedActions"
     @dateIncremented="showNextCalendarIntervalPage"
     @dateDecremented="showPreviousCalendarIntervalPage"
     @displayTypeSelected="handleDisplayTypeSelected" 
@@ -85,6 +85,23 @@ export default {
       type: String,
       required: false,
       default: null
+    },
+    /**
+     * Actions to be displayed in the 3dots ContextMenu for a calendar cell.
+     * The 3dots action button is displayed only if this list is provided and non-empty.
+     */
+    actions: {
+      type: Array,
+      required: false,
+      default: () => []
+    },
+    /**
+     * Alias for actions.
+     */
+    contextMenuActions: {
+      type: Array,
+      required: false,
+      default: null
     }
 
   },
@@ -106,27 +123,19 @@ export default {
       },
 
       selectedDay: null,
-
-      actions: [
-        {
-          title: "Edit",
-          onClick: () => {
-            console.log("CalendarComponent - Edit action - selectedDay", this.selectedDay);
-
-          }
-        },
-        {
-          title: "Delete",
-          onClick: () => {
-            console.log("Delete - selectedDay", this.selectedDay);
-          }
-        },
-         
-      ],
     }
   },
 
   computed: {
+    resolvedActions() {
+      if (Array.isArray(this.actions) && this.actions.length > 0) {
+        return this.actions;
+      }
+      if (Array.isArray(this.contextMenuActions) && this.contextMenuActions.length > 0) {
+        return this.contextMenuActions;
+      }
+      return [];
+    },
     currentLocale() {
       if (!this.$i18n) return null;
       return typeof this.$i18n.locale === 'object' && this.$i18n.locale.value !== undefined 

@@ -38,6 +38,11 @@ This package includes:
 ### 6. Built-in Translations & Localization (i18n)
 - Integrated English, French, and Arabic translations for view types (Month/Mois/شهر, Week/Semaine/أسبوع, Day/Jour/يوم), Today button/marker, day names (Sun/Dim/الأحد, Mon/Lun/الإثنين, etc.), context actions, and empty state labels.
 
+### 7. Cell Actions & ContextMenu (3-dots Button)
+- A 3-dots action button (`MenuIcon`) can be rendered on calendar cells to trigger a floating `ContextMenu`.
+- **Conditional Visibility**: The 3-dots button is **only displayed if an actions list is provided** (either globally via the `actions` / `contextMenuActions` prop on `CalendarComponent`, or per-day via `actions` within a `datesContent` entry).
+- When clicked, opens the `ContextMenu` and passes the clicked calendar day data to action callbacks `action.onClick(calendarDay, event)`.
+
 ## Props
 
 ### CalendarComponent
@@ -50,6 +55,8 @@ This package includes:
 | `defaultContent` | `Object \| Function \| String` | No | `null` | Default content/component rendered in cells that have no specific date content. |
 | `firstDayOfWeek` | `Number \| String` | No | `0` (Sunday) | Specifies the first day of the week (`0..6` or `'Sunday'`, `'Monday'`, etc.). |
 | `defaultLabel` | `String` | No | `null` | Custom label for empty cells (falls back to translated "No Event"). |
+| `actions` | `Array` | No | `[]` | List of action objects for cell ContextMenu. The 3-dots button is only shown if this array is non-empty. |
+| `contextMenuActions` | `Array` | No | `null` | Alias for `actions`. |
 
 ### `datesContent` Structure
 
@@ -136,3 +143,45 @@ export default {
 };
 </script>
 ```
+
+### 3. Calendar with Cell Actions (3-dots ContextMenu)
+
+```vue
+<template>
+  <CalendarComponent 
+    startingDate="15/05/2026"
+    :datesContent="events"
+    :actions="cellActions"
+  />
+</template>
+
+<script>
+import CalendarComponent from '@/components/calendar/CalendarComponent.vue';
+
+export default {
+  components: { CalendarComponent },
+  data() {
+    return {
+      events: [
+        { date: '15/05/2026', content: 'Quarterly Planning' }
+      ],
+      cellActions: [
+        {
+          title: 'Add Event',
+          onClick: (day) => {
+            console.log('Add event clicked on day:', day);
+          }
+        },
+        {
+          title: 'Clear Day',
+          onClick: (day) => {
+            console.log('Clear day clicked on day:', day);
+          }
+        }
+      ]
+    };
+  }
+};
+</script>
+```
+

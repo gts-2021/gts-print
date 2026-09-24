@@ -15,9 +15,9 @@
       </div>
 
       <!-- actions -->
-      <div v-if="isSelected" class="gts-print-calendar-content-actions-icon" @click="toggleMenu">
+      <div v-if="hasActions" class="gts-print-calendar-content-actions-icon" title="Actions" @click.stop="toggleMenu($event)">
         <MenuIcon />
-        <ContextMenu ref="contextMenu" className="gts-card-actions-menu" :actions="contextMenuActions" />
+        <ContextMenu ref="contextMenu" className="gts-card-actions-menu" :actions="resolvedCellActions" />
       </div>
 
     </div>
@@ -42,6 +42,8 @@ import BadgeComponent from '../../badge/BadgeComponent.vue';
 export default {
 
   name: "CalendarMonthlyInfo",
+
+  emits: ['daySelected'],
 
   components: {
     MenuIcon,
@@ -86,14 +88,43 @@ export default {
       return 'Today';
     },
 
+    cellActions() {
+      if (this.calendarDay && Array.isArray(this.calendarDay.actions) && this.calendarDay.actions.length > 0) {
+        return this.calendarDay.actions;
+      }
+      if (Array.isArray(this.contextMenuActions) && this.contextMenuActions.length > 0) {
+        return this.contextMenuActions;
+      }
+      return [];
+    },
+
+    hasActions() {
+      return this.cellActions.length > 0;
+    },
+
+    resolvedCellActions() {
+      return this.cellActions.map(action => ({
+        ...action,
+        onClick: (event) => {
+          if (typeof action.onClick === 'function') {
+            action.onClick(this.calendarDay, event);
+          }
+        }
+      }));
+    },
 
   },
 
   methods: {
 
     toggleMenu(event) {
-      event.stopPropagation();
-      this.$refs.contextMenu.toggleMenu();
+      if (event && event.stopPropagation) {
+        event.stopPropagation();
+      }
+      this.$emit("daySelected", this.calendarDay);
+      if (this.$refs.contextMenu) {
+        this.$refs.contextMenu.toggleMenu();
+      }
     },
 
     getDayTypeTheme(dayType) {
@@ -122,7 +153,7 @@ export default {
   cursor: pointer;
   width: 150px;
   min-height: 100px;
-  overflow: hidden;
+  overflow: visible;
 
 
   .gts-print-calendar-monthly-content-data-header {
@@ -165,12 +196,25 @@ export default {
     }
 
     .gts-print-calendar-content-actions-icon {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
+      width: 28px;
+      height: 28px;
+      border-radius: var(--gts-radius-sm, 5px);
+      transition: background-color 0.15s ease, color 0.15s ease;
+
+      &:hover {
+        background-color: #EEF2FF;
+      }
 
       .gts-card-actions-menu {
         position: absolute;
-        top: 40px;
-        right: 10px;
+        top: calc(100% + 4px);
+        right: 0;
+        z-index: 100;
 
       }
     }

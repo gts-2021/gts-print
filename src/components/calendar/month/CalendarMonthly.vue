@@ -24,7 +24,7 @@
             <td class="gts-print-calendar-monthly-content-data" v-for="(day, index ) in calendarData.weekDays" :key="index" @click="selectDay(week[index])"
               :class="getContentCssClass[weekIndex][index]">
 
-              <CalendarMonthlyInfo :calendarDay="week[index]" :selectedDay="selectedDay" :contextMenuActions="contextMenuActions"/>
+              <CalendarMonthlyInfo :calendarDay="week[index]" :selectedDay="selectedDay" :contextMenuActions="contextMenuActions" @daySelected="selectDay(week[index])"/>
 
             </td> 
         

@@ -6,7 +6,7 @@
       :key="day.date || index" 
       :class="getContentCssClass[index]"
     >
-      <CalendarDailyInfo :calendarDay="day" :selectedDay="selectedDay" @daySelected="selectDay(day)"/>
+      <CalendarDailyInfo :calendarDay="day" :selectedDay="selectedDay" :contextMenuActions="contextMenuActions" @daySelected="selectDay(day)"/>
     </div>
   </div>
 </template>
@@ -25,6 +25,11 @@ export default {
     calendarData: {
       type: Object,
       required: true,
+    },
+    contextMenuActions: {
+      type: Array,
+      required: false,
+      default: () => [],
     },
   },
 

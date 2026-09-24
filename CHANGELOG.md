@@ -9,7 +9,14 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 //add new section for new release 
 
-## [Unreleased]
+## [1.7.3]
+
+### Added
+
+* Add actions to calendar cell.
+ 
+
+## [1.7.1]
 
 ### Added
 
