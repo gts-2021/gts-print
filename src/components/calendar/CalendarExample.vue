@@ -33,12 +33,12 @@
       </div>
     </div>
 
-    <h4>1. GTS-CALENDAR : Custom First Day of Week &amp; Default Empty Cell Content</h4>
-    <span>Demonstrates <code>firstDayOfWeek="{{ selectedFirstDay }}"</code> and <code>:defaultContent</code> rendering
-      custom placeholder on empty cells</span>
+    <h4>1. GTS-CALENDAR : Custom First Day of Week, Default Empty Cell Content &amp; Cell Actions (3-dots ContextMenu)</h4>
+    <span>Demonstrates <code>firstDayOfWeek="{{ selectedFirstDay }}"</code>, <code>:defaultContent</code>, and <code>:actions="actions"</code> rendering the 3-dots ContextMenu button on each cell</span>
     <br><br>
     <CalendarComponent :isStrictMonth="false" :firstDayOfWeek="selectedFirstDay"
       :defaultContent="customDefaultCellComponent" :datesContent="dummyContent" :startingDate="todayDate"
+      :actions="actions"
       @onDateChanged="($emit) => console.log('Date changed:', $emit)" />
 
     <br>
@@ -399,18 +399,19 @@ export default {
 
       actions: [
         {
-          title: "Edit",
-          onClick: () => {
-            console.log("CalendarExample - Edit action - selectedDay", this.selectedDay);
+          title: "Edit Day",
+          onClick: (day) => {
+            console.log("CalendarExample - Edit action - day", day);
+            alert(`Edit action on ${day ? day.date : 'selected day'}`);
           }
         },
         {
-          title: "Delete",
-          onClick: () => {
-            console.log("CalendarExample - Delete action - selectedDay", this.selectedDay);
+          title: "Delete Events",
+          onClick: (day) => {
+            console.log("CalendarExample - Delete action - day", day);
+            alert(`Delete action on ${day ? day.date : 'selected day'}`);
           }
         },
-
       ],
 
     };

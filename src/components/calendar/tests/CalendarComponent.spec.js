@@ -174,4 +174,69 @@ describe('CalendarComponent.vue', () => {
     const weekDays = wrapper.vm.calendarContentConfig.calendarData.weekDays;
     expect(weekDays[0]).toBe('السبت');
   });
+
+  it('does not render 3-dots action button when no actions are provided', () => {
+    const wrapper = mount(CalendarComponent, {
+      props: {
+        startingDate: '15/05/2026',
+        datesContent: dummyContent,
+        actions: []
+      }
+    });
+
+    const actionIcons = wrapper.findAll('.gts-print-calendar-content-actions-icon');
+    expect(actionIcons).toHaveLength(0);
+  });
+
+  it('renders 3-dots action button when actions are provided', () => {
+    const wrapper = mount(CalendarComponent, {
+      props: {
+        startingDate: '15/05/2026',
+        datesContent: dummyContent,
+        actions: [
+          { title: 'Edit' },
+          { title: 'Delete' }
+        ]
+      }
+    });
+
+    const actionIcons = wrapper.findAll('.gts-print-calendar-content-actions-icon');
+    expect(actionIcons.length).toBeGreaterThan(0);
+  });
+
+  it('toggles ContextMenu when 3-dots action button is clicked', async () => {
+    const onEdit = jest.fn();
+    const wrapper = mount(CalendarComponent, {
+      props: {
+        startingDate: '15/05/2026',
+        datesContent: dummyContent,
+        actions: [
+          { title: 'Edit Event', onClick: onEdit },
+          { title: 'Delete Event' }
+        ]
+      }
+    });
+
+    const actionIcon = wrapper.find('.gts-print-calendar-content-actions-icon');
+    expect(actionIcon.exists()).toBe(true);
+
+    // Context menu should initially not be visible
+    expect(wrapper.find('.gts-context-menu').exists()).toBe(false);
+
+    // Click 3-dots button to open ContextMenu
+    await actionIcon.trigger('click');
+    expect(wrapper.find('.gts-context-menu').exists()).toBe(true);
+
+    // Click the Edit action item
+    const menuItems = wrapper.findAll('.gts-context-menu-item');
+    expect(menuItems.length).toBe(2);
+    expect(menuItems[0].text()).toContain('Edit Event');
+
+    await menuItems[0].trigger('click');
+    expect(onEdit).toHaveBeenCalledTimes(1);
+    // The handler should receive the clicked day object as the first parameter
+    expect(onEdit.mock.calls[0][0]).toBeDefined();
+    expect(onEdit.mock.calls[0][0].date).toBeDefined();
+  });
 });
+

@@ -21,11 +21,19 @@
     </div>
 
     <!-- Main Schedule Content Area -->
-    <div class="gts-daily-schedule-card">
       <div class="gts-daily-schedule-header">
         <span class="gts-daily-schedule-title">{{ dailyScheduleTitleText }}</span>
-        <div v-if="isSelected" class="gts-daily-actions-wrapper">
-          <component :item="calendarDay" :is="calendarDay.componentFormatter" />
+        <div v-if="isSelected || hasActions" class="gts-daily-actions-wrapper">
+          <component v-if="calendarDay.componentFormatter" :item="calendarDay" :is="calendarDay.componentFormatter" />
+          <div 
+            v-if="hasActions" 
+            class="gts-print-calendar-content-actions-icon" 
+            title="Actions" 
+            @click.stop="toggleMenu($event)"
+          >
+            <MenuIcon />
+            <ContextMenu ref="contextMenu" className="gts-card-actions-menu" :actions="resolvedCellActions" />
+          </div>
         </div>
       </div>
 
@@ -34,13 +42,13 @@
           <component :is="calendarDay.content" :day="calendarDay" />
         </div>
       </div>
-    </div>
-
   </div>
 
 </template>
 
 <script>
+import MenuIcon from '@/assets/icons/MenuIcon.vue';
+import ContextMenu from '../../contextmenu/ContextMenu.vue';
 import BadgeComponent from '../../badge/BadgeComponent.vue';
 
 export default {
@@ -49,6 +57,8 @@ export default {
   emits: ['daySelected'],
 
   components: {
+    MenuIcon,
+    ContextMenu,
     BadgeComponent
   },
 
@@ -60,6 +70,11 @@ export default {
     selectedDay: {
       type: Object,
       default: null
+    },
+    contextMenuActions: {
+      type: Array,
+      required: false,
+      default: () => [],
     }
   },
 
@@ -84,12 +99,46 @@ export default {
       return 'Daily Schedule & Agenda';
     },
 
+    cellActions() {
+      if (this.calendarDay && Array.isArray(this.calendarDay.actions) && this.calendarDay.actions.length > 0) {
+        return this.calendarDay.actions;
+      }
+      if (Array.isArray(this.contextMenuActions) && this.contextMenuActions.length > 0) {
+        return this.contextMenuActions;
+      }
+      return [];
+    },
+
+    hasActions() {
+      return this.cellActions.length > 0;
+    },
+
+    resolvedCellActions() {
+      return this.cellActions.map(action => ({
+        ...action,
+        onClick: (event) => {
+          if (typeof action.onClick === 'function') {
+            action.onClick(this.calendarDay, event);
+          }
+        }
+      }));
+    },
 
   },
 
   methods: {
     selectDay(calendarDay) {
       this.$emit("daySelected", calendarDay);
+    },
+
+    toggleMenu(event) {
+      if (event && event.stopPropagation) {
+        event.stopPropagation();
+      }
+      this.selectDay(this.calendarDay);
+      if (this.$refs.contextMenu) {
+        this.$refs.contextMenu.toggleMenu();
+      }
     },
 
     getDayTypeTheme(dayType) {
@@ -203,6 +252,29 @@ export default {
         display: flex;
         align-items: center;
         gap: 10px;
+
+        .gts-print-calendar-content-actions-icon {
+          position: relative;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          width: 28px;
+          height: 28px;
+          border-radius: var(--gts-radius-sm, 5px);
+          transition: background-color 0.15s ease, color 0.15s ease;
+
+          &:hover {
+            background-color: #EEF2FF;
+          }
+
+          .gts-card-actions-menu {
+            position: absolute;
+            top: calc(100% + 4px);
+            right: 0;
+            z-index: 100;
+          }
+        }
       }
     }
 
