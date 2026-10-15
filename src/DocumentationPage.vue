@@ -78,6 +78,7 @@ import ToolTipExample from './components/tooltip/ToolTipExample.vue';
 import NoContentExample from './components/nocontent/NoContentExample.vue';
 import ToggleExemple from './components/toggle/ToggleExemple.vue';
 import MapExemple from './components/map-picker/MapExemple.vue';
+import TabPanelExample from './components/tabpanel/TabPanelExample.vue';
 
 export default {
 	name: "DocumentationPage",
@@ -113,7 +114,8 @@ export default {
 				"tooltip": ToolTipExample,
 				"nocontent": NoContentExample,
 				"toggle": ToggleExemple,
-				"map-picker": MapExemple
+				"map-picker": MapExemple,
+				"tabpanel": TabPanelExample
 			}
 		};
 	},

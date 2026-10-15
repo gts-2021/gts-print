@@ -25,6 +25,7 @@ import ToggleComponent from '@/components/toggle/ToggleComponent.vue';
 import MapAutoComplete from '@/components/map-picker/MapAutoComplete.vue';
 import AddressMapPicker from '@/components/map-picker/AddressMapPicker.vue';
 import DataTableFilterField from '@/components/table/DataTableFilterField.vue';
+import TabPanel from '@/components/tabpanel/TabPanel.vue';
 
 const GtsPrint = {
   install(app) {
@@ -53,6 +54,7 @@ const GtsPrint = {
     app.component("ToggleComponent", ToggleComponent);
     app.component("MapAutoComplete", MapAutoComplete);
     app.component("AddressMapPicker", AddressMapPicker);
+    app.component("TabPanel", TabPanel);
     app.use(NotificationPlugin);
   }
 };
@@ -84,6 +86,7 @@ export {
   ToggleComponent,
   MapAutoComplete,
   AddressMapPicker,
+  TabPanel,
   NotificationPlugin
 };
 
