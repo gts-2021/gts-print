@@ -9,11 +9,29 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 //add new section for new release 
 
+## [1.7.4]
+
+### Added
+
+* Add `TabPanel` component:
+  - New accessible, controlled tab navigation component accepting `tabs: Array<Tab>` and `currentTab: String`.
+  - Tab schema supports `name`, `title`, `icon` (Vue component), `component` (Vue component to display), `disabled`, `badge`, and `badgeTheme`.
+  - Strict controlled behavior: clicking a tab emits events (`changeTab`, `update:currentTab`, `tabChange`, `tabClick`), and tab switching occurs if and only if `currentTab` is updated.
+  - Multiple visual variants (`line`, `pill`, `card`, `bordered`) and orientations (`horizontal`, `vertical`).
+  - Full WAI-ARIA accessibility compliance with keyboard navigation (Arrow keys, Home, End).
+  - Added interactive demo `TabPanelExample.vue`, comprehensive documentation in `README.md`, and unit tests in `TabPanel.spec.js`.
+
 ## [1.7.3]
 
 ### Added
 
-* Add actions to calendar cell.
+* Add actions to calendar cell:
+  - Added `:actions` prop to `CalendarComponent` to pass contextual actions down to all calendar views (monthly, weekly, daily).
+  - Implemented 3-dots action menu (`MenuIcon` and `ContextMenu`) in `CalendarMonthlyInfo.vue`, `CalendarWeeklyInfo.vue`, and `CalendarDailyInfo.vue`.
+  - Supported day-specific actions via `calendarDay.actions` with fallback to global `actions`.
+  - Forwarded the selected `calendarDay` and `event` to the action's `onClick(calendarDay, event)` handler.
+  - Updated `CalendarExample.vue` and `README.md` with usage instructions and interactive demonstrations.
+  - Added unit test coverage for calendar cell actions in `CalendarComponent.spec.js`.
  
 
 ## [1.7.1]
