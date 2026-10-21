@@ -9,6 +9,13 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 //add new section for new release 
 
+## [1.7.5]
+
+### Added
+
+* Add custom rendering for `ListBox`:
+  - Added `:formatter` prop as a function `(item, index) => VueComponent` allowing custom Vue component rendering for each option item in the listbox.
+
 ## [1.7.4]
 
 ### Added
@@ -18,8 +25,12 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
   - Tab schema supports `name`, `title`, `icon` (Vue component), `component` (Vue component to display), `disabled`, `badge`, and `badgeTheme`.
   - Strict controlled behavior: clicking a tab emits events (`changeTab`, `update:currentTab`, `tabChange`, `tabClick`), and tab switching occurs if and only if `currentTab` is updated.
   - Multiple visual variants (`line`, `pill`, `card`, `bordered`) and orientations (`horizontal`, `vertical`).
-  - Full WAI-ARIA accessibility compliance with keyboard navigation (Arrow keys, Home, End).
-  - Added interactive demo `TabPanelExample.vue`, comprehensive documentation in `README.md`, and unit tests in `TabPanel.spec.js`.
+* Add `formatter` prop to `ListBox`:
+  - Added `:formatter` prop as a function `(item, index) => VueComponent` allowing custom Vue component rendering for each option item in the listbox.
+  - Forwarded `:item="option"` and `:index="index"` down to the rendered component.
+  - Provided graceful fallback to `option.label` when `formatter` is not passed or returns `null`.
+  - Added `:formatSelected` prop allowing custom component rendering for the selected input display.
+  - Updated `InputExemple.vue`, `README.md`, and added unit tests in `TextInput.spec.js`.
 
 ## [1.7.3]
 
