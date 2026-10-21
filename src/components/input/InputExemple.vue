@@ -113,6 +113,9 @@
     <ListBox @OnValueChanged="(v) => console.log('onValueChanged : ', v)" :options="listBoxOptionsWithDisable"
       label="ListBox with   disabled items " selectItemLabel="Select an item" />
 
+    <ListBox @OnValueChanged="(v) => console.log('Formatted item changed: ', v)" :options="roleOptions"
+      :formatter="formatRoleOption" label="ListBox with custom item formatter (component rendering)" />
+
 
 
 
@@ -122,6 +125,7 @@
 
 <script>
 
+import { defineComponent, markRaw } from 'vue';
 import TextInput from '@/components/input/TextInput.vue';
 import TextInputArea from '@/components/input/TextInputArea.vue';
 import ListBox from './ListBox.vue';
@@ -206,12 +210,33 @@ export default {
         { label: 'Fig', value: 'fig' },
         { label: 'Grape', value: 'grape' }
       ],
-      emptyOptions: []
+      emptyOptions: [],
 
+      roleOptions: [
+        { label: 'Administrator', value: 'admin', description: 'Full system access & security management', badge: 'Admin' },
+        { label: 'Editor', value: 'editor', description: 'Can edit and publish corporate content', badge: 'Staff' },
+        { label: 'Viewer', value: 'viewer', description: 'Read-only access to documents', badge: 'Guest' },
+      ]
 
     };
   },
   methods: {
+    formatRoleOption(item, index) {
+      return markRaw(defineComponent({
+        props: ['item', 'index'],
+        template: `
+          <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+            <div>
+              <div style="font-weight: 600; font-size: 14px; color: #003F4D;">#{{ index + 1 }} {{ item.label }}</div>
+              <div style="font-size: 12px; color: #737373;">{{ item.description }}</div>
+            </div>
+            <span style="font-size: 11px; padding: 2px 8px; border-radius: 12px; background: #DCF8FE; color: #003F4D; font-weight: 600;">
+              {{ item.badge }}
+            </span>
+          </div>
+        `
+      }));
+    },
     onFruitChanged(option) {
       console.log('Fruit changed:', option);
     },

@@ -57,6 +57,8 @@ A custom dropdown/select component.
 | `isSelectItemLabelSelectable`| `Boolean`  | No       | `true`| Indicating that default item is selectable or no                              |
 | `disabled`     | `Boolean` | No       | `false` | Disables the dropdown.                                    |
 | `error`        | `String`  | No       | `''`    | Error message.                                            |
+| `formatter`    | `Function`| No       | `null`  | Function `(item, index) => VueComponent` for custom option rendering in the listbox. |
+| `formatSelected`| `Boolean`| No       | `false` | When `true`, also formats the selected value in the input using the `formatter` component. |
 
 
 ### Events
@@ -98,9 +100,46 @@ A custom dropdown/select component.
   <ListBox @OnValueChanged="(v)=> console.log('onValueChanged : ', v)" :options="listBoxOptions" label="ListBox with select disabled item label" selectItemLabel="Select an item"  :isSelectItemLabelSelectable="true" />
      
 
-    <ListBox @OnValueChanged="(v)=> console.log('onValueChanged : ', v)" :options="[{lable:'item', value:'1', disabled: true}]" label="ListBox with   disabled items " selectItemLabel="Select an item"   />
+  <ListBox @OnValueChanged="(v)=> console.log('onValueChanged : ', v)" :options="[{lable:'item', value:'1', disabled: true}]" label="ListBox with   disabled items " selectItemLabel="Select an item"   />
+
+  <!-- Example with custom component formatter -->
+  <ListBox
+    :options="roleOptions"
+    :formatter="formatRoleOption"
+    label="ListBox with custom option rendering"
+  />
      
 </template>
+
+<script>
+import { markRaw, defineComponent } from 'vue';
+import ListBox from '@/components/input/ListBox.vue';
+
+export default {
+  components: { ListBox },
+  data() {
+    return {
+      roleOptions: [
+        { label: 'Administrator', value: 'admin', badge: 'Admin' },
+        { label: 'Editor', value: 'editor', badge: 'Staff' }
+      ]
+    };
+  },
+  methods: {
+    formatRoleOption(item, index) {
+      return markRaw(defineComponent({
+        props: ['item', 'index'],
+        template: `
+          <div style="display: flex; justify-content: space-between;">
+            <span>#{{ index + 1 }} {{ item.label }}</span>
+            <span class="badge">{{ item.badge }}</span>
+          </div>
+        `
+      }));
+    }
+  }
+};
+</script>
 ```
 
 ## `<TextInputArea />`

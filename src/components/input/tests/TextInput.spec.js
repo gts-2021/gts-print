@@ -178,4 +178,60 @@ describe('Tests for ListBox component', () => {
     });
     expect(wrapper.find('.gts-input').classes()).toContain('gts-input-error');
   });
+
+  it('Should render custom component for options when formatter function is provided', async () => {
+    const CustomOptionComponent = {
+      name: 'CustomOptionComponent',
+      props: ['item', 'index'],
+      template: '<div class="custom-listbox-item">Index: {{ index }} | Label: {{ item.label }}</div>'
+    };
+
+    const wrapper = mount(ListBox, {
+      propsData: {
+        options,
+        formatter: (item, index) => CustomOptionComponent
+      }
+    });
+
+    const dropdownIcon = wrapper.find('.gts-listbox-dropdown');
+    await dropdownIcon.trigger('click');
+
+    const customItems = wrapper.findAll('.custom-listbox-item');
+    expect(customItems).toHaveLength(options.length);
+    expect(customItems[0].text()).toContain('Index: 0 | Label: Option 1');
+    expect(customItems[1].text()).toContain('Index: 1 | Label: Option 2');
+    expect(customItems[2].text()).toContain('Index: 2 | Label: Option 3');
+
+    // Selecting a formatted item
+    await wrapper.findAll('.gts-listbox-option').at(1).trigger('click');
+    expect(wrapper.vm.inputValue).toEqual(options[1]);
+    expect(wrapper.emitted('onValueChanged')).toBeTruthy();
+    expect(wrapper.emitted('onValueChanged')[0][0]).toEqual(options[1]);
+  });
+
+  it('Should fallback to option.label when formatter returns null', async () => {
+    const CustomOptionComponent = {
+      name: 'CustomOptionComponent',
+      props: ['item', 'index'],
+      template: '<div class="custom-item-component">{{ item.label }} - Custom</div>'
+    };
+
+    const wrapper = mount(ListBox, {
+      propsData: {
+        options,
+        formatter: (item, index) => (index === 0 ? null : CustomOptionComponent)
+      }
+    });
+
+    const dropdownIcon = wrapper.find('.gts-listbox-dropdown');
+    await dropdownIcon.trigger('click');
+
+    const optionElements = wrapper.findAll('.gts-listbox-option');
+    expect(optionElements[0].find('.custom-item-component').exists()).toBe(false);
+    expect(optionElements[0].text()).toBe('Option 1');
+
+    expect(optionElements[1].find('.custom-item-component').exists()).toBe(true);
+    expect(optionElements[1].text()).toBe('Option 2 - Custom');
+  });
 });
+
