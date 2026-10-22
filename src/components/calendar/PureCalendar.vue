@@ -16,7 +16,16 @@
     />
 
     <!-- dynamic display -->
-    <component 
+    <CalendarTimeGrid
+      v-if="showTimeGrid"
+      :calendarData="calendarContentConfig.calendarData"
+      :startTime="startTime"
+      :endTime="endTime"
+      :timeGridClass="timeGridClass"
+      :hourHeight="hourHeight"
+    />
+    <component
+      v-else
       :is="calendarContentConfig.selectedCalendarComponent" 
       :calendarData="calendarContentConfig.calendarData"
       :contextMenuActions="contextMenuActions"
@@ -33,6 +42,7 @@ import CalendarHeader from './CalendarHeader.vue';
 import CalendarMonthly from './month/CalendarMonthly.vue';
 import CalendarWeekly from './week/CalendarWeekly.vue';
 import CalendarDaily from './day/CalendarDaily.vue';
+import CalendarTimeGrid from './CalendarTimeGrid.vue';
 
 export default {
 
@@ -41,6 +51,7 @@ export default {
   emits: ['dateIncremented', 'dateDecremented', 'displayTypeSelected', 'dateSelected', 'todayClicked', 'daySelected'],
 
   components: {
+    CalendarTimeGrid,
     CalendarHeader,
     CalendarMonthly,
     CalendarWeekly,
@@ -48,6 +59,11 @@ export default {
   },
 
   props: {
+    displayTimes: { type: Boolean, default: false },
+    startTime: { type: Number, default: 0 },
+    endTime: { type: Number, default: 23 },
+    timeGridClass: { type: [String, Array, Object], default: '' },
+    hourHeight: { type: Number, default: 64 },
     headerConfig: {
       type: Object,
       required: true,
@@ -78,6 +94,14 @@ export default {
   data () {
     return {
     }
+  },
+
+  computed: {
+    showTimeGrid() {
+      return this.displayTimes && ['CalendarWeekly', 'CalendarDaily'].includes(
+        this.calendarContentConfig.selectedCalendarComponent
+      );
+    },
   },
 
   methods : {
