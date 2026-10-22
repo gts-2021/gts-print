@@ -58,6 +58,25 @@
       :contextMenuActions="actions" @dateIncremented="handleDateIncremented" @dateDecremented="handleDateDecremented"
       @displayTypeSelected="handleDisplayTypeSelected" @daySelected="selectDay" />
 
+    <br><hr><br>
+    <h4>4. WEEK WITH HOURS : Calcul automatique de hauteur et positionnement (day.slots)</h4>
+    <p>Affichage de créneaux horaires par intervalle avec calcul automatique de la hauteur et du positionnement vertical selon <code>startTime</code> et <code>endTime</code>.</p>
+    <CalendarComponent ref="hourlyWeek" :displayTimes="true" :startTime="8" :endTime="20" :firstDayOfWeek="selectedFirstDay"
+      :startingDate="todayDate" :datesContent="hourlyDemoContent" />
+
+    <br><hr><br>
+    <h4>5. DAY WITH HOURS : Créneaux horaires d'une journée (08:00–18:00)</h4>
+    <p>Vue journalière avec créneaux temporels personnalisés, calcul automatique de la hauteur et guide interactif au survol.</p>
+    <CalendarComponent ref="hourlyDay" :displayTimes="true" :startTime="8" :endTime="18"
+      timeGridClass="sector-time-grid" :hourHeight="140"
+      :startingDate="todayDate" :datesContent="hourlyDemoContent" />
+
+    <br><hr><br>
+    <h4>6. CRÉNEAUX EN CHEVAUCHEMENT (OVERLAPPING SLOTS) : Affichage côte à côte &amp; expansion à 90% au survol</h4>
+    <p>Lorsque des créneaux se chevauchent dans le même intervalle horaire, ils sont automatiquement disposés côte à côte en divisant la largeur disponible tout en conservant leur hauteur respective. Au survol (hover), le créneau sélectionné s'agrandit à environ 90% de la largeur pour visualiser facilement l'intégralité de son contenu.</p>
+    <CalendarComponent ref="overlappingWeek" :displayTimes="true" :startTime="8" :endTime="18" :firstDayOfWeek="selectedFirstDay"
+      timeGridClass="sector-time-grid" :hourHeight="120"
+      :startingDate="todayDate" :datesContent="overlappingDemoContent" />
   </div>
 
 </template>
@@ -72,6 +91,53 @@ import { defineComponent, markRaw } from 'vue';
 import CalendarComponent from './CalendarComponent.vue';
 import moment from 'moment';
 
+const appointmentSlotComponent = markRaw(defineComponent({
+  props: ['slot', 'day', 'startTime', 'endTime', 'hourHeight'],
+  template: `
+    <div class="gts-demo-slot-card appointment" @click.stop="onClick">
+      <div class="gts-demo-slot-time">⏱️ {{ startTime }} – {{ endTime }}</div>
+      <div class="gts-demo-slot-title">{{ slot.title || 'Client Consultation' }}</div>
+      <div class="gts-demo-slot-meta">{{ slot.subtitle || 'Salle 102 • Dr. Martin' }}</div>
+    </div>
+  `,
+  methods: {
+    onClick() {
+      alert(`Créneau sélectionné: ${this.slot.title} (${this.startTime} - ${this.endTime})`);
+    }
+  }
+}));
+
+const urgentSlotComponent = markRaw(defineComponent({
+  props: ['slot', 'day', 'startTime', 'endTime', 'hourHeight'],
+  template: `
+    <div class="gts-demo-slot-card urgent" @click.stop="onClick">
+      <div class="gts-demo-slot-time">🚨 {{ startTime }} – {{ endTime }}</div>
+      <div class="gts-demo-slot-title">{{ slot.title || 'Urgence / Intervention' }}</div>
+      <div class="gts-demo-slot-meta">{{ slot.subtitle || 'Bloc Opératoire 3' }}</div>
+    </div>
+  `,
+  methods: {
+    onClick() {
+      alert(`Créneau d'urgence: ${this.slot.title} (${this.startTime} - ${this.endTime})`);
+    }
+  }
+}));
+
+const consultationSlotComponent = markRaw(defineComponent({
+  props: ['slot', 'day', 'startTime', 'endTime', 'hourHeight'],
+  template: `
+    <div class="gts-demo-slot-card consultation" @click.stop="onClick">
+      <div class="gts-demo-slot-time">📋 {{ startTime }} – {{ endTime }}</div>
+      <div class="gts-demo-slot-title">{{ slot.title || 'Suivi Dossier' }}</div>
+      <div class="gts-demo-slot-meta">{{ slot.subtitle || 'Visioconférence' }}</div>
+    </div>
+  `,
+  methods: {
+    onClick() {
+      alert(`Suivi sélectionné: ${this.slot.title} (${this.startTime} - ${this.endTime})`);
+    }
+  }
+}));
 
 export default {
 
@@ -86,6 +152,161 @@ export default {
     const todayStr = moment().format('DD/MM/YYYY');
 
     return {
+      hourlyDemoContent: [
+        {
+          date: todayStr,
+          slots: [
+            {
+              startTime: '08:30',
+              endTime: '10:00',
+              title: 'Revue Stratégique',
+              subtitle: 'Salle de réunion A',
+              component: appointmentSlotComponent,
+            },
+            {
+              startTime: '10:30',
+              endTime: '12:00',
+              title: 'Urgence Technique',
+              subtitle: 'Intervention serveur',
+              component: urgentSlotComponent,
+            },
+            {
+              startTime: '13:30',
+              endTime: '15:15',
+              title: 'Consultation Client',
+              subtitle: 'Dr. Martin - Cabinet',
+              component: consultationSlotComponent,
+            },
+            {
+              startTime: '16:00',
+              endTime: '17:30',
+              title: 'Point d\'équipe',
+              subtitle: 'Visioconférence',
+              component: appointmentSlotComponent,
+            },
+          ],
+        },
+        {
+          date: moment().add(1, 'days').format('DD/MM/YYYY'),
+          slots: [
+            {
+              startTime: '09:00',
+              endTime: '11:00',
+              title: 'Workshop Architecture',
+              subtitle: 'Design System & Vue 3',
+              component: appointmentSlotComponent,
+            },
+            {
+              startTime: '14:00',
+              endTime: '15:30',
+              title: 'Maintenance Planifiée',
+              subtitle: 'Serveurs Cloud',
+              component: urgentSlotComponent,
+            },
+          ],
+        },
+        {
+          date: moment().add(2, 'days').format('DD/MM/YYYY'),
+          slots: [
+            {
+              startTime: '10:00',
+              endTime: '11:30',
+              title: 'Session Démo Produit',
+              subtitle: 'Salle polyvalente',
+              component: consultationSlotComponent,
+            },
+            {
+              startTime: '14:30',
+              endTime: '16:00',
+              title: 'Revue de Sprint',
+              subtitle: 'Équipe frontend',
+              component: appointmentSlotComponent,
+            },
+          ],
+        },
+      ],
+      overlappingDemoContent: [
+        {
+          date: todayStr,
+          slots: [
+            {
+              startTime: '08:30',
+              endTime: '10:15',
+              title: 'Consultation Générale',
+              subtitle: 'Dr. Martin • Cabinet 1',
+              component: appointmentSlotComponent,
+            },
+            {
+              startTime: '09:00',
+              endTime: '10:30',
+              title: 'Urgence Dentaire',
+              subtitle: 'Dr. Bernard • Salle d\'urgence',
+              component: urgentSlotComponent,
+            },
+            {
+              startTime: '09:45',
+              endTime: '11:15',
+              title: 'Examen Radiologique',
+              subtitle: 'Dr. Lambert • Imagerie',
+              component: consultationSlotComponent,
+            },
+            {
+              startTime: '11:30',
+              endTime: '12:45',
+              title: 'Point d\'équipe',
+              subtitle: 'Salle de réunion A',
+              component: appointmentSlotComponent,
+            },
+            {
+              startTime: '14:00',
+              endTime: '16:00',
+              title: 'Intervention Chirurgicale',
+              subtitle: 'Bloc 2 • Équipe A (2h)',
+              component: urgentSlotComponent,
+            },
+            {
+              startTime: '14:30',
+              endTime: '15:30',
+              title: 'Contrôle Anesthésie',
+              subtitle: 'Dr. Simon • Suivi per-opératoire',
+              component: consultationSlotComponent,
+            },
+            {
+              startTime: '16:30',
+              endTime: '17:30',
+              title: 'Visite Post-Opératoire',
+              subtitle: 'Chambre 204 • Non chevauchant (100% de largeur)',
+              component: appointmentSlotComponent,
+            },
+          ],
+        },
+        {
+          date: moment().add(1, 'days').format('DD/MM/YYYY'),
+          slots: [
+            {
+              startTime: '09:00',
+              endTime: '10:30',
+              title: 'Atelier UI/UX',
+              subtitle: 'Équipe Design',
+              component: appointmentSlotComponent,
+            },
+            {
+              startTime: '09:30',
+              endTime: '11:00',
+              title: 'Revue Technique',
+              subtitle: 'Lead Dev • Salle B',
+              component: urgentSlotComponent,
+            },
+            {
+              startTime: '14:00',
+              endTime: '15:30',
+              title: 'Démo Client',
+              subtitle: 'Visio • Vente',
+              component: consultationSlotComponent,
+            },
+          ],
+        },
+      ],
       selectedFirstDay: 'Saturday',
       currentLocale: 'en',
       todayDate: todayStr,
@@ -417,6 +638,12 @@ export default {
     };
   },
 
+  mounted() {
+    this.$refs.hourlyWeek.handleDisplayTypeSelected(CALENDARS_WEEK_TYPE);
+    this.$refs.hourlyDay.handleDisplayTypeSelected('Day');
+    this.$refs.overlappingWeek?.handleDisplayTypeSelected(CALENDARS_WEEK_TYPE);
+  },
+
   methods: {
 
     handleDateIncremented() {
@@ -461,6 +688,15 @@ export default {
 </script>
 
 <style lang="scss">
+.sector-time-grid {
+  --gts-time-max-height: 560px;
+  --gts-time-header-background: #edf7f5;
+  --gts-time-grid-line: #d9e9e5;
+  --gts-time-border: #bdd8d1;
+  --gts-time-cursor-color: #187765;
+  --gts-time-radius: 8px;
+}
+
 .calendar-content-test {
   background-color: green;
 }
@@ -511,6 +747,81 @@ export default {
     display: flex;
     gap: 8px;
     margin-top: 6px;
+  }
+}
+
+.gts-demo-slot-card {
+  height: 100%;
+  width: 100%;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  transition: all 0.2s ease;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+
+  &.appointment {
+    background: #eef2ff;
+    border-left: 4px solid #4f46e5;
+    color: #312e81;
+
+    &:hover {
+      background: #e0e7ff;
+      box-shadow: 0 3px 6px rgba(79, 70, 229, 0.2);
+    }
+  }
+
+  &.urgent {
+    background: #fef2f2;
+    border-left: 4px solid #ef4444;
+    color: #991b1b;
+
+    &:hover {
+      background: #fee2e2;
+      box-shadow: 0 3px 6px rgba(239, 68, 68, 0.2);
+    }
+  }
+
+  &.consultation {
+    background: #f0fdf4;
+    border-left: 4px solid #10b981;
+    color: #065f46;
+
+    &:hover {
+      background: #dcfce7;
+      box-shadow: 0 3px 6px rgba(16, 185, 129, 0.2);
+    }
+  }
+
+  .gts-demo-slot-time {
+    font-size: 11px;
+    font-weight: 700;
+    margin-bottom: 2px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .gts-demo-slot-title {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .gts-demo-slot-meta {
+    font-size: 11px;
+    opacity: 0.85;
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 </style>

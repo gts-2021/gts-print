@@ -8,6 +8,44 @@ jest.mock('@/assets/icons/MenuIcon.vue', () => ({ template: '<div>MenuIcon</div>
 jest.mock('maska/vue', () => ({ vMaska: {} }), { virtual: true });
 
 describe('CalendarComponent.vue', () => {
+  it('preserves legacy views by default and leaves month unchanged with displayTimes', async () => {
+    const wrapper = mount(CalendarComponent);
+    wrapper.vm.handleDisplayTypeSelected('Week');
+    await wrapper.vm.$nextTick();
+    expect(wrapper.find('.gts-print-calendar-weekly-container').exists()).toBe(true);
+    expect(wrapper.find('.gts-time-grid').exists()).toBe(false);
+    await wrapper.setProps({ displayTimes: true });
+    expect(wrapper.findAll('.gts-time-grid-hour')).toHaveLength(23);
+    expect(wrapper.findAll('.gts-time-grid-day')).toHaveLength(7);
+    wrapper.vm.handleDisplayTypeSelected('Month');
+    await wrapper.vm.$nextTick();
+    expect(wrapper.find('.gts-print-calendar-monthly').exists()).toBe(true);
+    expect(wrapper.find('.gts-time-grid').exists()).toBe(false);
+  });
+
+  it('renders a reactive daily range and passes layout context to consumer content once', async () => {
+    const content = markRaw(defineComponent({
+      props: ['day', 'startTime', 'endTime', 'hourHeight'],
+      template: '<div class="hourly-consumer">{{ day.date }} {{ startTime }} {{ endTime }} {{ hourHeight }}</div>',
+    }));
+    const wrapper = mount(CalendarComponent, {
+      props: { startingDate: '15/05/2026', displayTimes: true, startTime: 8, endTime: 17,
+        datesContent: [{ date: '15/05/2026', content }] },
+    });
+    wrapper.vm.handleDisplayTypeSelected('Day');
+    await wrapper.vm.$nextTick();
+    expect(wrapper.findAll('.gts-time-grid-hour')).toHaveLength(9);
+    expect(wrapper.find('.gts-time-grid-corner').text()).toBe('08:00 – 17:00');
+    expect(wrapper.findAll('.hourly-consumer')).toHaveLength(1);
+    expect(wrapper.find('.hourly-consumer').text()).toBe('15/05/2026 8 17 64');
+    await wrapper.setProps({ startTime: 12, endTime: 12 });
+    expect(wrapper.findAll('.gts-time-grid-hour')).toHaveLength(0);
+    await wrapper.setProps({ startTime: 18, endTime: 8 });
+    expect(wrapper.findAll('.gts-time-grid-hour')).toHaveLength(23);
+    await wrapper.setProps({ displayTimes: false });
+    expect(wrapper.find('.gts-print-calendar-daily-container').exists()).toBe(true);
+  });
+
   const todayStr = moment().format('DD/MM/YYYY');
 
   const dummyContent = [
