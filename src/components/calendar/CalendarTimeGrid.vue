@@ -20,10 +20,43 @@
         :class="{ 'is-today': day.isToday }" :data-date="day.date"
         @mousemove="updateCursor($event, day)" @mouseleave="clearCursor">
         <div v-for="hour in hours" :key="hour" class="gts-time-grid-cell" aria-hidden="true"></div>
-        <div v-if="day.content && hours.length" class="gts-time-grid-content">
+
+        <!-- Render slots when day.slots is provided -->
+        <div v-if="hasSlots(day) && hours.length" class="gts-time-grid-content">
+          <div
+            v-for="(slot, slotIndex) in getDaySlots(day)"
+            :key="slot.id || slotIndex"
+            class="gts-time-grid-slot"
+            :style="getSlotStyle(slot)"
+          >
+            <component
+              v-if="slot.component"
+              :is="slot.component"
+              :slot="slot"
+              :slotData="slot"
+              :day="day"
+              :startTime="slot.startTime"
+              :endTime="slot.endTime"
+              :hourHeight="effectiveHourHeight"
+              v-bind="slot.props || {}"
+            />
+            <div v-else class="gts-time-grid-slot-default">
+              <span class="gts-time-grid-slot-time">
+                {{ formatSlotTime(slot.startTime) }} – {{ formatSlotTime(slot.endTime) }}
+              </span>
+              <span v-if="slot.title || slot.label" class="gts-time-grid-slot-title">
+                {{ slot.title || slot.label }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fallback to legacy/custom day.content if no slots are defined -->
+        <div v-else-if="day.content && hours.length" class="gts-time-grid-content">
           <component :is="day.content" :day="day" :startTime="range.start"
             :endTime="range.end" :hourHeight="effectiveHourHeight" />
         </div>
+
         <div v-if="cursor" class="gts-time-grid-cursor" :style="{ top: `${cursor.top}px` }" aria-hidden="true">
           <span v-if="cursor.date === day.date">{{ cursor.label }}</span>
         </div>
@@ -80,6 +113,37 @@ export default {
         label: `${String(Math.floor(minutes / 60)).padStart(2, '0')}:${String(minutes % 60).padStart(2, '0')}` };
     },
     formatHour(hour) { return `${String(hour).padStart(2, '0')}:00`; },
+    hasSlots(day) {
+      return Array.isArray(day?.slots) && day.slots.length > 0;
+    },
+    getDaySlots(day) {
+      if (!this.hasSlots(day)) return [];
+      return day.slots.filter((slot) => {
+        if (!slot || slot.startTime === undefined || slot.endTime === undefined) return false;
+        const start = this.parseTimeToHours(slot.startTime);
+        const end = this.parseTimeToHours(slot.endTime);
+        return end > start && end > this.range.start && start < this.range.end;
+      });
+    },
+    parseTimeToHours(time) {
+      if (!time) return 0;
+      const [hours, minutes] = time.split(':').map(Number);
+      return hours + (minutes || 0) / 60;
+    },
+    getSlotStyle(slot) {
+      const startHour = this.parseTimeToHours(slot.startTime);
+      const endHour = this.parseTimeToHours(slot.endTime);
+      const top = (startHour - this.range.start) * this.effectiveHourHeight;
+      const height = Math.max(0, (endHour - startHour) * this.effectiveHourHeight);
+      return {
+        top: `${top}px`,
+        height: `${height}px`,
+        ...(slot.style || {}),
+      };
+    },
+    formatSlotTime(time) {
+      return time || '';
+    },
   },
   watch: {
     startTime: 'clearCursor', endTime: 'clearCursor', hourHeight: 'clearCursor', calendarData: 'clearCursor',
@@ -143,8 +207,46 @@ export default {
   &.is-today { background: var(--gts-time-today-background, rgba($primary-color-50, .5)); }
 }
 .gts-time-grid-content { position: absolute; inset: 0; overflow: hidden; }
+.gts-time-grid-slot {
+  position: absolute;
+  left: 3px;
+  right: 3px;
+  box-sizing: border-box;
+  z-index: 1;
+  overflow: hidden;
+  border-radius: var(--gts-time-slot-radius, 6px);
+
+  > * {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+  }
+}
+.gts-time-grid-slot-default {
+  background: var(--gts-time-slot-bg, $primary-color-50);
+  border: 1px solid var(--gts-time-slot-border, $primary-color-300);
+  color: var(--gts-time-slot-color, $primary-color-700);
+  padding: 4px 6px;
+  font-size: 11px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  .gts-time-grid-slot-time {
+    font-weight: 600;
+    font-size: 10px;
+    opacity: 0.85;
+  }
+
+  .gts-time-grid-slot-title {
+    font-weight: 500;
+  }
+}
 .gts-time-grid-cursor {
-  position: absolute; left: 0; right: 0; z-index: 1; pointer-events: none;
+  position: absolute; left: 0; right: 0; z-index: 5; pointer-events: none;
   border-top: 1px solid var(--gts-time-cursor-color, $primary-color-500);
   span { position: absolute; right: 4px; bottom: 2px; padding: 2px 6px; border-radius: 4px;
     background: var(--gts-time-cursor-color, $primary-color-500);

@@ -300,6 +300,10 @@ export default {
           }
         }
 
+        let slots = (dateContent && Array.isArray(dateContent.slots))
+          ? dateContent.slots
+          : (dateContent && Array.isArray(dateContent.timeSlots) ? dateContent.timeSlots : []);
+
         calendarRange.push(
           {
             date: day.format(this.dateFormat),
@@ -309,6 +313,7 @@ export default {
             label: defaultLabelText,
             disabled: true,
             content,
+            slots,
             isEmpty,
             isToday,
             dayType,

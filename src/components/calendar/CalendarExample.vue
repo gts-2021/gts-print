@@ -59,16 +59,16 @@
       @displayTypeSelected="handleDisplayTypeSelected" @daySelected="selectDay" />
 
     <br><hr><br>
-    <h4>4. WEEK WITH HOURS : Full day (00:00–24:00)</h4>
-    <p>Optional hourly view. Event positioning is handled by the consuming component.</p>
-    <CalendarComponent ref="hourlyWeek" :displayTimes="true" :endTime="24" :firstDayOfWeek="selectedFirstDay"
+    <h4>4. WEEK WITH HOURS : Calcul automatique de hauteur et positionnement (day.slots)</h4>
+    <p>Affichage de créneaux horaires par intervalle avec calcul automatique de la hauteur et du positionnement vertical selon <code>startTime</code> et <code>endTime</code>.</p>
+    <CalendarComponent ref="hourlyWeek" :displayTimes="true" :startTime="8" :endTime="20" :firstDayOfWeek="selectedFirstDay"
       :startingDate="todayDate" :datesContent="hourlyDemoContent" />
 
     <br><hr><br>
-    <h4>5. DAY WITH HOURS : Sector opening hours (08:00–18:00)</h4>
-    <p>Exact closing time: 18:00. Custom theme and row height; hover to see the time at the pointer.</p>
+    <h4>5. DAY WITH HOURS : Créneaux horaires d'une journée (08:00–18:00)</h4>
+    <p>Vue journalière avec créneaux temporels personnalisés, calcul automatique de la hauteur et guide interactif au survol.</p>
     <CalendarComponent ref="hourlyDay" :displayTimes="true" :startTime="8" :endTime="18"
-      timeGridClass="sector-time-grid" :hourHeight="80"
+      timeGridClass="sector-time-grid" :hourHeight="140"
       :startingDate="todayDate" :datesContent="hourlyDemoContent" />
   </div>
 
@@ -83,8 +83,54 @@ import DeleteIcon from '@/assets/icons/DeleteIcon.vue';
 import { defineComponent, markRaw } from 'vue';
 import CalendarComponent from './CalendarComponent.vue';
 import moment from 'moment';
-import CalendarTimeDemoContent from './CalendarTimeDemoContent.vue';
 
+const appointmentSlotComponent = markRaw(defineComponent({
+  props: ['slot', 'day', 'startTime', 'endTime', 'hourHeight'],
+  template: `
+    <div class="gts-demo-slot-card appointment" @click.stop="onClick">
+      <div class="gts-demo-slot-time">⏱️ {{ startTime }} – {{ endTime }}</div>
+      <div class="gts-demo-slot-title">{{ slot.title || 'Client Consultation' }}</div>
+      <div class="gts-demo-slot-meta">{{ slot.subtitle || 'Salle 102 • Dr. Martin' }}</div>
+    </div>
+  `,
+  methods: {
+    onClick() {
+      alert(`Créneau sélectionné: ${this.slot.title} (${this.startTime} - ${this.endTime})`);
+    }
+  }
+}));
+
+const urgentSlotComponent = markRaw(defineComponent({
+  props: ['slot', 'day', 'startTime', 'endTime', 'hourHeight'],
+  template: `
+    <div class="gts-demo-slot-card urgent" @click.stop="onClick">
+      <div class="gts-demo-slot-time">🚨 {{ startTime }} – {{ endTime }}</div>
+      <div class="gts-demo-slot-title">{{ slot.title || 'Urgence / Intervention' }}</div>
+      <div class="gts-demo-slot-meta">{{ slot.subtitle || 'Bloc Opératoire 3' }}</div>
+    </div>
+  `,
+  methods: {
+    onClick() {
+      alert(`Créneau d'urgence: ${this.slot.title} (${this.startTime} - ${this.endTime})`);
+    }
+  }
+}));
+
+const consultationSlotComponent = markRaw(defineComponent({
+  props: ['slot', 'day', 'startTime', 'endTime', 'hourHeight'],
+  template: `
+    <div class="gts-demo-slot-card consultation" @click.stop="onClick">
+      <div class="gts-demo-slot-time">📋 {{ startTime }} – {{ endTime }}</div>
+      <div class="gts-demo-slot-title">{{ slot.title || 'Suivi Dossier' }}</div>
+      <div class="gts-demo-slot-meta">{{ slot.subtitle || 'Visioconférence' }}</div>
+    </div>
+  `,
+  methods: {
+    onClick() {
+      alert(`Suivi sélectionné: ${this.slot.title} (${this.startTime} - ${this.endTime})`);
+    }
+  }
+}));
 
 export default {
 
@@ -99,10 +145,79 @@ export default {
     const todayStr = moment().format('DD/MM/YYYY');
 
     return {
-      hourlyDemoContent: [0, 1, 2].map(offset => ({
-        date: moment().add(offset, 'days').format('DD/MM/YYYY'),
-        content: markRaw(CalendarTimeDemoContent),
-      })),
+      hourlyDemoContent: [
+        {
+          date: todayStr,
+          slots: [
+            {
+              startTime: '08:30',
+              endTime: '10:00',
+              title: 'Revue Stratégique',
+              subtitle: 'Salle de réunion A',
+              component: appointmentSlotComponent,
+            },
+            {
+              startTime: '10:30',
+              endTime: '12:00',
+              title: 'Urgence Technique',
+              subtitle: 'Intervention serveur',
+              component: urgentSlotComponent,
+            },
+            {
+              startTime: '13:30',
+              endTime: '15:15',
+              title: 'Consultation Client',
+              subtitle: 'Dr. Martin - Cabinet',
+              component: consultationSlotComponent,
+            },
+            {
+              startTime: '16:00',
+              endTime: '17:30',
+              title: 'Point d\'équipe',
+              subtitle: 'Visioconférence',
+              component: appointmentSlotComponent,
+            },
+          ],
+        },
+        {
+          date: moment().add(1, 'days').format('DD/MM/YYYY'),
+          slots: [
+            {
+              startTime: '09:00',
+              endTime: '11:00',
+              title: 'Workshop Architecture',
+              subtitle: 'Design System & Vue 3',
+              component: appointmentSlotComponent,
+            },
+            {
+              startTime: '14:00',
+              endTime: '15:30',
+              title: 'Maintenance Planifiée',
+              subtitle: 'Serveurs Cloud',
+              component: urgentSlotComponent,
+            },
+          ],
+        },
+        {
+          date: moment().add(2, 'days').format('DD/MM/YYYY'),
+          slots: [
+            {
+              startTime: '10:00',
+              endTime: '11:30',
+              title: 'Session Démo Produit',
+              subtitle: 'Salle polyvalente',
+              component: consultationSlotComponent,
+            },
+            {
+              startTime: '14:30',
+              endTime: '16:00',
+              title: 'Revue de Sprint',
+              subtitle: 'Équipe frontend',
+              component: appointmentSlotComponent,
+            },
+          ],
+        },
+      ],
       selectedFirstDay: 'Saturday',
       currentLocale: 'en',
       todayDate: todayStr,
@@ -542,6 +657,81 @@ export default {
     display: flex;
     gap: 8px;
     margin-top: 6px;
+  }
+}
+
+.gts-demo-slot-card {
+  height: 100%;
+  width: 100%;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  transition: all 0.2s ease;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+
+  &.appointment {
+    background: #eef2ff;
+    border-left: 4px solid #4f46e5;
+    color: #312e81;
+
+    &:hover {
+      background: #e0e7ff;
+      box-shadow: 0 3px 6px rgba(79, 70, 229, 0.2);
+    }
+  }
+
+  &.urgent {
+    background: #fef2f2;
+    border-left: 4px solid #ef4444;
+    color: #991b1b;
+
+    &:hover {
+      background: #fee2e2;
+      box-shadow: 0 3px 6px rgba(239, 68, 68, 0.2);
+    }
+  }
+
+  &.consultation {
+    background: #f0fdf4;
+    border-left: 4px solid #10b981;
+    color: #065f46;
+
+    &:hover {
+      background: #dcfce7;
+      box-shadow: 0 3px 6px rgba(16, 185, 129, 0.2);
+    }
+  }
+
+  .gts-demo-slot-time {
+    font-size: 11px;
+    font-weight: 700;
+    margin-bottom: 2px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .gts-demo-slot-title {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .gts-demo-slot-meta {
+    font-size: 11px;
+    opacity: 0.85;
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 </style>

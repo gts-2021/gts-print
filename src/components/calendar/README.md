@@ -52,7 +52,7 @@ to show a scrollable hourly grid with sticky day headings and an hour column.
 Month view is unchanged. Use the existing header to select Week or Day.
 
 ```vue
-<CalendarComponent :displayTimes="true" :startTime="8" :endTime="17" :datesContent="events" />
+<CalendarComponent :displayTimes="true" :startTime="8" :endTime="18" :datesContent="events" />
 ```
 
 - `startTime`: Number, default `0`.
@@ -61,17 +61,31 @@ Month view is unchanged. Use the existing header to select Week or Day.
 - Both values must be integers between 0 and 24, with start <= end.
   Invalid ranges fall back to 00:00–23:00. Equal values show no time slots.
 - The range controls display only, not booking eligibility.
-- Each day's `content` (or `defaultContent`) is rendered once over its day column,
-  receiving `day`, `startTime`, `endTime`, and `hourHeight` (64 pixels by default).
-  The consumer owns event filtering, splitting, positioning and overlap handling.
-  Position an event at `(eventHour - startTime) * hourHeight` pixels from the top.
-  Content outside the visible range is clipped. No event times are inferred.
-- The same `datesContent` API remains available. To align existing custom content
-  with hours, the consumer must implement positioning, as shown in
-  `CalendarTimeDemoContent.vue`. No hourly event click or selection API is added.
 
-Examples 4 and 5 demonstrate a full-day week and a day limited to sector hours;
-the three previous examples are preserved.
+#### Automatic Interval Slot Positioning (`slots`)
+
+Instead of calculating pixel offsets manually, you can supply a `slots` array for each day in `datesContent`. `CalendarTimeGrid` **automatically calculates the vertical position (`top`) and height** for each slot component based on `startTime`, `endTime`, and `hourHeight`:
+
+- Position: `top = (slot.startTime - grid.startTime) * hourHeight`
+- Dimension: `height = (slot.endTime - slot.startTime) * hourHeight`
+
+Each `slot` can define:
+- `startTime`: String (`"09:00"`, `"9:30"`, `"09h30"`) or Number (`9`, `9.5`).
+- `endTime`: String or Number.
+- `component`: A Vue component rendered within the slot (takes 100% width and 100% height).
+- `title` / `label`: Optional title used in default slot representation if no `component` is given.
+- `props`: Optional additional props object passed to the component (`v-bind="slot.props"`).
+- `style`: Optional CSS style overrides merged into the slot container.
+
+The slot component automatically receives the following props:
+- `slot`: The complete slot object.
+- `slotData`: Alias for `slot`.
+- `day`: The calendar day object.
+- `startTime`: `slot.startTime`.
+- `endTime`: `slot.endTime`.
+- `hourHeight`: Active pixel height per hour.
+
+> Legacy support: If a day does not have `slots`, it will fall back to `day.content` (rendered once across the whole day column).
 
 ### Hover guide and custom styling
 
@@ -81,7 +95,7 @@ The guide disappears when leaving the day or scrolling.
 
 `timeGridClass` accepts a Vue class binding (string, array, or object) and is applied
 directly to the hourly grid's scroll container. `hourHeight` is a positive number
-in pixels (default 64), shared by rows, cursor calculations, and consumer content.
+in pixels (default 64), shared by rows, cursor calculations, and slot sizing.
 Use this prop rather than overriding row heights in CSS to keep events aligned.
 
 ```vue
@@ -128,7 +142,17 @@ Each item in `datesContent` should look like this:
 {
   date: "DD/MM/YYYY",  // The date to associate content with
   dayType: "Holiday",  // Optional custom day type string (e.g., 'Holiday', 'Ferie')
-  content: "Content"   // Content to display (Vue component, template, or string)
+  content: "Content",  // Optional full-cell content (Vue component, template, or string)
+  slots: [             // Optional time interval slots with automatic positioning and height
+    {
+      startTime: "09:00", // 'HH:mm', 'H:mm', '9h30' or numeric (9.5)
+      endTime: "10:30",
+      title: "Consultation",
+      component: SlotComponent, // Vue component rendered inside the slot
+      props: { doctor: "Dr. Dupont" }, // Optional props forwarded to component
+      style: { background: "#eef2ff" }  // Optional style override
+    }
+  ]
 }
 ```
 
@@ -239,6 +263,62 @@ export default {
           onClick: (day) => {
             console.log('Clear day clicked on day:', day);
           }
+        }
+      ]
+    };
+  }
+};
+</script>
+```
+
+### 4. Hourly Grid with Automatic Slot Intervals (`slots`)
+
+```vue
+<template>
+  <CalendarComponent
+    :displayTimes="true"
+    :startTime="8"
+    :endTime="18"
+    :hourHeight="80"
+    :datesContent="calendarSchedule"
+  />
+</template>
+
+<script>
+import CalendarComponent from '@/components/calendar/CalendarComponent.vue';
+import { defineComponent, markRaw } from 'vue';
+
+const AppointmentCard = markRaw(defineComponent({
+  props: ['slot', 'startTime', 'endTime'],
+  template: `
+    <div style="padding: 6px; background: #eef2ff; border-left: 3px solid #4f46e5; height: 100%; border-radius: 4px;">
+      <strong>{{ startTime }} – {{ endTime }}</strong>
+      <div>{{ slot.title }}</div>
+    </div>
+  `
+}));
+
+export default {
+  components: { CalendarComponent },
+  data() {
+    return {
+      calendarSchedule: [
+        {
+          date: '22/10/2026',
+          slots: [
+            {
+              startTime: '09:00',
+              endTime: '10:30',
+              title: 'Client Review',
+              component: AppointmentCard
+            },
+            {
+              startTime: '14:00',
+              endTime: '15:45',
+              title: 'Team Workshop',
+              component: AppointmentCard
+            }
+          ]
         }
       ]
     };

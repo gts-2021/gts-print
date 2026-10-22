@@ -37,4 +37,131 @@ describe('CalendarTimeGrid', () => {
     await wrapper.setProps({ hourHeight: 100 });
     expect(wrapper.find('.gts-time-grid-cursor').exists()).toBe(false);
   });
+
+  it('automatically calculates top and height for day.slots and renders slot component', async () => {
+    const testSlotComponent = {
+      name: 'TestSlot',
+      props: ['slot', 'startTime', 'endTime', 'hourHeight'],
+      template: '<div class="test-slot-inner">{{ slot.title }}: {{ startTime }}-{{ endTime }}</div>',
+    };
+
+    const calendarDataWithSlots = {
+      calendars: [[
+        {
+          date: '22/10/2026',
+          name: 'THU',
+          number: '22',
+          slots: [
+            {
+              startTime: '09:00',
+              endTime: '10:30',
+              title: 'Morning Meeting',
+              component: testSlotComponent,
+            },
+            {
+              startTime: '14:00',
+              endTime: '15:45',
+              title: 'Afternoon Workshop',
+              component: testSlotComponent,
+            },
+          ],
+        },
+        {
+          date: '23/10/2026',
+          name: 'FRI',
+          number: '23',
+          slots: [],
+        },
+      ]],
+    };
+
+    const wrapper = mount(CalendarTimeGrid, {
+      props: {
+        calendarData: calendarDataWithSlots,
+        startTime: 8,
+        endTime: 18,
+        hourHeight: 60,
+      },
+    });
+
+    const slots = wrapper.findAll('.gts-time-grid-slot');
+    expect(slots).toHaveLength(2);
+
+    // Slot 1: 09:00 - 10:30 (1.5h), start is 1h after 08:00
+    // top = (9 - 8) * 60 = 60px, height = 1.5 * 60 = 90px
+    expect(slots[0].attributes('style')).toContain('top: 60px');
+    expect(slots[0].attributes('style')).toContain('height: 90px');
+    expect(slots[0].find('.test-slot-inner').text()).toBe('Morning Meeting: 09:00-10:30');
+
+    // Slot 2: 14:00 - 15:45 (1.75h), start is 6h after 08:00
+    // top = (14 - 8) * 60 = 360px, height = 1.75 * 60 = 105px
+    expect(slots[1].attributes('style')).toContain('top: 360px');
+    expect(slots[1].attributes('style')).toContain('height: 105px');
+    expect(slots[1].find('.test-slot-inner').text()).toBe('Afternoon Workshop: 14:00-15:45');
+  });
+
+  it('renders default slot representation when no component is specified', async () => {
+    const calendarDataWithDefaultSlot = {
+      calendars: [[
+        {
+          date: '22/10/2026',
+          name: 'THU',
+          number: '22',
+          slots: [
+            {
+              startTime: '10:00',
+              endTime: '11:30',
+              title: 'Default Slot Title',
+            },
+          ],
+        },
+      ]],
+    };
+
+    const wrapper = mount(CalendarTimeGrid, {
+      props: {
+        calendarData: calendarDataWithDefaultSlot,
+        startTime: 8,
+        endTime: 18,
+        hourHeight: 80,
+      },
+    });
+
+    const slot = wrapper.find('.gts-time-grid-slot');
+    expect(slot.exists()).toBe(true);
+    // top = (10 - 8) * 80 = 160px, height = 1.5 * 80 = 120px
+    expect(slot.attributes('style')).toContain('top: 160px');
+    expect(slot.attributes('style')).toContain('height: 120px');
+    expect(slot.find('.gts-time-grid-slot-title').text()).toBe('Default Slot Title');
+    expect(slot.find('.gts-time-grid-slot-time').text()).toBe('10:00 – 11:30');
+  });
+
+  it('falls back to day.content when day.slots is not provided', async () => {
+    const fallbackComponent = {
+      name: 'FallbackContent',
+      template: '<div class="fallback-day-content">Custom Content</div>',
+    };
+
+    const calendarDataWithFallback = {
+      calendars: [[
+        {
+          date: '22/10/2026',
+          name: 'THU',
+          number: '22',
+          content: fallbackComponent,
+        },
+      ]],
+    };
+
+    const wrapper = mount(CalendarTimeGrid, {
+      props: {
+        calendarData: calendarDataWithFallback,
+        startTime: 8,
+        endTime: 18,
+      },
+    });
+
+    expect(wrapper.find('.fallback-day-content').exists()).toBe(true);
+    expect(wrapper.find('.fallback-day-content').text()).toBe('Custom Content');
+  });
 });
