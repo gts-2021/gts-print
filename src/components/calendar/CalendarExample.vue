@@ -58,6 +58,18 @@
       :contextMenuActions="actions" @dateIncremented="handleDateIncremented" @dateDecremented="handleDateDecremented"
       @displayTypeSelected="handleDisplayTypeSelected" @daySelected="selectDay" />
 
+    <br><hr><br>
+    <h4>4. WEEK WITH HOURS : Full day (00:00–24:00)</h4>
+    <p>Optional hourly view. Event positioning is handled by the consuming component.</p>
+    <CalendarComponent ref="hourlyWeek" :displayTimes="true" :endTime="24" :firstDayOfWeek="selectedFirstDay"
+      :startingDate="todayDate" :datesContent="hourlyDemoContent" />
+
+    <br><hr><br>
+    <h4>5. DAY WITH HOURS : Sector opening hours (08:00–18:00)</h4>
+    <p>Exact closing time: 18:00. Custom theme and row height; hover to see the time at the pointer.</p>
+    <CalendarComponent ref="hourlyDay" :displayTimes="true" :startTime="8" :endTime="18"
+      timeGridClass="sector-time-grid" :hourHeight="80"
+      :startingDate="todayDate" :datesContent="hourlyDemoContent" />
   </div>
 
 </template>
@@ -71,6 +83,7 @@ import DeleteIcon from '@/assets/icons/DeleteIcon.vue';
 import { defineComponent, markRaw } from 'vue';
 import CalendarComponent from './CalendarComponent.vue';
 import moment from 'moment';
+import CalendarTimeDemoContent from './CalendarTimeDemoContent.vue';
 
 
 export default {
@@ -86,6 +99,10 @@ export default {
     const todayStr = moment().format('DD/MM/YYYY');
 
     return {
+      hourlyDemoContent: [0, 1, 2].map(offset => ({
+        date: moment().add(offset, 'days').format('DD/MM/YYYY'),
+        content: markRaw(CalendarTimeDemoContent),
+      })),
       selectedFirstDay: 'Saturday',
       currentLocale: 'en',
       todayDate: todayStr,
@@ -417,6 +434,11 @@ export default {
     };
   },
 
+  mounted() {
+    this.$refs.hourlyWeek.handleDisplayTypeSelected(CALENDARS_WEEK_TYPE);
+    this.$refs.hourlyDay.handleDisplayTypeSelected('Day');
+  },
+
   methods: {
 
     handleDateIncremented() {
@@ -461,6 +483,15 @@ export default {
 </script>
 
 <style lang="scss">
+.sector-time-grid {
+  --gts-time-max-height: 560px;
+  --gts-time-header-background: #edf7f5;
+  --gts-time-grid-line: #d9e9e5;
+  --gts-time-border: #bdd8d1;
+  --gts-time-cursor-color: #187765;
+  --gts-time-radius: 8px;
+}
+
 .calendar-content-test {
   background-color: green;
 }

@@ -5,6 +5,11 @@
     :headerConfig="headerConfig" 
     :calendarContentConfig="calendarContentConfig"
     :contextMenuActions="resolvedActions"
+    :displayTimes="displayTimes"
+    :startTime="startTime"
+    :endTime="endTime"
+    :timeGridClass="timeGridClass"
+    :hourHeight="hourHeight"
     @dateIncremented="showNextCalendarIntervalPage"
     @dateDecremented="showPreviousCalendarIntervalPage"
     @displayTypeSelected="handleDisplayTypeSelected" 
@@ -43,6 +48,11 @@ export default {
   },
 
   props: {
+    displayTimes: { type: Boolean, default: false },
+    startTime: { type: Number, default: 0 },
+    endTime: { type: Number, default: 23 },
+    timeGridClass: { type: [String, Array, Object], default: '' },
+    hourHeight: { type: Number, default: 64 },
     startingDate: {
       type: String,
       required: false,

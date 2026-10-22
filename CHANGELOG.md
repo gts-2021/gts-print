@@ -9,6 +9,13 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 //add new section for new release 
 
+## [1.7.6]
+
+### Added
+
+* Add custom rendering for `CalendarTimeGrid` component for displaying times in `CalendarComponent`
+
+
 ## [1.7.5]
 
 ### Added

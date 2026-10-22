@@ -45,6 +45,68 @@ This package includes:
 
 ## Props
 
+### Optional hourly display (Week and Day only)
+
+`displayTimes` defaults to `false`, preserving the existing views. Set it to `true`
+to show a scrollable hourly grid with sticky day headings and an hour column.
+Month view is unchanged. Use the existing header to select Week or Day.
+
+```vue
+<CalendarComponent :displayTimes="true" :startTime="8" :endTime="17" :datesContent="events" />
+```
+
+- `startTime`: Number, default `0`.
+- `endTime`: Number, default `23`, exact closing boundary. No hour is added.
+  For a complete 00:00–24:00 day, explicitly pass `endTime="24"` as a number (`:endTime="24"`).
+- Both values must be integers between 0 and 24, with start <= end.
+  Invalid ranges fall back to 00:00–23:00. Equal values show no time slots.
+- The range controls display only, not booking eligibility.
+- Each day's `content` (or `defaultContent`) is rendered once over its day column,
+  receiving `day`, `startTime`, `endTime`, and `hourHeight` (64 pixels by default).
+  The consumer owns event filtering, splitting, positioning and overlap handling.
+  Position an event at `(eventHour - startTime) * hourHeight` pixels from the top.
+  Content outside the visible range is clipped. No event times are inferred.
+- The same `datesContent` API remains available. To align existing custom content
+  with hours, the consumer must implement positioning, as shown in
+  `CalendarTimeDemoContent.vue`. No hourly event click or selection API is added.
+
+Examples 4 and 5 demonstrate a full-day week and a day limited to sector hours;
+the three previous examples are preserved.
+
+### Hover guide and custom styling
+
+Hover over a day to display a horizontal guide across the columns and the time
+at the pointer. It also works over event content and never intercepts clicks.
+The guide disappears when leaving the day or scrolling.
+
+`timeGridClass` accepts a Vue class binding (string, array, or object) and is applied
+directly to the hourly grid's scroll container. `hourHeight` is a positive number
+in pixels (default 64), shared by rows, cursor calculations, and consumer content.
+Use this prop rather than overriding row heights in CSS to keep events aligned.
+
+```vue
+<CalendarComponent :displayTimes="true" :startTime="8" :endTime="18"
+  :hourHeight="80" timeGridClass="booking-grid" :datesContent="events" />
+```
+
+```css
+/* Global stylesheet; in a scoped Vue stylesheet use :deep(.booking-grid). */
+.booking-grid {
+  --gts-time-max-height: 560px;
+  --gts-time-header-background: #edf7f5;
+  --gts-time-border: #bdd8d1;
+  --gts-time-grid-line: #d9e9e5;
+  --gts-time-cursor-color: #187765;
+  --gts-time-radius: 8px;
+}
+```
+
+Additional variables: `--gts-time-background`, `--gts-time-text`,
+`--gts-time-today-background`, `--gts-time-cursor-text`, `--gts-time-axis-width`,
+`--gts-time-day-min-width`, and `--gts-time-header-height`.
+Existing `.gts-time-grid-*` classes remain available for more specific overrides
+(use `:deep()` when overriding from a scoped consumer stylesheet).
+
 ### CalendarComponent
 
 | Prop | Type | Required | Default | Description |
