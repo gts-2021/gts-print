@@ -85,6 +85,10 @@ The slot component automatically receives the following props:
 - `endTime`: `slot.endTime`.
 - `hourHeight`: Active pixel height per hour.
 
+#### Overlapping Slots & Hover Expansion
+- **Automatic side-by-side layout**: When multiple slots overlap in time on the same day, `CalendarTimeGrid` automatically groups them into clusters and places them in parallel sub-columns. The column width is divided equally between overlapping slots, while each slot strictly retains its own `startTime`, `endTime`, and calculated `height`.
+- **Dynamic 90% width on hover**: When hovering over an overlapping slot (`.is-overlapping:hover`), it smoothly expands to **~90% of the day column width** (centered at `left: 5%`) with elevated `z-index` and drop shadow. This enables users to comfortably view truncated titles, badges, and metadata in crowded time slots without leaving the view.
+
 > Legacy support: If a day does not have `slots`, it will fall back to `day.content` (rendered once across the whole day column).
 
 ### Hover guide and custom styling
@@ -131,6 +135,9 @@ Existing `.gts-time-grid-*` classes remain available for more specific overrides
 | `defaultContent` | `Object \| Function \| String` | No | `null` | Default content/component rendered in cells that have no specific date content. |
 | `firstDayOfWeek` | `Number \| String` | No | `0` (Sunday) | Specifies the first day of the week (`0..6` or `'Sunday'`, `'Monday'`, etc.). |
 | `defaultLabel` | `String` | No | `null` | Custom label for empty cells (falls back to translated "No Event"). |
+| `timeGridClass` | `String \| Array \| Object` | No | `''` | Custom CSS class applied to the scroll container of the hourly time grid. |
+| `timeGridContentClass` | `String \| Array \| Object` | No | `''` | Custom CSS class applied directly to the `.gts-time-grid-content` container (for slots and time content). |
+| `hourHeight` | `Number` | No | `64` | Row height per hour in pixels for the hourly time grid. |
 | `actions` | `Array` | No | `[]` | List of action objects for cell ContextMenu. The 3-dots button is only shown if this array is non-empty. |
 | `contextMenuActions` | `Array` | No | `null` | Alias for `actions`. |
 

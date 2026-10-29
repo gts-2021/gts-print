@@ -1,22 +1,11 @@
 <template>
 
-    <PureCalendar 
-    :key="currentLocale"
-    :headerConfig="headerConfig" 
-    :calendarContentConfig="calendarContentConfig"
-    :contextMenuActions="resolvedActions"
-    :displayTimes="displayTimes"
-    :startTime="startTime"
-    :endTime="endTime"
-    :timeGridClass="timeGridClass"
-    :hourHeight="hourHeight"
-    @dateIncremented="showNextCalendarIntervalPage"
-    @dateDecremented="showPreviousCalendarIntervalPage"
-    @displayTypeSelected="handleDisplayTypeSelected" 
-    @dateSelected="onDateSelected" 
-    @todayClicked="onDateSelected"
-    @daySelected="selectDay"
-  />
+  <PureCalendar :key="currentLocale" :headerConfig="headerConfig" :calendarContentConfig="calendarContentConfig"
+    :contextMenuActions="resolvedActions" :displayTimes="displayTimes" :startTime="startTime" :endTime="endTime"
+    :timeGridClass="timeGridClass" :timeGridContentClass="timeGridContentClass" :hourHeight="hourHeight"
+    @dateIncremented="showNextCalendarIntervalPage" @dateDecremented="showPreviousCalendarIntervalPage"
+    @displayTypeSelected="handleDisplayTypeSelected" @dateSelected="onDateSelected" @todayClicked="onDateSelected"
+    @daySelected="selectDay" />
 
 </template>
 
@@ -52,6 +41,7 @@ export default {
     startTime: { type: Number, default: 0 },
     endTime: { type: Number, default: 23 },
     timeGridClass: { type: [String, Array, Object], default: '' },
+    timeGridContentClass: { type: [String, Array, Object], default: '' },
     hourHeight: { type: Number, default: 64 },
     startingDate: {
       type: String,
@@ -148,8 +138,8 @@ export default {
     },
     currentLocale() {
       if (!this.$i18n) return null;
-      return typeof this.$i18n.locale === 'object' && this.$i18n.locale.value !== undefined 
-        ? this.$i18n.locale.value 
+      return typeof this.$i18n.locale === 'object' && this.$i18n.locale.value !== undefined
+        ? this.$i18n.locale.value
         : this.$i18n.locale;
     },
     /**
@@ -283,7 +273,7 @@ export default {
         // Check if the day is outside the current month (for monthly view)
         let isOutsideMonth = false;
         if (this.headerConfig.defaultType == CALENDARS_MONTH_TYPE) {
-             isOutsideMonth = !day.isSame(currentDate, 'month');
+          isOutsideMonth = !day.isSame(currentDate, 'month');
         }
 
         let isEmpty = this.isStrictMonth && isOutsideMonth;
@@ -359,7 +349,7 @@ export default {
       } else {
         dateToGenerate = this.selectedStartDate.clone().startOf('day').add(-1, 'days');
       }
-      
+
       this.onDateSelected(dateToGenerate);
     },
 
@@ -400,7 +390,7 @@ export default {
 
     },
 
-    selectDay(selectedDay){
+    selectDay(selectedDay) {
       this.selectedDay = selectedDay;
     },
 

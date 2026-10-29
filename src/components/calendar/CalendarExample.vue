@@ -70,6 +70,13 @@
     <CalendarComponent ref="hourlyDay" :displayTimes="true" :startTime="8" :endTime="18"
       timeGridClass="sector-time-grid" :hourHeight="140"
       :startingDate="todayDate" :datesContent="hourlyDemoContent" />
+
+    <br><hr><br>
+    <h4>6. CRÉNEAUX EN CHEVAUCHEMENT (OVERLAPPING SLOTS) : Affichage côte à côte &amp; expansion à 90% au survol</h4>
+    <p>Lorsque des créneaux se chevauchent dans le même intervalle horaire, ils sont automatiquement disposés côte à côte en divisant la largeur disponible tout en conservant leur hauteur respective. Au survol (hover), le créneau sélectionné s'agrandit à environ 90% de la largeur pour visualiser facilement l'intégralité de son contenu.</p>
+    <CalendarComponent ref="overlappingWeek" :displayTimes="true" :startTime="8" :endTime="18" :firstDayOfWeek="selectedFirstDay"
+      timeGridClass="sector-time-grid" :hourHeight="120"
+      :startingDate="todayDate" :datesContent="overlappingDemoContent" />
   </div>
 
 </template>
@@ -214,6 +221,88 @@ export default {
               title: 'Revue de Sprint',
               subtitle: 'Équipe frontend',
               component: appointmentSlotComponent,
+            },
+          ],
+        },
+      ],
+      overlappingDemoContent: [
+        {
+          date: todayStr,
+          slots: [
+            {
+              startTime: '08:30',
+              endTime: '10:15',
+              title: 'Consultation Générale',
+              subtitle: 'Dr. Martin • Cabinet 1',
+              component: appointmentSlotComponent,
+            },
+            {
+              startTime: '09:00',
+              endTime: '10:30',
+              title: 'Urgence Dentaire',
+              subtitle: 'Dr. Bernard • Salle d\'urgence',
+              component: urgentSlotComponent,
+            },
+            {
+              startTime: '09:45',
+              endTime: '11:15',
+              title: 'Examen Radiologique',
+              subtitle: 'Dr. Lambert • Imagerie',
+              component: consultationSlotComponent,
+            },
+            {
+              startTime: '11:30',
+              endTime: '12:45',
+              title: 'Point d\'équipe',
+              subtitle: 'Salle de réunion A',
+              component: appointmentSlotComponent,
+            },
+            {
+              startTime: '14:00',
+              endTime: '16:00',
+              title: 'Intervention Chirurgicale',
+              subtitle: 'Bloc 2 • Équipe A (2h)',
+              component: urgentSlotComponent,
+            },
+            {
+              startTime: '14:30',
+              endTime: '15:30',
+              title: 'Contrôle Anesthésie',
+              subtitle: 'Dr. Simon • Suivi per-opératoire',
+              component: consultationSlotComponent,
+            },
+            {
+              startTime: '16:30',
+              endTime: '17:30',
+              title: 'Visite Post-Opératoire',
+              subtitle: 'Chambre 204 • Non chevauchant (100% de largeur)',
+              component: appointmentSlotComponent,
+            },
+          ],
+        },
+        {
+          date: moment().add(1, 'days').format('DD/MM/YYYY'),
+          slots: [
+            {
+              startTime: '09:00',
+              endTime: '10:30',
+              title: 'Atelier UI/UX',
+              subtitle: 'Équipe Design',
+              component: appointmentSlotComponent,
+            },
+            {
+              startTime: '09:30',
+              endTime: '11:00',
+              title: 'Revue Technique',
+              subtitle: 'Lead Dev • Salle B',
+              component: urgentSlotComponent,
+            },
+            {
+              startTime: '14:00',
+              endTime: '15:30',
+              title: 'Démo Client',
+              subtitle: 'Visio • Vente',
+              component: consultationSlotComponent,
             },
           ],
         },
@@ -552,6 +641,7 @@ export default {
   mounted() {
     this.$refs.hourlyWeek.handleDisplayTypeSelected(CALENDARS_WEEK_TYPE);
     this.$refs.hourlyDay.handleDisplayTypeSelected('Day');
+    this.$refs.overlappingWeek?.handleDisplayTypeSelected(CALENDARS_WEEK_TYPE);
   },
 
   methods: {

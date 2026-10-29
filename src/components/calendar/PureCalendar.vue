@@ -22,6 +22,7 @@
       :startTime="startTime"
       :endTime="endTime"
       :timeGridClass="timeGridClass"
+      :timeGridContentClass="timeGridContentClass"
       :hourHeight="hourHeight"
     />
     <component
@@ -63,6 +64,7 @@ export default {
     startTime: { type: Number, default: 0 },
     endTime: { type: Number, default: 23 },
     timeGridClass: { type: [String, Array, Object], default: '' },
+    timeGridContentClass: { type: [String, Array, Object], default: '' },
     hourHeight: { type: Number, default: 64 },
     headerConfig: {
       type: Object,

@@ -164,4 +164,87 @@ describe('CalendarTimeGrid', () => {
     expect(wrapper.find('.fallback-day-content').exists()).toBe(true);
     expect(wrapper.find('.fallback-day-content').text()).toBe('Custom Content');
   });
+
+  it('positions overlapping slots side-by-side with divided widths and respects their heights', async () => {
+    const calendarDataWithOverlaps = {
+      calendars: [[
+        {
+          date: '22/10/2026',
+          name: 'THU',
+          number: '22',
+          slots: [
+            {
+              startTime: '09:00',
+              endTime: '10:30',
+              title: 'Consultation A',
+            },
+            {
+              startTime: '09:30',
+              endTime: '11:00',
+              title: 'Consultation B',
+            },
+          ],
+        },
+      ]],
+    };
+
+    const wrapper = mount(CalendarTimeGrid, {
+      props: {
+        calendarData: calendarDataWithOverlaps,
+        startTime: 8,
+        endTime: 18,
+        hourHeight: 60,
+      },
+    });
+
+    const slots = wrapper.findAll('.gts-time-grid-slot');
+    expect(slots).toHaveLength(2);
+
+    expect(slots[0].classes()).toContain('is-overlapping');
+    expect(slots[1].classes()).toContain('is-overlapping');
+
+    // Slot 1 (09:00-10:30, col 0/2)
+    expect(slots[0].attributes('style')).toContain('top: 60px');
+    expect(slots[0].attributes('style')).toContain('height: 90px');
+    expect(slots[0].attributes('style')).toContain('left: calc(0% + 2px)');
+    expect(slots[0].attributes('style')).toContain('width: calc(50% - 4px)');
+
+    // Slot 2 (09:30-11:00, col 1/2)
+    expect(slots[1].attributes('style')).toContain('top: 90px');
+    expect(slots[1].attributes('style')).toContain('height: 90px');
+    expect(slots[1].attributes('style')).toContain('left: calc(50% + 2px)');
+    expect(slots[1].attributes('style')).toContain('width: calc(50% - 4px)');
+  });
+
+  it('applies timeGridContentClass to gts-time-grid-content container', async () => {
+    const calendarDataWithSlots = {
+      calendars: [[
+        {
+          date: '22/10/2026',
+          name: 'THU',
+          number: '22',
+          slots: [
+            {
+              startTime: '09:00',
+              endTime: '10:00',
+              title: 'Meeting',
+            },
+          ],
+        },
+      ]],
+    };
+
+    const wrapper = mount(CalendarTimeGrid, {
+      props: {
+        calendarData: calendarDataWithSlots,
+        startTime: 8,
+        endTime: 18,
+        timeGridContentClass: 'custom-content-class',
+      },
+    });
+
+    const content = wrapper.find('.gts-time-grid-content');
+    expect(content.exists()).toBe(true);
+    expect(content.classes()).toContain('custom-content-class');
+  });
 });

@@ -22,11 +22,12 @@
         <div v-for="hour in hours" :key="hour" class="gts-time-grid-cell" aria-hidden="true"></div>
 
         <!-- Render slots when day.slots is provided -->
-        <div v-if="hasSlots(day) && hours.length" class="gts-time-grid-content">
+        <div v-if="hasSlots(day) && hours.length" class="gts-time-grid-content" :class="timeGridContentClass">
           <div
             v-for="(slot, slotIndex) in getDaySlots(day)"
             :key="slot.id || slotIndex"
             class="gts-time-grid-slot"
+            :class="{ 'is-overlapping': slot.isOverlapping }"
             :style="getSlotStyle(slot)"
           >
             <component
@@ -52,7 +53,7 @@
         </div>
 
         <!-- Fallback to legacy/custom day.content if no slots are defined -->
-        <div v-else-if="day.content && hours.length" class="gts-time-grid-content">
+        <div v-else-if="day.content && hours.length" class="gts-time-grid-content" :class="timeGridContentClass">
           <component :is="day.content" :day="day" :startTime="range.start"
             :endTime="range.end" :hourHeight="effectiveHourHeight" />
         </div>
@@ -76,6 +77,7 @@ export default {
     startTime: { type: Number, default: 0 },
     endTime: { type: Number, default: 23 },
     timeGridClass: { type: [String, Array, Object], default: '' },
+    timeGridContentClass: { type: [String, Array, Object], default: '' },
     hourHeight: { type: Number, default: 64 },
   },
   data() {
@@ -118,12 +120,83 @@ export default {
     },
     getDaySlots(day) {
       if (!this.hasSlots(day)) return [];
-      return day.slots.filter((slot) => {
+      const validSlots = day.slots.filter((slot) => {
         if (!slot || slot.startTime === undefined || slot.endTime === undefined) return false;
         const start = this.parseTimeToHours(slot.startTime);
         const end = this.parseTimeToHours(slot.endTime);
         return end > start && end > this.range.start && start < this.range.end;
       });
+
+      if (!validSlots.length) return [];
+
+      // Sort by startHour ascending, then duration descending
+      const mapped = validSlots.map((slot, index) => {
+        const startHour = this.parseTimeToHours(slot.startTime);
+        const endHour = this.parseTimeToHours(slot.endTime);
+        return {
+          slot,
+          index,
+          startHour,
+          endHour,
+        };
+      }).sort((a, b) => a.startHour - b.startHour || (b.endHour - b.startHour) - (a.endHour - a.startHour));
+
+      // Group into clusters of overlapping slots
+      const clusters = [];
+      let currentCluster = [];
+      let clusterEnd = -Infinity;
+
+      for (const item of mapped) {
+        if (item.startHour < clusterEnd) {
+          currentCluster.push(item);
+          clusterEnd = Math.max(clusterEnd, item.endHour);
+        } else {
+          if (currentCluster.length) {
+            clusters.push(currentCluster);
+          }
+          currentCluster = [item];
+          clusterEnd = item.endHour;
+        }
+      }
+      if (currentCluster.length) {
+        clusters.push(currentCluster);
+      }
+
+      // Assign column index and total columns within each cluster
+      const result = [];
+      for (const cluster of clusters) {
+        const columns = []; // columns[c] holds lastEndHour in that column
+
+        for (const item of cluster) {
+          let placed = false;
+          for (let c = 0; c < columns.length; c++) {
+            if (columns[c] <= item.startHour) {
+              columns[c] = item.endHour;
+              item.colIndex = c;
+              placed = true;
+              break;
+            }
+          }
+          if (!placed) {
+            item.colIndex = columns.length;
+            columns.push(item.endHour);
+          }
+        }
+
+        const totalCols = columns.length;
+        for (const item of cluster) {
+          result.push({
+            ...item.slot,
+            startHour: item.startHour,
+            endHour: item.endHour,
+            colIndex: item.colIndex,
+            totalCols,
+            isOverlapping: totalCols > 1,
+          });
+        }
+      }
+
+      return result;
     },
     parseTimeToHours(time) {
       if (!time) return 0;
@@ -131,13 +204,29 @@ export default {
       return hours + (minutes || 0) / 60;
     },
     getSlotStyle(slot) {
-      const startHour = this.parseTimeToHours(slot.startTime);
-      const endHour = this.parseTimeToHours(slot.endTime);
+      const startHour = slot.startHour !== undefined ? slot.startHour : this.parseTimeToHours(slot.startTime);
+      const endHour = slot.endHour !== undefined ? slot.endHour : this.parseTimeToHours(slot.endTime);
       const top = (startHour - this.range.start) * this.effectiveHourHeight;
       const height = Math.max(0, (endHour - startHour) * this.effectiveHourHeight);
+
+      const totalCols = slot.totalCols || 1;
+      const colIndex = slot.colIndex || 0;
+
+      let leftStyle = '3px';
+      let widthStyle = 'calc(100% - 6px)';
+
+      if (totalCols > 1) {
+        const widthPercent = 100 / totalCols;
+        const leftPercent = colIndex * widthPercent;
+        leftStyle = `calc(${leftPercent}% + 2px)`;
+        widthStyle = `calc(${widthPercent}% - 4px)`;
+      }
+
       return {
         top: `${top}px`,
         height: `${height}px`,
+        left: leftStyle,
+        width: widthStyle,
         ...(slot.style || {}),
       };
     },
@@ -209,12 +298,20 @@ export default {
 .gts-time-grid-content { position: absolute; inset: 0; overflow: hidden; }
 .gts-time-grid-slot {
   position: absolute;
-  left: 3px;
-  right: 3px;
   box-sizing: border-box;
   z-index: 1;
   overflow: hidden;
   border-radius: var(--gts-time-slot-radius, 6px);
+  transition: width 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+              left 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.2s ease;
+
+  &.is-overlapping:hover {
+    width: 90% !important;
+    left: 5% !important;
+    z-index: 10 !important;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.22);
+  }
 
   > * {
     width: 100%;
@@ -246,7 +343,7 @@ export default {
   }
 }
 .gts-time-grid-cursor {
-  position: absolute; left: 0; right: 0; z-index: 5; pointer-events: none;
+  position: absolute; left: 0; right: 0; z-index: 20; pointer-events: none;
   border-top: 1px solid var(--gts-time-cursor-color, $primary-color-500);
   span { position: absolute; right: 4px; bottom: 2px; padding: 2px 6px; border-radius: 4px;
     background: var(--gts-time-cursor-color, $primary-color-500);
