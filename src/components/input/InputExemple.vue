@@ -47,6 +47,24 @@
 
     <h3>AutoComplete Example</h3>
 
+    <p>Clear button enabled by default: type or select a fruit, then click × to reset both values.</p>
+    <AutoComplete label="Clear text and selection" v-model="clearableFruitText"
+      v-model:selectedOption="clearableFruit" :options="fruitOptions" />
+    <div>
+      <span>Typed value:</span> {{ clearableFruitText || '(empty)' }} <br>
+      <span>Selected option:</span> {{ clearableFruit || '(none)' }}
+    </div><br>
+
+    <AutoComplete label="Clear button hidden (clearable=false)" v-model="nonClearableFruitText"
+      :options="fruitOptions" :clearable="false" />
+
+    <section dir="rtl" lang="ar" style="width: 100%; max-width: 320px; text-align: right; margin-block: 20px;">
+      <h4>مثال باللغة العربية</h4>
+      <AutoComplete label="اختر فاكهة" placeholder="ابحث عن فاكهة"
+        v-model="arabicFruitText" v-model:selectedOption="arabicFruit"
+        :options="arabicFruitOptions" />
+    </section>
+
     <AutoComplete label="Handling selected value by event" v-model="frutInp1" :options="fruitOptions"
       @onOptionSelected="(option) => { selectedFruit1 = option; }" />
 
@@ -196,6 +214,16 @@ export default {
       valueToChange: '1',
       twoWayBindValue: '1',
       frutInp1: '',
+      clearableFruitText: '',
+      clearableFruit: { label: 'Banana', value: 'banana' },
+      nonClearableFruitText: 'Apple',
+      arabicFruitText: '',
+      arabicFruit: { label: 'تفاح', value: 'apple' },
+      arabicFruitOptions: [
+        { label: 'تفاح', value: 'apple' },
+        { label: 'موز', value: 'banana' },
+        { label: 'برتقال', value: 'orange' }
+      ],
       selectedFruit1: '',
       frutInp2: '',
       selectedFruit2: { "label": "Banana", "value": "banana" },

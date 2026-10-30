@@ -1,6 +1,7 @@
 {
   "input": {
-    "required": "*"
+    "required": "*",
+    "clear": "Effacer la saisie et la sélection"
   },
   "mapAutoComplete": {
     "mapPicker": {

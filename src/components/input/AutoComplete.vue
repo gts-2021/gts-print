@@ -3,8 +3,14 @@
     <div class="gts-autocomplete-container" v-click-outside="closeList">
 
       <input ref="gtsInput" v-model="inputValue" @input="onInput" @focus="onFocus" :disabled="disabled"
-        :class="'gts-input gts-autocomplete ' + (disabled ? 'gts-input-disabled' : '') + (error ? ' gts-input-error' : '')"
+        :class="['gts-input gts-autocomplete', { 'gts-input-disabled': disabled, 'gts-input-error': error, 'gts-autocomplete-clearable': clearable && inputValue }]"
         type="text" :placeholder="placeholder" />
+
+      <button v-if="clearable && inputValue" type="button" class="gts-autocomplete-clear"
+        :disabled="disabled" :aria-label="clearLabel" :title="clearLabel"
+        @mousedown.prevent @click="clearSelection">
+        <span aria-hidden="true">×</span>
+      </button>
 
       <div v-if="isOpen && filteredOptions.length" class="gts-listbox-option-container">
         <span v-for="(option, index) in filteredOptions" :key="index" class="gts-listbox-option"
@@ -41,6 +47,11 @@ export default {
   ],
 
   props: {
+    clearable: {
+      type: Boolean,
+      default: true
+    },
+
     modelValue: {
       type: String,
       default: ''
@@ -67,6 +78,12 @@ export default {
       isOpen: false,
       inputValue: '',
       filteredOptions: []
+    }
+  },
+
+  computed: {
+    clearLabel() {
+      return '$t' in this ? this.$t('input.clear') : 'Clear text and selection';
     }
   },
 
@@ -109,6 +126,14 @@ export default {
   },
 
   methods: {
+
+    clearSelection() {
+      if (this.disabled || !this.clearable) return;
+
+      this.onInput({ target: { value: '' } });
+      this.$refs.gtsInput.focus();
+      this.closeList();
+    },
 
     setUpDefaultSelectedValue() {
       if (this.selectedOption && this.selectedOption.value !== undefined) {
@@ -213,6 +238,41 @@ export default {
 
 .gts-autocomplete-container {
   position: relative;
+
+  .gts-autocomplete-clearable {
+    padding-inline-end: 48px;
+  }
+
+  .gts-autocomplete-clear {
+    position: absolute;
+    inset-inline-end: 4px;
+    top: 4px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 4px;
+    background: transparent;
+    color: $primary-color-700;
+    font-size: 24px;
+    cursor: pointer;
+
+    &:hover:not(:disabled) {
+      background-color: $primary-color-50;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $primary-color-400;
+      outline-offset: -2px;
+    }
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+  }
 
   .gts-listbox-option-container {
     position: absolute;

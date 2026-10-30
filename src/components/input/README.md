@@ -50,6 +50,7 @@ A custom dropdown/select component.
 | Prop           | Type      | Required | Default | Description                                               |
 | -------------- | --------- | -------- | ------- | --------------------------------------------------------- |
 | `options`      | `Array`   | No       | `[]`    | Array of option objects `{ label: '...', value: '...' }`. |
+| `clearable`    | `Boolean` | No       | `true`  | Shows a clear button when the input contains text. Disabled when the input is disabled. |
 | `label`        | `String`  | Yes      | -       | Label for the dropdown.                                   |
 | `defaultValue` | `String`  | No       | -       | Default selected value                                    |
 | `value`        | `String`  | No       | -       | Code controlled value (hard bind)                         |
@@ -177,3 +178,25 @@ An autocomplete input which often to user the suggestion after entring chars.
 | ------------------- | -------- | ------------------------------------- |
 | `onValueChanged`    | `String` | Emitted when input value changes. |
 | `onOptionSelected`  | `Object` | Emitted when option value selected. |
+
+### Clear text and selection
+
+The × button clears the text and selection, resets filtering, closes suggestions and returns focus to the input.
+It emits `update:modelValue` with `''`, `update:selectedOption` and `onSelectionReset` with `undefined`,
+and `onValueChanged` with `''`, using the existing input events. It does not emit `onOptionSelected`.
+
+```vue
+<script setup>
+import { ref } from 'vue';
+import AutoComplete from './AutoComplete.vue';
+
+const text = ref('');
+const selectedFruit = ref();
+const options = [{ label: 'Apple', value: 'apple' }, { label: 'Banana', value: 'banana' }];
+</script>
+
+<template>
+  <AutoComplete label="Fruit" v-model="text" v-model:selectedOption="selectedFruit" :options="options" />
+  <AutoComplete label="Without clear button" :options="options" :clearable="false" />
+</template>
+```
