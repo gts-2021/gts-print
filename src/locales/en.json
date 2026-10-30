@@ -1,6 +1,7 @@
 {
   "input": {
-    "required": "*"
+    "required": "*",
+    "clear": "Clear text and selection"
   },
   "mapAutoComplete": {
     "mapPicker": {
