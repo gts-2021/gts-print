@@ -293,7 +293,7 @@ export default {
   position: relative;
   min-width: 0;
   border-left: 1px solid var(--gts-time-border, $neutral-color-200);
-  &.is-today { background: var(--gts-time-today-background, rgba($primary-color-50, .5)); }
+  &.is-today { background: var(--gts-time-today-background, color-mix(in srgb, #{$primary-color-50} 50%, transparent)); }
 }
 .gts-time-grid-content { position: absolute; inset: 0; overflow: hidden; }
 .gts-time-grid-slot {
@@ -347,6 +347,6 @@ export default {
   border-top: 1px solid var(--gts-time-cursor-color, $primary-color-500);
   span { position: absolute; right: 4px; bottom: 2px; padding: 2px 6px; border-radius: 4px;
     background: var(--gts-time-cursor-color, $primary-color-500);
-    color: var(--gts-time-cursor-text, #fff); font-size: 11px; line-height: 16px; }
+    color: var(--gts-time-cursor-text, $color-white); font-size: 11px; line-height: 16px; }
 }
 </style>

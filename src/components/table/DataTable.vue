@@ -918,7 +918,7 @@ export default {
 
         &:nth-child(even) {
           .gts-print-table-content-data {
-            background-color: #DEE8EA6B;
+            background-color: var(--gts-table-zebra-bg, color-mix(in srgb, #{$primary-color-400} 6%, transparent));
           }
         }
 

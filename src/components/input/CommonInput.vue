@@ -56,7 +56,7 @@ export default {
 <style lang="scss">
 .gts-calendar-icon {
     position: absolute;
-    color: gray !important;
+    color: var(--gts-calendar-icon-color, var(--gts-neutral-400, gray)) !important;
     right: 10px;
     top: 11px;
     cursor: pointer;

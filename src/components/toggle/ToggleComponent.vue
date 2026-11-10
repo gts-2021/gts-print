@@ -97,7 +97,7 @@ $thumb-margin: 2px;
     .gts-toggle-thumb {
       width: $thumb-size;
       height: $thumb-size;
-      background-color: white;
+      background-color: $color-white;
       border-radius: 50%;
       position: absolute;
       left: $thumb-margin;

@@ -4,9 +4,9 @@
 
 		<div v-if="actions.length != 0" tabindex="0" class="gts-card-actions-btn" @click="toggleMenu">
 			<svg width="8" height="16" viewBox="0 0 8 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-				<circle cx="4" cy="2" r="2" fill="#002A34" />
-				<circle cx="4" cy="8" r="2" fill="#002A34" />
-				<circle cx="4" cy="14" r="2" fill="#002A34" />
+				<circle cx="4" cy="2" r="2" fill="var(--gts-primary-700, #002A34)" />
+				<circle cx="4" cy="8" r="2" fill="var(--gts-primary-700, #002A34)" />
+				<circle cx="4" cy="14" r="2" fill="var(--gts-primary-700, #002A34)" />
 			</svg>
 
 		</div>
@@ -67,7 +67,7 @@ export default {
 	.gts-card-content {
 		width: 100%;
 		height: 100%;
-		border: 1px solid #D4D4D4;
+		border: 1px solid var(--gts-card-border, var(--gts-neutral-200, #D4D4D4));
 		border-radius: 16px;
 		overflow: hidden;
 	}

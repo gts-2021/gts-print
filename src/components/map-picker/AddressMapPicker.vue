@@ -198,10 +198,17 @@ export default {
         this.map.removeLayer(this.circle);
       }
 
+      const themeEl =
+        (typeof document !== 'undefined' && (document.getElementById('map') || document.documentElement)) || null;
+      const primaryColor =
+        themeEl && typeof getComputedStyle === 'function'
+          ? getComputedStyle(themeEl).getPropertyValue('--gts-primary-400').trim() || '#006980'
+          : '#006980';
+
       this.circle = L.circle([lat, lng], {
         radius: this.localRayon * 1000, // convert km to meters
-        color: '#3f51b5',
-        fillColor: '#3f51b5',
+        color: primaryColor,
+        fillColor: primaryColor,
         fillOpacity: 0.15,
         weight: 1.5
       }).addTo(this.map);
@@ -290,7 +297,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 .address-map-picker .gts-dialog-content {
   height: 660px;
   max-height: 660px;
@@ -327,7 +334,7 @@ export default {
 }
 
 .search-error-msg {
-  color: #d32f2f;
+  color: $accent-error-red-color;
   font-size: 13px;
   margin-bottom: 10px;
 }
@@ -341,10 +348,10 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  background: #f8f9fa;
+  background: $neutral-color-50;
   padding: 10px 15px;
   border-radius: 8px;
-  border: 1px solid #e9ecef;
+  border: 1px solid $neutral-color-200;
 }
 
 .radius-slider-label {
@@ -352,13 +359,13 @@ export default {
   justify-content: space-between;
   align-items: center;
   font-size: 14px;
-  color: #495057;
+  color: $neutral-color-700;
 }
 
 .radius-value {
   font-weight: bold;
-  color: #3f51b5; /* primary color */
-  background: #e8eaf6;
+  color: $primary-color-400;
+  background: $primary-color-50;
   padding: 2px 8px;
   border-radius: 12px;
   font-size: 12px;
@@ -370,7 +377,7 @@ export default {
   appearance: none;
   height: 6px;
   border-radius: 5px;
-  background: #dee2e6;
+  background: $neutral-color-200;
   outline: none;
   margin: 5px 0;
   cursor: pointer;
@@ -382,7 +389,7 @@ export default {
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: #3f51b5;
+  background: $primary-color-400;
   cursor: pointer;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
   transition: transform 0.15s ease-in-out, background-color 0.15s;
@@ -390,14 +397,14 @@ export default {
 
 .radius-slider::-webkit-slider-thumb:hover {
   transform: scale(1.25);
-  background: #303f9f;
+  background: $primary-color-500;
 }
 
 .radius-slider::-moz-range-thumb {
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: #3f51b5;
+  background: $primary-color-400;
   cursor: pointer;
   border: none;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
@@ -406,7 +413,7 @@ export default {
 
 .radius-slider::-moz-range-thumb:hover {
   transform: scale(1.25);
-  background: #303f9f;
+  background: $primary-color-500;
 }
 
 #map {
@@ -415,6 +422,6 @@ export default {
   width: 100%;
   min-height: 340px;
   border-radius: 8px;
-  border: 1px solid #dee2e6;
+  border: 1px solid $neutral-color-200;
 }
 </style>

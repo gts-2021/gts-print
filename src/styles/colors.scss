@@ -1,41 +1,41 @@
-$primary-color-700:#002A34; 
-$primary-color-600: #003F4D;
-$primary-color-500: #005467;
-$primary-color-400: #006980;
-$primary-color-300: #007E9A;
-$primary-color-200: #0093B3;
-$primary-color-100: #00A8CD;
+$primary-color-700: var(--gts-primary-700, #002A34);
+$primary-color-600: var(--gts-primary-600, #003F4D);
+$primary-color-500: var(--gts-primary-500, #005467);
+$primary-color-400: var(--gts-primary-400, #006980);
+$primary-color-300: var(--gts-primary-300, #007E9A);
+$primary-color-200: var(--gts-primary-200, #0093B3);
+$primary-color-100: var(--gts-primary-100, #00A8CD);
 
-$primary-color-50: #DCF8FE;
+$primary-color-50: var(--gts-primary-50, #DCF8FE);
 
 
-$secondary-color: #35495e;
-$secondary-color-50: #eefaf7;
-$secondary-color-100: #cbf0e6;
-$secondary-color-200: #b1e8d9;
-$secondary-color-300: #8edec8;
-$secondary-color-400: #78d7bd;
-$secondary-color-500: #56cdad;
-$secondary-color-600: #4ebb9d;
-$secondary-color-700: #3d927b;
+$secondary-color: var(--gts-secondary, #35495e);
+$secondary-color-50: var(--gts-secondary-50, #eefaf7);
+$secondary-color-100: var(--gts-secondary-100, #cbf0e6);
+$secondary-color-200: var(--gts-secondary-200, #b1e8d9);
+$secondary-color-300: var(--gts-secondary-300, #8edec8);
+$secondary-color-400: var(--gts-secondary-400, #78d7bd);
+$secondary-color-500: var(--gts-secondary-500, #56cdad);
+$secondary-color-600: var(--gts-secondary-600, #4ebb9d);
+$secondary-color-700: var(--gts-secondary-700, #3d927b);
 
-$color-white: #fff;
-$neutral-color-50: #FAFAFA;
+$color-white: var(--gts-color-white, #fff);
+$neutral-color-50: var(--gts-neutral-50, #FAFAFA);
 
-$neutral-color-100: #F5F5F5;
-$neutral-color-200: #e2e2e2;
-$neutral-color-300: #bbbbbb;
-$neutral-color-400: #8f8f8f;
-$neutral-color-500: #737373;
-$neutral-color-600: #696969;
-$neutral-color-700: #404040;
-$neutral-color-800: #262626;
-$neutral-color-900: #303030;
+$neutral-color-100: var(--gts-neutral-100, #F5F5F5);
+$neutral-color-200: var(--gts-neutral-200, #e2e2e2);
+$neutral-color-300: var(--gts-neutral-300, #bbbbbb);
+$neutral-color-400: var(--gts-neutral-400, #8f8f8f);
+$neutral-color-500: var(--gts-neutral-500, #737373);
+$neutral-color-600: var(--gts-neutral-600, #696969);
+$neutral-color-700: var(--gts-neutral-700, #404040);
+$neutral-color-800: var(--gts-neutral-800, #262626);
+$neutral-color-900: var(--gts-neutral-900, #303030);
 
-$accent-dark-red-color: #801700;
-$accent-error-red-color: #ff0000;
-$accent-light-red-color: #fceded;
-$accent-light-red-color-100: #fddddd;
+$accent-dark-red-color: var(--gts-accent-dark-red, #801700);
+$accent-error-red-color: var(--gts-accent-error-red, #ff0000);
+$accent-light-red-color: var(--gts-accent-light-red, #fceded);
+$accent-light-red-color-100: var(--gts-accent-light-red-100, #fddddd);
 
-$accent-dark-orange-color: #ffb836;
-$accent-light-orange-color: #eb85331A;
+$accent-dark-orange-color: var(--gts-accent-dark-orange, #ffb836);
+$accent-light-orange-color: var(--gts-accent-light-orange, #eb85331A);

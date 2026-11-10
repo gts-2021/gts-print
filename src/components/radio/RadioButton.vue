@@ -72,7 +72,7 @@ export default {
     width: 20px;
     height: 20px;
     padding: 4px;
-    background-color: white;
+    background-color: $color-white;
     border: 1px solid $primary-color-400;
     border-radius: 10px;
     margin-right: 10px;

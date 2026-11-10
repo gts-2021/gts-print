@@ -190,9 +190,9 @@ export default {
 	}
 
 	.gts-button-primary-50:hover {
-		background: #bfe1e8;
+		background: color-mix(in srgb, #{$primary-color-50} 85%, #{$primary-color-400});
 		color: $primary-color-400;
-		border: 1px solid #bfe1e8;
+		border: 1px solid color-mix(in srgb, #{$primary-color-50} 85%, #{$primary-color-400});
 	}
 
 	/* PRIMARY_50_INVERSE */
@@ -216,9 +216,9 @@ export default {
 	}
 
 	.gts-button-danger:hover {
-		background: #dc0000;
+		background: color-mix(in srgb, #{$accent-error-red-color} 86%, #000);
 		color: $color-white;
-		border-color: #dc0000;
+		border-color: color-mix(in srgb, #{$accent-error-red-color} 86%, #000);
 
 	}
 
@@ -230,7 +230,7 @@ export default {
 	}
 
 	.gts-button-danger-inverse:hover {
-		background: #ffeaea;
+		background: color-mix(in srgb, #{$accent-error-red-color} 8%, #{$color-white});
 		color: $accent-error-red-color;
 		border: 1px solid $accent-error-red-color;
 	}

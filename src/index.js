@@ -1,3 +1,4 @@
+import './styles/tokens.css';
 
 import BarSide from '@/components/barside/BarSide.vue';
 import DataTable from '@/components/table/DataTable.vue';

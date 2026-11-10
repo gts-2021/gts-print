@@ -80,8 +80,8 @@ export default {
 
 .gts-tooltip {
   position: absolute;
-  background-color: #333;
-  color: #fff;
+  background-color: var(--gts-tooltip-bg, var(--gts-neutral-800, #333));
+  color: var(--gts-tooltip-color, var(--gts-color-white, #fff));
   padding: 8px 12px;
   border-radius: 4px;
   font-size: 14px;

@@ -216,7 +216,7 @@ export default {
 
 		&.disabled {
 			pointer-events: none;
-			color: grey;
+			color: $neutral-color-400;
 		}
 	}
 

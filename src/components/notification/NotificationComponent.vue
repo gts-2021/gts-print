@@ -70,8 +70,8 @@ export default {
 
 /* WARNING */
 .gts-notification-warning {
-  color:rgb(189, 161, 2);
-  background-color: rgb(251, 252, 190);
+  color: var(--gts-accent-warning-text, rgb(189, 161, 2));
+  background-color: var(--gts-accent-warning-bg, rgb(251, 252, 190));
   border-color: $accent-dark-orange-color;
 }
 </style>

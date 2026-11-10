@@ -432,11 +432,11 @@ export default {
       }
       &.gts-tab-badge-warning {
         background-color: $accent-light-orange-color;
-        color: #b45309;
+        color: var(--gts-accent-warning-text, #b45309);
       }
       &.gts-tab-badge-success {
-        background-color: #ecfdf5;
-        color: #047857;
+        background-color: var(--gts-secondary-50, #ecfdf5);
+        color: var(--gts-secondary-700, #047857);
       }
     }
 

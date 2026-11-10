@@ -4,7 +4,7 @@
     <div v-if="this.isOpen" class="gts-dialog-container">
       <div ref="dialogRef" :class="'gts-dialog ' + (this.className || '')" :style="dialogStyle">
         <div class="gts-dialog-header" :style="isMovable ? 'cursor: move;' : ''" @mousedown="startDrag">
-          <span class="gts-dialog-header-title" :style="'color:' + this.titleColor + ';'">{{ title }}</span>
+          <span class="gts-dialog-header-title" :style="titleColor ? { color: titleColor } : null">{{ title }}</span>
           <svg @click="onCloseClicked" class="gts-dialog-header-close-icon" width="30" height="30"
             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
             <path
@@ -247,7 +247,7 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 20, 29, 0.705);
+  background-color: var(--gts-dialog-backdrop, rgba(0, 20, 29, 0.705));
   z-index: 100;
   overflow-y: auto;
 
@@ -261,7 +261,7 @@ export default {
   background-color: $color-white;
   width: 900px;
   border-radius: 10px;
-  box-shadow: 0 0 0.18cm #d5d5d5;
+  box-shadow: 0 0 0.18cm var(--gts-dialog-shadow, #d5d5d5);
   animation: scaleIn 0.2s ease forwards;
   display: flex;
   flex-direction: column;
@@ -284,6 +284,7 @@ export default {
 
     .gts-dialog-header-close-icon {
       cursor: pointer;
+      fill: var(--gts-dialog-close-color, currentColor);
     }
 
   }
@@ -312,7 +313,7 @@ export default {
     height: 16px;
     cursor: se-resize;
     z-index: 10;
-    background: linear-gradient(135deg, transparent 60%, #a3a3a3 60%);
+    background: linear-gradient(135deg, transparent 60%, var(--gts-neutral-400, #a3a3a3) 60%);
     border-bottom-right-radius: 10px;
   }
 }
