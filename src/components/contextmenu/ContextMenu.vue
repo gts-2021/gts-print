@@ -68,7 +68,7 @@ export default {
 
 	background-color: $color-white;
 	min-width: 170px;
-	border: 1px solid #D4D4D4;
+	border: 1px solid var(--gts-context-menu-border, var(--gts-neutral-200, #D4D4D4));
 	border-radius: 10px;
 	overflow: hidden;
 	z-index: 5;

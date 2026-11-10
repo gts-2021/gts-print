@@ -110,7 +110,7 @@ export default {
         }
 
         .barside-item-content { 
-            background-color: #{$primary-color-400}33;
+            background-color: color-mix(in srgb, #{$primary-color-400} 20%, transparent);
         }
     }
 

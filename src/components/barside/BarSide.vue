@@ -85,11 +85,11 @@ export default {
 <style lang="scss">
 .barside-container {
     color: $primary-color-400;
-    background-color: #F2EDEB26;
+    background-color: var(--gts-barside-bg, #F2EDEB26);
     width: 272px;
     height: 100vh;
     padding-top: 16px;
-    border-right: 1px solid #D3D6DB;
+    border-right: 1px solid var(--gts-barside-border, #D3D6DB);
     overflow-y: auto;
     transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s ease;
 
@@ -117,8 +117,8 @@ export default {
         }
 
         .barside-toggle-btn {
-            background-color: #FFFFFF;
-            border: 1px solid #E2E8F0;
+            background-color: $color-white;
+            border: 1px solid var(--gts-barside-toggle-border, #E2E8F0);
             border-radius: 8px;
             width: 34px;
             height: 34px;
@@ -134,7 +134,7 @@ export default {
             &:hover {
                 background-color: $primary-color-50;
                 color: $primary-color-400;
-                border-color: #{$primary-color-400}40;
+                border-color: color-mix(in srgb, #{$primary-color-400} 25%, transparent);
                 transform: scale(1.05);
             }
 
@@ -163,7 +163,7 @@ export default {
     }
 
     .barside-menu-separation {
-        background-color: #E2E8F0;
+        background-color: var(--gts-barside-divider, #E2E8F0);
         margin-top: 24px;
         margin-bottom: 24px;
         height: 1px;

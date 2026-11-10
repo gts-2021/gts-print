@@ -3,7 +3,7 @@
   <div class="gts-checkbox-container" :id="id">
     <div @click="onToggle" class="gts-checkbox">
 
-      <svg v-if="isRadioChecked" fill="white" class="gts-checkbox-checked" xmlns="http://www.w3.org/2000/svg"
+      <svg v-if="isRadioChecked" fill="var(--gts-color-white, white)" class="gts-checkbox-checked" xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24">
         <title>check-bold</title>
         <path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z" />
@@ -85,7 +85,7 @@ export default {
     display: flex;
     width: 20px;
     height: 20px;
-    background-color: white;
+    background-color: $color-white;
     border: 1px solid $neutral-color-300;
     border-radius: 4px;
     margin-right: 10px;

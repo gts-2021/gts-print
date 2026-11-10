@@ -176,7 +176,7 @@ export default {
     }
 
     &.is-today {
-      background: #DEE8EA;
+      background: var(--gts-calendar-today-bg, color-mix(in srgb, #{$primary-color-400} 12%, #{$color-white}));
       border-left: 4px solid $primary-color-500;
     }
 
@@ -220,7 +220,7 @@ export default {
         width: 10px;
         height: 10px;
         border-radius: 50%;
-        background-color: #22c55e;
+        background-color: var(--gts-calendar-today-dot, #22c55e);
         flex-shrink: 0;
       }
     }
@@ -265,7 +265,7 @@ export default {
           transition: background-color 0.15s ease, color 0.15s ease;
 
           &:hover {
-            background-color: #EEF2FF;
+            background-color: var(--gts-calendar-action-hover-bg, #EEF2FF);
           }
 
           .gts-card-actions-menu {

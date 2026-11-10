@@ -179,7 +179,7 @@ export default {
         width: 7px;
         height: 7px;
         border-radius: 50%;
-        background-color: #22c55e;
+        background-color: var(--gts-calendar-today-dot, #22c55e);
         flex-shrink: 0;
       }
 
@@ -280,7 +280,7 @@ export default {
       transition: background-color 0.15s ease, color 0.15s ease;
 
       &:hover {
-        background-color: #EEF2FF;
+        background-color: var(--gts-calendar-action-hover-bg, #EEF2FF);
       }
 
       .gts-card-actions-menu {

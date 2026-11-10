@@ -283,7 +283,7 @@ export default {
     width: 100%;
     border: 1px solid $neutral-color-300;
     border-radius: 5px;
-    background-color: white;
+    background-color: $color-white;
     z-index: 15;
     top: 100%;
     margin-top: 4px;

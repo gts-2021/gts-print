@@ -72,7 +72,6 @@ export default {
 			align-items: center;
 			width: 40px;
 			height: 40px;
-			color: white;
 			border-radius: 40px;
 			border: 1px solid $neutral-color-200;
 			color: $primary-color-700;
@@ -95,7 +94,7 @@ export default {
 			background-color: $primary-color-400;
 			width: 40px;
 			height: 40px;
-			color: white;
+			color: $color-white;
 			border-radius: 40px;
 		}
 
