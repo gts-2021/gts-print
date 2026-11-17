@@ -38,9 +38,8 @@
       <table class="gts-print-table">
         <thead>
           <tr class="gts-print-table-header">
-            <th class="gts-print-table-header-container" v-for="(header, index) in visibleHeaders" :key="header">
-              <div :class="['gts-print-table-header-data', header.className]">
-
+            <th :class="['gts-print-table-header-container']" v-for="(header, index) in visibleHeaders" :key="header">
+              <div :class="['gts-print-table-header-data']">
                 <span class="gts-print-table-header-title"> {{ header.title }} </span>
                 <span v-if="header.sortable" class="gts-print-table-header-icon"
                   @click="toggleMenu(header.name, $event)"><v-icon>{{ "mdi-dots-vertical" }}</v-icon></span>
@@ -53,11 +52,9 @@
           <tr class="gts-print-table-content" v-for="(item, index) in dataToDisplay" :key="item">
             <td :class="['gts-print-table-content-data', header.className]" v-for="(header) in visibleHeaders"
               :key="header.name">
-
-              <span v-if="header.componentFormatter">
-                <component :item="item" :is="header.componentFormatter"></component>
-              </span>
-
+              
+              <component v-if="header.componentFormatter" :item="item" :is="header.componentFormatter"></component>
+               
               <span v-else-if="header.textFormatter"> {{ header.textFormatter(item, index) }} </span>
 
               <span v-else>{{ item[header.name] }} </span>

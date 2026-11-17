@@ -9,6 +9,16 @@ Created By: BENGUERGOURA Oussama & HADJERSI Mohamed | 20/10/2024
 
 //add new section for new release 
 
+## [1.7.10]
+
+### Changed
+
+* Transfer border from `gts-card-content` to `gts-card-container`
+
+### Removed
+
+* Remove `span` wrapper for custom table cell formatted.
+
 ## [1.7.6]
 
 ### Added

@@ -63,13 +63,14 @@ export default {
 <style lang="scss">
 .gts-card-container {
 	position: relative;
+	border: 1px solid var(--gts-card-border, var(--gts-neutral-200, #D4D4D4));
+	border-radius: 16px;
 
 	.gts-card-content {
 		width: 100%;
 		height: 100%;
-		border: 1px solid var(--gts-card-border, var(--gts-neutral-200, #D4D4D4));
 		border-radius: 16px;
-		overflow: hidden;
+
 	}
 
 	.gts-card-actions-btn {
